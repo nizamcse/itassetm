@@ -49,7 +49,8 @@ Route::prefix('admin')->group(function () {
     ]);
 
     Route::get('asset-types', function () {
-        return view('admin.asset-types');
+        $assetTypes =  \App\AssetType::all();
+        return view('admin.asset-types')->with(['assetTypes' => $assetTypes]);
     })->name('admin.asset-types');
 
     Route::get('vendors', function () {
@@ -98,6 +99,11 @@ Route::prefix('admin')->group(function () {
         'as'    => 'json-location'
     ]);
 
+    Route::get('/json/assets',[
+        'uses'  => 'OrganizationController@getAssetsJson',
+        'as'    => 'json-assets'
+    ]);
+
 
     Route::get('/json/department/delete/{id?}',[
         'uses'  => 'OrganizationController@getDeleteDepartmentJson',
@@ -127,6 +133,41 @@ Route::prefix('admin')->group(function () {
     Route::get('/json/location/delete/{id?}',[
         'uses'  => 'OrganizationController@getDeleteLocationJson',
         'as'    => 'json-delete-location'
+    ]);
+
+    Route::post('/json/assets',[
+        'uses'  => 'OrganizationController@postAssetsJson',
+        'as'    => 'post.assets'
+    ]);
+
+    Route::get('/json/assets/delete/{id?}',[
+        'uses'  => 'OrganizationController@deleteAssetsJson',
+        'as'    => 'json-delete-asset'
+    ]);
+
+    Route::post('/json/assets/update/{id?}',[
+        'uses'  => 'OrganizationController@updateAssetsJson',
+        'as'    => 'json-update-asset'
+    ]);
+
+    Route::get('/json/employees',[
+        'uses'  => 'OrganizationController@getEmployees',
+        'as'    => 'json-employees'
+    ]);
+
+    Route::post('/json/employee',[
+        'uses'  => 'OrganizationController@postEmployeeJson',
+        'as'    => 'post.employee'
+    ]);
+
+    Route::get('/json/employee/{id?}',[
+        'uses'  => 'OrganizationController@getEmployeeJson',
+        'as'    => 'json-employee'
+    ]);
+
+    Route::get('/json/employee/delete/{id?}',[
+        'uses'  => 'OrganizationController@deleteEmployeeJson',
+        'as'    => 'json-delete-employee'
     ]);
 
 

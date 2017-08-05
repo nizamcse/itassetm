@@ -24,7 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->string('designation')->nullable();
             $table->string('location')->nullable();
             $table->string('org')->nullable();
-            $table->string('created_by')->nullable();
+            $table->integer('created_by')->unsigned()->nullable();
 
             $table->timestamps();
 

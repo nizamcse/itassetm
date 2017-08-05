@@ -41,8 +41,8 @@
                                 <div class="form-group">
                                     <label>Section S.V </label>
 
-                                    <select name="reporting_to" class="form-control select2" style="width: 100%" ;="">
-                                        <option value="">Choose Section S.V</option>
+                                    <select id="edit_report_to_employee" name="reporting_to" class="form-control select2" style="width: 100%" ;="">
+                                        <option value="">Reporting To</option>
                                     </select>
                                 </div>
                                 <!-- /.form-group -->
@@ -53,14 +53,6 @@
                     <button type="button" class="btn btn-success bt-cancel-update">Cancel</button>
                     <button type="submit" class="btn btn-success bt-update-department">Save</button>
                 </form>
-            </div>
-
-            <div id="reporting-to-hidden-data" style="display: none">
-                <option value="">Option 1</option>
-                <option value="3">Option 2</option>
-                <option value="4">Option 3</option>
-                <option value="5">Option 4</option>
-                <option value="6">Option 5</option>
             </div>
 
         </div>
@@ -168,9 +160,8 @@
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Reporting To </label>';
-            var $input2 ='<select name="department['+ind+'][reporting_to]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#reporting-to-hidden-data").html();
-            $input2 += $input2Data;
+            var $input2 ='<select id="report_to_employee" name="department['+ind+'][reporting_to]" class="form-control select2" style="width: 100%";">';
+            $input2 += getEmployeesList();
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -200,8 +191,7 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Reporting To </label>';
             var $input2 ='<select name="department['+ind+'][reporting_to]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#reporting-to-hidden-data").html();
-            $input2 += $input2Data;
+            $input2 += getEmployeesList();
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -218,6 +208,7 @@
 
         $("#addDepartment").click(function () {
             $( "#department-form" ).css({"display":"block"});
+            $("#edit-department-form").css({"display":"none"});
             formField();
         });
 
@@ -237,6 +228,7 @@
             $("#edit-department-form").attr("action","{{ route('json-update-department') }}/"+elem.data('id'));
             $("#edit-department-form").css({"display":"block"});
             $("#edit-department-form input[name='name']").val(elem.data('name'));
+            $("#department-form").css({"display":"none"});
         }
 
         function deleteDepartment(elem) {
@@ -259,6 +251,21 @@
         });
         $("#edit-department-form").css({"display":"none"});
         $( "#department-form" ).css({"display":"none"});
+
+        var getEmployeesList = function (){
+            $.ajax({url: "{{ route('json-employees') }}", success: function(result){
+                var $employeesOption = '<option value="">Select Department</option>';
+                result.employees.forEach(function (employee) {
+                    $employeesOption +='<option value="'+employee.id+'">'+employee.name+'</option>'
+                });
+                $("#report_to_employee").html($employeesOption);
+                $("#edit_report_to_employee").html($employeesOption);
+
+                return $employeesOption;
+            }});
+        };
+
+        getEmployeesList();
 
 
 
