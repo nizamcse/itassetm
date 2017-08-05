@@ -12,39 +12,8 @@
             <form id="location-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
                 <div id="section-input-area"></div>
-                <button id="cancelSectionForm" type="button" class="btn btn-success">Cancel</button>
+                <button id="cancelLocationForm" type="button" class="btn btn-success">Cancel</button>
                 <button type="submit" class="btn btn-success save-section">Save</button>
-                <input class="hide" type="text" name="Locid" value="">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Location Name</label>
-                            <input type="text" class="form-control" name="name" value="" placeholder="Location Name" required="">
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Parent </label>
-
-                            <select class="form-control select2" name="parent_id" style="width: 100%;">
-                                <option value="">Top</option>
-                                @foreach($locations as $location)
-                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <!-- /.form-group -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="hide">
-                        <div class="form-group">
-                            <label>Location Level</label>
-                            <input type="text" class="form-control" name="txtLocationLev" value="" placeholder="Location Level">
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success">Save</button>
             </form>
             <div id="location-parent" style="display: none">
                 <option value="">Option 1</option>
@@ -53,6 +22,31 @@
                 <option value="">Option 3</option>
                 <option value="">Option 2</option>
             </div>
+            <form id="location-edit-form" action="{{ route('post.location') }}" method="POST">
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label>Section Name</label>
+                            <input type="text" class="form-control" name="name"  placeholder="Location" required="">
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label>Location Parent</label>
+                            <select name="parent_id" class="form-control select2" style="width: 100%">
+                                <option value="">Option 1</option>
+                                <option value="">Option 5</option>
+                                <option value="">Option 4</option>
+                                <option value="">Option 3</option>
+                                <option value="">Option 2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button id="cancelLocationEditForm" type="button" class="btn btn-success">Cancel</button>
+                <button type="submit" class="btn btn-success save-section">Save</button>
+            </form>
             <!-- /.row -->
         </div>
         <div class="x_content">
@@ -69,12 +63,23 @@
 @section('script')
     @include('../partials.location-list')
     <script>
+        $("#location-form").css({"display":"none"});
+        $("#location-edit-form").css({"display":"none"});
+
+        $("#cancelLocationForm").click(function(){
+            $("#location-form").css({"display":"none"});
+            $("#section-input-area").html('');
+        });
+
+        $("#cancelLocationEditForm").click(function(){
+            $("#location-edit-form").css({"display":"none"});
+        });
+
         var locationData = function (data) {
 
             var theTemplateScript = $("#location-data-template").html();
 
             // Compile the template
-            console.log(data);
             var theTemplate = Handlebars.compile(theTemplateScript);
 
 
@@ -89,7 +94,135 @@
             $.ajax({url: "{{ route('json-location') }}", success: function(result){
                 locationData(result);
             }});
+        };
+
+        var formField = function () {
+            var ind = $("#section-input-area").find('.row').length;
+            var $fieldHtml = '<div class="row">';
+            var $fieldColum1 = '<div class="col-sm-5"><div class="form-group"><label>Section Name</label>';
+            var $input1 = '<input type="text" class="form-control" name="location['+ind+'][name]"  placeholder="Location" required="">';
+            $fieldColum1 += $input1;
+            $fieldColum1 += '</div></div>';
+            var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
+            var $input2 ='<select name="location['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
+            var $input2Data = $("#location-parent").html();
+            $input2 += $input2Data;
+            $input2 += '</select>';
+            $fieldColum2 += $input2;
+            $fieldColum2 += '</div></div>';
+
+            var $fieldColum3 = '<div class="col-sm-2"><button class="btn-danger btn-remove-row" type="button" style="margin-top:30px" onclick="removeRow($(this))">Remove</button></div>';
+
+            $fieldHtml += $fieldColum1;
+            $fieldHtml += $fieldColum2;
+            $fieldHtml += $fieldColum3;
+            $fieldHtml += '</div>';
+
+            $("#section-input-area").append($fieldHtml);
+
+        };
+        var initForm = function () {
+            var ind = $("#section-input-area").find('.row').length;
+            var $fieldHtml = '<div class="row">';
+            var $fieldColum1 = '<div class="col-sm-5"><div class="form-group"><label>Section Name</label>';
+            var $input1 = '<input type="text" class="form-control" name="location['+ind+'][name]"  placeholder="Location" required="">';
+            $fieldColum1 += $input1;
+            $fieldColum1 += '</div></div>';
+            var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
+            var $input2 ='<select name="location['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
+            var $input2Data = $("#location-parent").html();
+            $input2 += $input2Data;
+            $input2 += '</select>';
+            $fieldColum2 += $input2;
+            $fieldColum2 += '</div></div>';
+
+            var $fieldColum3 = '<div class="col-sm-2"><button class="btn-danger btn-remove-row" type="button" style="margin-top:30px" onclick="removeRow($(this))">Remove</button></div>';
+
+            $fieldHtml += $fieldColum1;
+            $fieldHtml += $fieldColum2;
+            $fieldHtml += $fieldColum3;
+            $fieldHtml += '</div>';
+
+            $("#section-input-area").html($fieldHtml);
+
+        };
+
+        function removeRow(element) {
+            element.closest('.row').remove();
+            var ind = $("#section-input-area").find('.row').length;
+            if(ind<=0){
+                $("#location-form").css({"display":"none"});
+            }
         }
+
+        function editLocation(elem){
+            $("#location-edit-form").attr("action","{{ route('json-update-location') }}/"+elem.data('id'));
+
+            $("#location-form").css({"display":"none"});
+            $("#location-edit-form").css({"display":"block"});
+
+            $("#location-edit-form input[name='name']").val(elem.data('name'));
+        }
+
+        function deleteLocation(elem) {
+            var url = "{{ route('json-delete-location') }}/"+elem.data('id');
+
+            $.ajax({
+                type        : 'GET',
+                url         : url,
+                encode      : true
+            }).done(function(data) {
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+                locations();
+            });
+        }
+
+        $( "#location-form" ).on( "submit", function( event ) {
+            var formData = $( this ).serialize();
+            var url = $( this ).attr('action');
+            $.ajax({
+                type        : 'POST',
+                url         : url,
+                data        : formData,
+                encode          : true
+            }).done(function(data) {
+                locations();
+                $( "#location-form" )[0].reset();
+                $( "#location-form" ).css({"display":"none"});
+                initForm();
+
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+            });
+            event.preventDefault();
+        });
+
+        $("#location-edit-form").on( "submit", function( event ) {
+
+            var formData = $( this ).serialize();
+            console.log(formData);
+            var url = $( this ).attr('action');
+            $.ajax({
+                type        : 'POST',
+                url         : url,
+                data        : formData,
+                encode          : true
+            }).done(function(data) {
+                locations();
+                $("#location-edit-form")[0].reset();
+                $("#location-edit-form").css({"display":"none"});
+
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+            });
+            event.preventDefault();
+        });
+
+        $("#addLocation").click(function () {
+            $("#location-form").css({"display":"block"});
+            formField();
+        });
 
         locations();
 

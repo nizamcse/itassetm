@@ -119,5 +119,15 @@ Route::prefix('admin')->group(function () {
         'as'    => 'json-delete-section'
     ]);
 
+    Route::post('/json/location/update/{id?}',[
+        'uses'  => 'OrganizationController@updateLocationJson',
+        'as'    => 'json-update-location'
+    ]);
+
+    Route::get('/json/location/delete/{id?}',[
+        'uses'  => 'OrganizationController@getDeleteLocationJson',
+        'as'    => 'json-delete-location'
+    ]);
+
 
 });
