@@ -3,97 +3,319 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title"></h3>
+            <h3 class="box-title">Employee Details</h3>
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                <button id="addEmployee" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus"></i>Add New Employee</button>
             </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <form action="/?option=Employe" method="post">
-                <input class="hide" type="text" name="empid" value="">
-                <div class="row">
-                    <div class="col-xs-2">
-                        <label>Employee Code</label>
-                        <input type="text" class="form-control" name="txtEmpCode" value="" placeholder="Employee Code" required="">
-                    </div>
-                    <div class="col-xs-5">
-                        <label>Employee Name</label>
-                        <input type="text" class="form-control" name="txtEmpName" value="" placeholder="Employee Name" required="">
-                    </div>
-                    <div class="col-xs-3">
-                        <label>Designation</label>
-                        <input type="text" class="form-control" name="DpEmpDesignation" value="" placeholder="Designation">
-                    </div>
-                    <div class="col-xs-2">
-                        <label>Joining Date</label>
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+            <div id="submit-status"></div>
+            <form id="employee-form" action="{{ route('post.employee') }}" method="POST">
+                {{ csrf_field() }}
+                <div id="section-input-area">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                <input type="text" class="form-control" name="employee_code" value="" placeholder="Employee Code" required="">
                             </div>
-                            <input type="text" class="form-control pull-right" id="Employeedatepicker3" name="DTjoin" value="">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <input type="text" class="form-control" name="name" value="" placeholder="Employee Name" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" class="form-control" name="designation" value="" placeholder="Designation">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Joining Date</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="Employeedatepicker3" name="joining_date" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" name="phone" value="" placeholder="Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email" value="" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="employee_department">Department</label>
+                                <select id="employee_department" name=employee_dept" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="employee_section">SEction</label>
+                                <select id="employee_section" name=employee_section" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="employee_location">Location</label>
+                                <select id="employee_location" name="employee_location" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-3">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" name="txtEmpPhone" value="" placeholder="Phone">
-                    </div>
-                    <div class="col-xs-3">
-                        <label>Email</label>
-                        <input type="text" class="form-control" name="txtEmpEmail" value="" placeholder="Email">
-                    </div>
-                    <div class="col-xs-2">
-                        <label>Department</label>
-
-                        <select class="form-control select2" name="DpEmpDepartment" style="width: 100%" ;="">
-                            <option value=""> Choose department</option>
-                            <option value="3">HR</option><option value="4">IT</option><option value="6">Accounts</option><option value="8">ytutyut</option>                </select>
-                    </div>
-                    <div class="col-xs-2">
-                        <label>Section</label>
-                        <select class="form-control select2" name="DpEmpSection" style="width: 100%" ;="">
-                            <option value="">Choose Section</option>
-                            <option value="1">sec1</option><option value="4">Sec2</option><option value="5">fgdfgdf</option>                </select>
-                    </div>
-                    <div class="col-xs-2">
-                        <label>Location</label>
-                        <select class="form-control select2" name="DpEmpLocation" ="width:="" 100%";="">
-                        <option value="">Choose Location</option>
-                        <option value="1">Uttara</option><option value="3">Building 1</option><option value="4">Gulshan</option><option value="6">Building 1</option><option value="7">Building 2</option><option value="8">room1</option><option value="9">room2</option><option value="14">Desk 1</option><option value="15">test</option><option value="16">ajimpur</option><option value="17">mogda</option><option value="18">test</option>                </select>
+                <button id="cancelEmployeeForm" type="button" class="btn btn-success">Cancel</button>
+                <button type="submit" class="btn btn-success save-section">Save</button>
+            </form>
+            <form id="employee-edit-form" action="{{ route('post.employee') }}" method="POST">
+                {{ csrf_field() }}
+                <div id="section-input-area">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                <input type="text" class="form-control" name="employee_code" value="" placeholder="Employee Code" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <input type="text" class="form-control" name="name" value="" placeholder="Employee Name" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" class="form-control" name="designation" value="" placeholder="Designation">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Joining Date</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="Employeedatepicker3" name="joining_date" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" name="phone" value="" placeholder="Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email" value="" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="edit_employee_department">Department</label>
+                                <select id="edit_employee_department" name=employee_dept" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="edit_employee_section">SEction</label>
+                                <select id="edit_employee_section" name=employee_section" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="edit_employee_location">Location</label>
+                                <select id="edit_employee_location" name="employee_location" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form></div>
-
-        <button type="submit" class="btn btn-success">Save</button>
+                <button id="cancelEmployeeEditForm" type="button" class="btn btn-success">Cancel</button>
+                <button type="submit" class="btn btn-success save-section">Save</button>
+            </form>
+        </div>
 
         <!-- /.row -->
     </div>
     <div class="x_content">
-
-        <table id="datatable" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>ID#</th>
-                <th>Employee Name</th>
-                <th>Designation</th>
-                <th>Phone </th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-
-            <tbody><tr><td>1</td><td>linkon</td><td>IT</td><td>019</td><td>@gmail.com</td><td>
-                    <a class="btn btn-success btn-xs" href="/?option=Employe&amp;code=1">Edit</a>	| <a class="btn btn-danger btn-xs" href="/?option=Employe&amp;code=1&amp;delete=yes">Delete</a>							</td></tr><tr><td>3</td><td>nahid</td><td>na</td><td>01913800099</td><td>@gmail.com</td><td>
-                    <a class="btn btn-success btn-xs" href="/?option=Employe&amp;code=3">Edit</a>	| <a class="btn btn-danger btn-xs" href="/?option=Employe&amp;code=3&amp;delete=yes">Delete</a>							</td></tr>						<!--<a class="btn btn-primary btn-xs" href="/?option=Department&code=">"Edit"</a>-->
-            </tbody><tbody>
-
-            </tbody>
-        </table>
+        <div id="employees"></div>
     </div>
     <div class="box-footer">
 
     </div>
+@endsection
+
+@section('script')
+    @include('../partials.employees-list')
+    <script>
+
+        $("#employee-form").css({"display":"none"});
+        $("#addEmployee").click(function () {
+            $("#employee-form").css({"display":"block"});
+            $("#employee-edit-form").css({"display":"none"});
+        });
+        $("#cancelEmployeeForm").click(function () {
+            $("#employee-form").css({"display":"none"});
+            $("#employee-form")[0].reset();
+        });
+        $("#employee-edit-form").css({"display":"none"});
+
+        var employeesData = function (data) {
+
+            var theTemplateScript = $("#employee-table-template").html();
+
+            // Compile the template
+            var theTemplate = Handlebars.compile(theTemplateScript);
+
+
+            // Pass our data to the template
+            var theCompiledHtml = theTemplate(data);
+            // Add the compiled html to the page
+            $('#employees').html(theCompiledHtml);
+
+        };
+
+        var getEmployeesList = function (){
+            $.ajax({url: "{{ route('json-employees') }}", success: function(result){
+                employeesData(result);
+            }});
+        };
+
+        var getEmployee = function (id){
+            $.ajax({url: "{{ route('json-employee') }}/"+id, success: function(result){
+                $("#employee-edit-form").css({"display":"block"});
+                $("#employee-form").css({"display":"none"});
+                $("#employee-edit-form input[name='name']").val(result.employee.name);
+
+                $("#employee-edit-form input[name='employee_code']").val(result.employee.employee_code);
+
+                $("#employee-edit-form input[name='joined_at']").val(result.employee.joined_at);
+
+                $("#employee-edit-form input[name='phone']").val(result.employee.phone);
+
+                $("#employee-edit-form input[name='email']").val(result.employee.email);
+
+                $("#employee-edit-form input[name='designation']").val(result.employee.designation);
+
+            }});
+        };
+
+        $("#employee-form" ).on( "submit", function( event ) {
+            var formData = $( this ).serialize();
+            var url = $( this ).attr('action');
+            $.ajax({
+                type        : 'POST',
+                url         : url,
+                data        : formData,
+                encode          : true
+            }).done(function(data) {
+                getEmployeesList();
+                $("#employee-form" )[0].reset();
+                $("#employee-form" ).css({"display":"none"});
+
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+            });
+            event.preventDefault();
+        });
+
+        function setDepartment() {
+            var url = "{{ route('json-department') }}";
+            $.ajax({
+                type        : 'GET',
+                url         : url,
+                encode          : true
+            }).done(function(data) {
+                var $departmentsOptions = '<option value="">Select Department</option>';
+                data.departments.forEach(function (dept) {
+                    console.log(dept);
+                    $departmentsOptions +='<option value="'+dept.id+'">'+dept.name+'</option>'
+                });
+                $("#edit_employee_department").html($departmentsOptions);
+                $("#employee_department").html($departmentsOptions);
+            });
+        }
+        function setSection() {
+            var url = "{{ route('json-section') }}";
+            $.ajax({
+                type        : 'GET',
+                url         : url,
+                encode          : true
+            }).done(function(data) {
+                var $departmentsOptions = '<option value="">Select Section</option>';
+                data.sections.forEach(function (section) {
+                    $departmentsOptions +='<option value="'+section.id+'">'+section.name+'</option>'
+                });
+
+                $("#employee_section").html($departmentsOptions);
+                $("#edit_employee_section").html($departmentsOptions);
+            });
+        }
+        function setLocation() {
+            var url = "{{ route('json-location') }}";
+            $.ajax({
+                type        : 'GET',
+                url         : url,
+                encode      : true
+            }).done(function(data) {
+                var $departmentsOptions = '<option value="">Select Location</option>';
+                data.locations.forEach(function (location) {
+                    $departmentsOptions +='<option value="'+location.id+'">'+location.name+'</option>'
+                });
+                $("#employee_location").html($departmentsOptions);
+                $("#edit_employee_location").html($departmentsOptions);
+            });
+        }
+
+        function editEmployee(elem) {
+            getEmployee(elem.data('id'));
+        }
+
+        function deleteEmployee(elem) {
+            var url = "{{ route('json-delete-employee') }}/"+elem.data('id');
+
+            $.ajax({
+                type        : 'GET',
+                url         : url,
+                encode      : true
+            }).done(function(data) {
+                console.log(data);
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+                getEmployeesList();
+            });
+        }
+
+        $("#cancelEmployeeEditForm").click(function () {
+            $("#employee-edit-form")[0].reset();
+            $("#employee-edit-form").css({"display":"none"});
+        });
+
+        getEmployeesList();
+        setDepartment();
+        setSection();
+        setLocation();
+
+
+    </script>
 @endsection

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\AssetType;
 use App\Department;
 use App\Employee;
 use App\Location;
 use App\Organization;
 use App\Section;
+use Faker\Provider\DateTime;
 use Validator;
 
 use Illuminate\Http\Request;
@@ -14,6 +16,13 @@ use Auth;
 
 class OrganizationController extends Controller
 {
+    private $assetType;
+
+    public function __construct()
+    {
+        $this->assetType = "";
+    }
+
     public function create(Request $request){
 
         $validator = Validator::make($request->all(),[
@@ -227,4 +236,86 @@ class OrganizationController extends Controller
             'message' => 'Successfully deleted this Section'
         ],200);
     }
+
+    public function getAssetsJson(){
+        $assets['assets'] = AssetType::with('parent')->get();
+        return response()->json($assets,200);
+    }
+
+    public function postAssetsJson(Request $request){
+
+        foreach ($request->input('assets') as $assets){
+
+            AssetType::firstOrCreate([
+                'name'  => $assets['name'],
+                'parent_id'  => $assets['parent_id']
+            ]);
+        }
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created this asset'
+        ],200);
+
+    }
+
+    public function deleteAssetsJson($id){
+        AssetType::findOrFail($id)->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this asset'
+        ],200);
+    }
+
+    public function updateAssetsJson(Request $request, $id){
+        $asset = AssetType::findOrFail($id);
+        $asset->update([
+            'name'          => $request->input('name'),
+            'parent_id'     => $request->input('parent_id')
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this asset'
+        ],200);
+    }
+
+
+    public function getEmployees(){
+        $employees['employees'] = Employee::all();
+        return response()->json($employees,200);
+    }
+
+    public function postEmployeeJson(Request $request){
+        $org = Organization::first();
+        $time = strtotime($request->input('joining_date'));
+
+        $newformat = date('Y-m-d',$time);
+        $employee = Employee::create([
+            'employee_code'     => $request->input('employee_code'),
+            'dept_id'           => $request->input('employee_dept'),
+            'joined_at'         => $newformat,
+            'name'              => $request->input('name'),
+            'phone'             => $request->input('phone'),
+            'email'             => $request->input('email'),
+            'designation'       => $request->input('designation'),
+            'location'          => $request->input('employee_location'),
+            'org'               => $org->id,
+            'location_id'        => $request->input('employee_location'),
+            'created_by'        => Auth::user()->id,
+        ]);
+    }
+
+    public function getEmployeeJson($id){
+        $employee['employee'] = Employee::find($id);
+        return response()->json($employee,200);
+    }
+
+    public function deleteEmployeeJson($id){
+        Employee::findOrFail($id)->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this employee'
+        ],200);
+    }
+
 }
