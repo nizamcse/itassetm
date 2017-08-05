@@ -125,9 +125,10 @@ class OrganizationController extends Controller
     }
 
     public function createLocation(Request $request){
-        $location = Location::firstOrNew([
-            'name'  => $request->input('name'),
-            'parent_id' => $request->input('parent_id')
+        foreach ($request->input('location') as $location)
+        $location = Location::firstOrCreate([
+            'name'  => $location['name'],
+            'parent_id' => $location['parent_id']
         ]);
 
         $location->save();
@@ -203,5 +204,27 @@ class OrganizationController extends Controller
     public function getLocationJson(){
         $locations['locations'] = Location::with(['parent'])->get();
         return response()->json($locations,200);
+    }
+
+    public function updateLocationJson(Request $request, $id){
+        $location = Location::findOrFail($id);
+        $location->update([
+            'name'  => $request->input('name'),
+            'parent_id' => $request->input('parent_id')
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this location'
+        ],200);
+    }
+
+    public function getDeleteLocationJson($id){
+        $location = Location::findOrFail($id);
+        $location->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this Section'
+        ],200);
     }
 }
