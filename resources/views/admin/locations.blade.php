@@ -3,16 +3,17 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title">Select2</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-            </div>
+            <h3 class="box-title">Location</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <form action="{{ route('post.location') }}" method="POST">
+            <div id="submit-status"></div>
+            <a href="#" id="addLocation">Add Location</a>
+            <form id="location-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
+                <div id="section-input-area"></div>
+                <button id="cancelSectionForm" type="button" class="btn btn-success">Cancel</button>
+                <button type="submit" class="btn btn-success save-section">Save</button>
                 <input class="hide" type="text" name="Locid" value="">
                 <div class="row">
                     <div class="col-md-4">
@@ -45,6 +46,13 @@
                 </div>
                 <button type="submit" class="btn btn-success">Save</button>
             </form>
+            <div id="location-parent" style="display: none">
+                <option value="">Option 1</option>
+                <option value="">Option 5</option>
+                <option value="">Option 4</option>
+                <option value="">Option 3</option>
+                <option value="">Option 2</option>
+            </div>
             <!-- /.row -->
         </div>
         <div class="x_content">
