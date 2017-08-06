@@ -21,6 +21,7 @@
 
                     </div>
                     <!-- /.row -->
+                    <button type="submit" class="btn btn-danger bt-cancel-add-department">Cancel</button>
                     <button type="submit" class="btn btn-success bt-save-department">Save</button>
                 </form>
             </div>
@@ -69,6 +70,8 @@
 @section('script')
     @include('../partials.department-list-table')
     <script>
+        var $departmentOption;
+
         var departmentDataTable = function(){
             $('#datatable').DataTable( {
                 "paging":   true,
@@ -153,6 +156,8 @@
         getDepartments();
 
         var formField = function () {
+
+
             var ind = $("#department-input-area").find('.row').length;
             var $fieldHtml = '<div class="row">';
             var $fieldColum1 = '<div class="col-sm-5"><div class="form-group"><label>Department Name</label>';
@@ -161,7 +166,7 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Reporting To </label>';
             var $input2 ='<select id="report_to_employee" name="department['+ind+'][reporting_to]" class="form-control select2" style="width: 100%";">';
-            $input2 += getEmployeesList();
+            $input2 += $departmentOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -179,6 +184,7 @@
                     "display" : "inline-block"
                 });
             }
+            getEmployeesList();
         };
 
 
@@ -191,7 +197,7 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Reporting To </label>';
             var $input2 ='<select name="department['+ind+'][reporting_to]" class="form-control select2" style="width: 100%";">';
-            $input2 += getEmployeesList();
+            $input2 += $departmentOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -204,6 +210,7 @@
             $fieldHtml += '</div>';
 
             $("#department-input-area").html($fieldHtml);
+            getEmployeesList();
         }
 
         $("#addDepartment").click(function () {
@@ -229,6 +236,7 @@
             $("#edit-department-form").css({"display":"block"});
             $("#edit-department-form input[name='name']").val(elem.data('name'));
             $("#department-form").css({"display":"none"});
+            getEmployeesList();
         }
 
         function deleteDepartment(elem) {
@@ -249,20 +257,21 @@
         $(".bt-cancel-update").click(function () {
             $("#edit-department-form").css({"display":"none"});
         });
+        $(".bt-cancel-add-department").click(function () {
+            $("#department-form").css({"display":"none"});
+            $("#department-form #department-input-area").html('');
+        });
         $("#edit-department-form").css({"display":"none"});
         $( "#department-form" ).css({"display":"none"});
 
         var getEmployeesList = function (){
             $.ajax({url: "{{ route('json-employees') }}", success: function(result){
-                var $employeesOption = '<option value="">Select Department</option>';
+                $departmentOption = '<option value="">Select Department</option>';
                 result.employees.forEach(function (employee) {
-                    $employeesOption +='<option value="'+employee.id+'">'+employee.name+'</option>'
+                    $departmentOption +='<option value="'+employee.id+'">'+employee.name+'</option>'
                 });
-                $("#report_to_employee").html($employeesOption);
-                $("#edit_report_to_employee").html($employeesOption);
-
-                return $employeesOption;
             }});
+            $("#edit-department-form #edit_report_to_employee").html($departmentOption);
         };
 
         getEmployeesList();
