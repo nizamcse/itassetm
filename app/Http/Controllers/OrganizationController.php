@@ -70,22 +70,23 @@ class OrganizationController extends Controller
         $org = Organization::first();
 
         foreach ($request->input('department') as $department){
+            //return $department;
             $department = Department::firstOrNew([
                 'name' => $department['name']
             ]);
 
             $department->created_by = Auth::user()->id;
             $department->org =$org->id;
-            $department->reporting_to = $department['reporting_to'];
+
+
+            $employee = Employee::find($department['reporting_to']);
+            $department->reporting_to = $employee->id;
             $department->save();
         }
 
 
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'Successfully created'
-        ],200);
+        return response()->json($employee,200);
     }
 
     public function getDepartments(){

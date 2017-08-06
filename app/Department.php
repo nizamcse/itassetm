@@ -12,4 +12,8 @@ class Department extends Model
         'reporting_to',
         'created_by',
     ];
+
+    public function reporting(){
+        return $this->belongsTo('App\Employee','reporting_to');
+    }
 }
