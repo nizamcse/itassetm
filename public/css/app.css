@@ -4,3 +4,35 @@
 .form-group .help-block{
     position: absolute;
 }
+
+.form-group .btn-group ul{
+    background-color: #f7f7f7;
+    list-style: none;
+    border-top: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+.form-group .btn-group ul li{
+    background-color: #f7f7f7;
+    list-style: none;
+    color: #333;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 7px 15px;
+    cursor: pointer;
+    border-left: 2px solid deepskyblue;
+}
+.form-group .btn-group .optionGroup{
+    padding-left: 20px;
+    padding: 0;
+}
+
+.btn-group.open .btn-select-location,
+.btn-select-location:active,
+.btn-select-location:focus,
+.btn-select-location:hover,
+.btn-select-location{
+    background-color: snow;
+    border-radius: 0px;
+    box-shadow: none;
+    text-align: left;
+}

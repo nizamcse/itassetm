@@ -16,13 +16,6 @@
                 <button id="cancelAssetForm" type="button" class="btn btn-success">Cancel</button>
                 <button type="submit" class="btn btn-success save-section">Save</button>
             </form>
-            <div id="asset-parent" style="display: none">
-                <option value="">Top</option>
-                <option class="optionGroup" value="">Software</option>
-                <option value="">--Anti Virus</option>
-                <option class="optionGroup" value="">Hardware</option>
-                <option value="">--RAM</option>
-            </div>
             <form id="asset-type-edit-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="row">
@@ -35,12 +28,8 @@
                     <div class="col-sm-5">
                         <div class="form-group">
                             <label>Asset Parent</label>
-                            <select name="parent_id" class="form-control select2" style="width: 100%">
-                                <option value="">Top</option>
-                                <option class="optionGroup" value="">Software</option>
-                                <option value="">--Anti Virus</option>
-                                <option class="optionGroup" value="">Hardware</option>
-                                <option value="">--RAM</option>
+                            <select id="parent_id" name="parent_id" class="form-control select2" style="width: 100%">
+
                             </select>
                         </div>
                     </div>
@@ -63,6 +52,7 @@
 @section('script')
     @include('../partials.asset-types')
     <script>
+        var $assetOptions;
         $("#asset-type-form").css({"display":"none"});
         $("#asset-type-edit-form").css({"display":"none"});
 
@@ -96,6 +86,13 @@
             }});
         };
 
+        var assetTree = function peintTree(){
+
+            $.ajax({url: "{{ route('asset-tree') }}", success: function(result){
+                $assetOptions = result;
+            }});
+        };
+
         var formField = function () {
             var ind = $("#section-input-area").find('.row').length;
             var $fieldHtml = '<div class="row">';
@@ -105,7 +102,8 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Asset Parent </label>';
             var $input2 ='<select name="assets['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#asset-parent").html();
+            var $input2Data = '<option value="">TOP</option>';
+            $input2Data += $assetOptions;
             $input2 += $input2Data;
             $input2 += '</select>';
             $fieldColum2 += $input2;
@@ -130,7 +128,8 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Asset Parent </label>';
             var $input2 ='<select name="assets['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#asset-parent").html();
+            var $input2Data = '<option value="">TOP</option>';
+            $input2Data += $assetOptions;
             $input2 += $input2Data;
             $input2 += '</select>';
             $fieldColum2 += $input2;
@@ -158,10 +157,16 @@
         function editAsset(elem){
             $("#asset-type-edit-form").attr("action","{{ route('json-update-asset') }}/"+elem.data('id'));
 
-            $("#asset-form").css({"display":"none"});
+            $("#asset-type-form").css({"display":"none"});
             $("#asset-type-edit-form").css({"display":"block"});
 
             $("#asset-type-edit-form input[name='name']").val(elem.data('name'));
+            var $input2Data = '<option value="">TOP</option>';
+            $input2Data += $assetOptions;
+
+            $("#asset-type-edit-form #parent_id").html($input2Data);
+
+            $('#asset-type-edit-form #parent_id option[value="'+elem.data('parent')+'"]').prop('selected', true);
         }
 
         function deleteAsset(elem) {
@@ -195,6 +200,7 @@
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
             });
+            assetTree();
             event.preventDefault();
         });
 
@@ -215,6 +221,7 @@
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
             });
+            assetTree();
             event.preventDefault();
         });
 
@@ -229,6 +236,7 @@
         }
 
         getAssetList();
+        assetTree();
 
 
     </script>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +35,7 @@
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{ asset('plugins/datepicker/datepicker3.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables/jquery.dataTables.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <!-- bootstrap datepicker -->
     <!--for grid-->
 
@@ -70,204 +69,10 @@
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="{{ asset('dist/img/user3-128x128.jpg') }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                AdminLTE Design Team
-                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="{{ asset('dist/img/user4-128x128.jpg') }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Developers
-                                                <small><i class="fa fa-clock-o"></i> Today</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="{{ asset('dist/img/user3-128x128.jpg') }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Sales Department
-                                                <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="{{ asset('dist/img/user4-128x128.jpg') }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Reviewers
-                                                <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
-                        </ul>
-                    </li>
-                    <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                                            page and may cause design problems
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-red"></i> 5 new members joined
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-user text-red"></i> You changed your username
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">9</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 9 tasks</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Design some buttons
-                                                <small class="pull-right">20%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Create a nice theme
-                                                <small class="pull-right">40%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">40% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Some task I need to do
-                                                <small class="pull-right">60%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">60% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Make beautiful transitions
-                                                <small class="pull-right">80%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">80% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="#">View all tasks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Alexander Pierce</span>
+                            <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -275,8 +80,8 @@
                                 <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
-                                    <small>Member since Nov. 2012</small>
+                                    {{ Auth::user()->name }}
+                                    <small>{{ Auth::user()->email }}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -300,7 +105,7 @@
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -324,7 +129,7 @@
                     <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Administrator</p>
+                    <p>{{ Auth::user()->name }}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -370,7 +175,12 @@
 					</span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="/?option=Asset_detail"><i class="fa fa-circle-o"></i> Asset Detail</a></li>	<li class="active"><a href="/?option=Sub_Asset"><i class="fa fa-circle-o"></i> Sub Assets</a></li>
+                        <li class="active">
+                            <a href="{{ route('assets') }}"><i class="fa fa-circle-o"></i> Asset Detail</a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ route('sub-assets') }}"><i class="fa fa-circle-o"></i> Sub Assets</a>
+                        </li>
 
                     </ul>
                 </li>
@@ -382,7 +192,37 @@
 					</span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="/?option=Budget_Head"><i class="fa fa-circle-o"></i> Budget Head</a></li>	<li class="active"><a href="/?option=Budget_Approval"><i class="fa fa-circle-o"></i> Budget Approval</a></li>	<li class="active"><a href="/?option=Budget_Type"><i class="fa fa-circle-o"></i> Budget Type</a></li>	<li class="active"><a href="/?option=Budget_Declar"><i class="fa fa-circle-o"></i> Budget Declar</a></li>	<li class="active"><a href="/?option=Budget_Approval_Employee"><i class="fa fa-circle-o"></i> Budget Type Approval</a></li>	<li class="active"><a href="/?option=Grid"><i class="fa fa-circle-o"></i> Grid</a></li>
+                        <li class="active">
+                            <a href="{{ route('budget-head') }}"><i class="fa fa-circle-o"></i> Budget Head</a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ route('budget-type') }}"><i class="fa fa-circle-o"></i> Budget Type</a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ route('budget-type-approval') }}"><i class="fa fa-circle-o"></i> Budget Type Approval</a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ route('budget-declear') }}"><i class="fa fa-circle-o"></i> Budget Declar</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cog"></i> <span>Purchase Requisition</span>
+                        <span class="pull-right-container">
+					<i class="fa fa-angle-left pull-right"></i>
+					</span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active">
+                            <a href="{{ route('purchase-requisition') }}"><i class="fa fa-circle-o"></i> Purchase Requisition</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('purchase-requisition-details') }}"><i class="fa fa-circle-o"></i> Purchase Requisition Details</a>
+                        </li>
+
 
                     </ul>
                 </li>
@@ -430,201 +270,10 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 2.3.8
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright @2017 MbizTech.</strong> All rights
         reserved.
     </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-            <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!-- Home tab content -->
-            <div class="tab-pane" id="control-sidebar-home-tab">
-                <h3 class="control-sidebar-heading">Recent Activity</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:void(0)">
-                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                                <p>Will be 23 on April 24th</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <i class="menu-icon fa fa-user bg-yellow"></i>
-
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-
-                                <p>New phone +1(800)555-1234</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-
-                                <p>nora@example.com</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <i class="menu-icon fa fa-file-code-o bg-green"></i>
-
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-
-                                <p>Execution time 5 seconds</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
-
-                <h3 class="control-sidebar-heading">Tasks Progress</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:void(0)">
-                            <h4 class="control-sidebar-subheading">
-                                Custom Template Design
-                                <span class="label label-danger pull-right">70%</span>
-                            </h4>
-
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <h4 class="control-sidebar-subheading">
-                                Update Resume
-                                <span class="label label-success pull-right">95%</span>
-                            </h4>
-
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <h4 class="control-sidebar-subheading">
-                                Laravel Integration
-                                <span class="label label-warning pull-right">50%</span>
-                            </h4>
-
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)">
-                            <h4 class="control-sidebar-subheading">
-                                Back End Framework
-                                <span class="label label-primary pull-right">68%</span>
-                            </h4>
-
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
-
-            </div>
-            <!-- /.tab-pane -->
-
-            <!-- Settings tab content -->
-            <div class="tab-pane" id="control-sidebar-settings-tab">
-                <form method="post">
-                    <h3 class="control-sidebar-heading">General Settings</h3>
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Report panel usage
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
-
-                        <p>
-                            Some information about this general settings option
-                        </p>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Allow mail redirect
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
-
-                        <p>
-                            Other sets of options are available
-                        </p>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Expose author name in posts
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
-
-                        <p>
-                            Allow the user to show his name in blog posts
-                        </p>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <h3 class="control-sidebar-heading">Chat Settings</h3>
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Show me as online
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Turn off notifications
-                            <input type="checkbox" class="pull-right">
-                        </label>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Delete chat history
-                            <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-                        </label>
-                    </div>
-                    <!-- /.form-group -->
-                </form>
-            </div>
-            <!-- /.tab-pane -->
-        </div>
-    </aside>
-    <!-- /.control-sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
 
 </div>
 <!-- ./wrapper -->
@@ -646,10 +295,6 @@
 <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="{{ asset('plugins/chartjs/Chart.min.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('dist/js/demo.js') }}"></script>
 
 <script src="http://js-grid.com/js/jsgrid.min.js"></script>
 <!-- ./wrapper -->
@@ -680,16 +325,14 @@
 <script src="{{ asset('plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/app.min.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!--script src="dist/js/pages/dashboard.js"></script>-->
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('dist/js/demo.js') }}"></script>
+
 <script src="{{ asset('dist/js/main.js') }}"></script>
 <script src="{{ asset('dist/js/grid.js') }}"></script>
 <script src="{{ asset('dist/js/ReceiveGrid.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
 <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 @yield('script')
 
 </body>

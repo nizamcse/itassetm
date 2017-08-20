@@ -23,4 +23,8 @@ class Organization extends Model
         'key',
         'created_by',
     ];
+
+    public function yearlyBudget(){
+        return $this->hasOne('App\YearlyBudgetInfo', 'org_id', 'id');
+    }
 }

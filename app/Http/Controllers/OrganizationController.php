@@ -6,8 +6,11 @@ use App\AssetType;
 use App\Department;
 use App\Employee;
 use App\Location;
+use App\Manufacturer;
 use App\Organization;
 use App\Section;
+use App\ServiceType;
+use App\Vendor;
 use Faker\Provider\DateTime;
 use Validator;
 
@@ -68,29 +71,25 @@ class OrganizationController extends Controller
         //return response()->json($request->input('department'),200);
 
         $org = Organization::first();
-
+        $rows = array();
         foreach ($request->input('department') as $department){
-            //return $department;
-            $department = Department::firstOrNew([
-                'name' => $department['name']
+            $rows = new Department([
+                'name'         => $department['name'],
+                'created_by'   => Auth::user()->id,
+                'org'          => $org->id,
+                'reporting_to' => $department['reporting_to'],
             ]);
+            $rows->save();
 
-            $department->created_by = Auth::user()->id;
-            $department->org =$org->id;
-
-
-            $employee = Employee::find($department['reporting_to']);
-            $department->reporting_to = $employee->id;
-            $department->save();
         }
-
-
-
-        return response()->json($employee,200);
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created'
+        ],200);
     }
 
     public function getDepartments(){
-        $departments = Department::all();
+        $departments = Department::with('reporting')->get();
         return view('admin.department')->with([
             'departments' => $departments
         ]);
@@ -108,15 +107,14 @@ class OrganizationController extends Controller
 
     public function createSection(Request $request){
         $org = Organization::first();
-
         foreach ($request->input('section') as $section){
-            $section = Section::firstOrNew([
-                'name' => $section['name']
+            $row = new Section ([
+                'name' => $section['name'],
+                'created_by' => Auth::user()->id,
+                'sec_org' => $org->id,
+                'sec_sv' => $section['employee_id'],
             ]);
-
-            $section->created_by = Auth::user()->id;
-            $section->sec_org =$org->id;
-            $section->save();
+            $row->save();
         }
 
 
@@ -135,21 +133,24 @@ class OrganizationController extends Controller
     }
 
     public function createLocation(Request $request){
-        foreach ($request->input('location') as $location)
-        $location = Location::firstOrCreate([
-            'name'  => $location['name'],
-            'parent_id' => $location['parent_id']
-        ]);
 
-        $location->save();
+        foreach ($request->input('location') as $location){
+            $location = Location::firstOrNew([
+                'name'  => $location['name']
+            ]);
 
-        return redirect()->back();
+            $location->fill(['parent_id' => $location['parent_id']])->save();
+        }
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created this location'
+        ],200);
     }
 
     /************************* Ajax Request Json Format ************************/
 
     public function getDepartmentJson(){
-        $departments['departments'] = Department::all();
+        $departments['departments'] = Department::with('reporting')->get();
 
         //$locations['locations'] = Location::with(['parent'])->get();
 
@@ -158,8 +159,8 @@ class OrganizationController extends Controller
         //return response()->json($locations,200);
 
     }
-    public function getSectionJson(){
-        $sections['sections'] = Section::all();
+    public function getSectionJson($id = null){
+        $sections['sections'] = Section::with('superVisor')->get();
         return response()->json($sections,200);
 
     }
@@ -194,7 +195,8 @@ class OrganizationController extends Controller
         $section->update([
             'name'          => $request->input('name'),
             'created_by'    => Auth::user()->id,
-            'sec_org'           => $org->id
+            'sec_org'           => $org->id,
+            'sec_sv'           => $request->input('employee_id'),
         ]);
         return response()->json([
             'status' => 'ok',
@@ -214,6 +216,51 @@ class OrganizationController extends Controller
     public function getLocationJson(){
         $locations['locations'] = Location::with(['parent'])->get();
         return response()->json($locations,200);
+    }
+
+    public function get_location_tree($parent_id = null,$level = 0)
+    {
+        $menu = "";
+        $location = Location::where('parent_id',$parent_id)->get();
+        foreach ($location as $row)
+        {
+
+            $menu .= '<option value="'.$row->id.'">';
+            for($i=1; $i<=$level; $i++){
+                $menu.="-- ";
+            }
+            $menu.=$row->name.'</option>';
+
+            $child = Location::where('parent_id',$row->id)->get();
+            if(count($child) >0){
+                $menu .= $this->get_location_tree($row->id,$level+1);
+            }
+
+        }
+
+        return $menu;
+    }
+    public function get_asset_tree($parent_id = null,$level = 0)
+    {
+        $options = "";
+        $assets = AssetType::where('parent_id',$parent_id)->get();
+        foreach ($assets as $row)
+        {
+
+            $options .= '<option value="'.$row->id.'">';
+            for($i=1; $i<=$level; $i++){
+                $options.="-- ";
+            }
+            $options.=$row->name.'</option>';
+
+            $child = AssetType::where('parent_id',$row->id)->get();
+            if(count($child) >0){
+                $options .= $this->get_asset_tree($row->id,$level+1);
+            }
+
+        }
+
+        return $options;
     }
 
     public function updateLocationJson(Request $request, $id){
@@ -304,6 +351,11 @@ class OrganizationController extends Controller
             'location_id'        => $request->input('employee_location'),
             'created_by'        => Auth::user()->id,
         ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created this employee'
+        ],200);
     }
 
     public function getEmployeeJson($id){
@@ -316,6 +368,194 @@ class OrganizationController extends Controller
         return response()->json([
             'status' => 'ok',
             'message' => 'Successfully deleted this employee'
+        ],200);
+    }
+
+    public function updateEmployeeJson(Request $request, $id){
+        $employee = Employee::find($id);
+
+        $time = strtotime($request->input('joining_date'));
+
+        $newformat = date('Y-m-d',$time);
+        $employee->update([
+            'employee_code'     => $request->input('employee_code'),
+            'dept_id'           => $request->input('employee_dept'),
+            'joined_at'         => $newformat,
+            'name'              => $request->input('name'),
+            'phone'             => $request->input('phone'),
+            'email'             => $request->input('email'),
+            'designation'       => $request->input('designation'),
+            'location'          => $request->input('employee_location'),
+            'location_id'        => $request->input('employee_location'),
+            'created_by'        => Auth::user()->id,
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this employee'
+        ],200);
+    }
+/*
+ * Manufacturer
+ */
+    public function getManufacturers(){
+        $manufacturers['manufacturers'] = Manufacturer::all();
+        return response()->json($manufacturers,200);
+    }
+
+    public function postManufacturers(Request $request){
+        $org = Organization::first();
+        foreach ($request->input('manufacturer') as $manufacturer){
+
+            $row = Manufacturer::firstOrNew([
+                'name'  => $manufacturer['name']
+            ]);
+
+            $row->fill([
+                'org'          => $org->id,
+                'created_by'   => Auth::user()->id,
+            ])->save();
+        }
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created this manufacturers'
+        ],200);
+    }
+
+    public function updateManufacturers(Request $request,$id){
+
+        $manufacturer = Manufacturer::findOrFail($id);
+
+        $org = Organization::first();
+
+        $manufacturer->update([
+            'name'  => $request->input('name'),
+            'org'          => $org->id,
+            'created_by'   => Auth::user()->id,
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this manufacturers'
+        ],200);
+    }
+
+    public function deleteManufacturers($id){
+        Manufacturer::destroy($id);
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this manufacturers'
+        ],200);
+    }
+
+    public function getServiceType(){
+        $serviceType ['service_type'] = ServiceType::all();
+
+        return response()->json($serviceType,200);
+    }
+
+    public function createServiceType(Request $request){
+        $org = Organization::first();
+        foreach ($request->input('service_type') as $serviceType){
+
+            $row = ServiceType::firstOrNew([
+                'name'          => $serviceType['name'],
+                'service_type'  => $serviceType['type']
+            ]);
+
+            $row->fill([
+                'service_org'          => $org->id,
+                'created_by'   => Auth::user()->id,
+            ])->save();
+        }
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created this manufacturers'
+        ],200);
+    }
+
+    public function deleteServiceType($id){
+        ServiceType::find($id)->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this service'
+        ],200);
+    }
+
+    public function updateServiceType(Request $request, $id){
+        $serviceTYpe = ServiceType::find($id);
+        $serviceTYpe->update([
+            'name'          => $request->input('name'),
+            'service_type'  => $request->input('service_type')
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this service'
+        ],200);
+    }
+
+    public function createVendor(Request $request){
+        $org = Organization::first();
+        foreach ($request->input('vendor') as $vendor){
+
+            Vendor::create([
+                'name'  => $vendor['name'],
+                'address'  => $vendor['address'],
+                'contact_person'  => $vendor['contact_person'],
+                'contact_no'  => $vendor['contact_no'],
+                'web'  => $vendor['web'],
+                'trade_no'  => $vendor['trade_no'],
+                'vat_no'  => $vendor['vat_no'],
+                'company'  => $vendor['company'],
+                'org'  => $org->id,
+                'created_by'  => Auth::user()->id,
+            ]);
+        }
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully created vendors'
+        ],200);
+    }
+
+    public function getVendors(){
+        $vendors ['vendors'] = Vendor::all();
+
+        return response()->json($vendors,200);
+    }
+
+    public function deleteVendor($id){
+        Vendor::find($id)->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully deleted this vendors'
+        ],200);
+    }
+
+    public function getVendor($id){
+        $vendor['vendor'] = Vendor::find($id);
+        return response()->json($vendor,200);
+    }
+
+    public function updateVendor(Request $request, $id){
+        $vendor = Vendor::find($id);
+        $org = Organization::first();
+        $vendor->update([
+            'name'  => $request->input('name'),
+            'address'  => $request->input('address'),
+            'contact_person'  => $request->input('contact_person'),
+            'contact_no'  => $request->input('contact_no'),
+            'web'  => $request->input('web'),
+            'trade_no'  => $request->input('trade_no'),
+            'vat_no'  => $request->input('vat_no'),
+            'company'  =>$request->input('company'),
+            'org'  => $org->id,
+            'created_by'  => Auth::user()->id,
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully updated this vendors'
         ],200);
     }
 
