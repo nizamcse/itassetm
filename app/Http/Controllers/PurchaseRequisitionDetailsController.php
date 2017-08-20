@@ -27,11 +27,16 @@ class PurchaseRequisitionDetailsController extends Controller
     }
 
     public function getPurchaseRequisitionDetails(){
+        /*
+         * This may need later
+         */
+        /*
         $purchase_requisition_details['purchase_requisition_details'] = PurchaseRequisitionDetail::with([
             'asset.employee' => function($q){
                 $q->with(['department','section'])->get();
             }
         ])->get();
+        */
 
         $purchase_requisition_details['purchase_requisition_details'] = PurchaseRequisitionDetail::with(['asset.employee'])->get();
 
