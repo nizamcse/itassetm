@@ -59,7 +59,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="employee_department">Department</label>
-                                <select id="employee_department" name=employee_dept" class="form-control select2" style="width: 100%">
+                                <select id="employee_department" name="employee_dept" class="form-control select2" style="width: 100%">
                                 </select>
                             </div>
                         </div>
@@ -130,14 +130,14 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="edit_employee_department">Department</label>
-                                <select id="edit_employee_department" name=employee_dept" class="form-control select2" style="width: 100%">
+                                <select id="edit_employee_department" name="employee_dept" class="form-control select2" style="width: 100%">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="edit_employee_section">SEction</label>
-                                <select id="edit_employee_section" name=employee_section" class="form-control select2" style="width: 100%">
+                                <select id="edit_employee_section" name="employee_section" class="form-control select2" style="width: 100%">
                                 </select>
                             </div>
                         </div>
@@ -203,8 +203,10 @@
 
         var getEmployee = function (id){
             $.ajax({url: "{{ route('json-employee') }}/"+id, success: function(result){
+                var url = "{{ route('post.json-employee') }}/"+result.employee.id;
                 $("#employee-edit-form").css({"display":"block"});
                 $("#employee-form").css({"display":"none"});
+                $("#employee-edit-form").attr('action',url);
                 $("#employee-edit-form input[name='name']").val(result.employee.name);
 
                 $("#employee-edit-form input[name='employee_code']").val(result.employee.employee_code);
@@ -216,6 +218,12 @@
                 $("#employee-edit-form input[name='email']").val(result.employee.email);
 
                 $("#employee-edit-form input[name='designation']").val(result.employee.designation);
+
+                $("#employee-edit-form select[name='employee_dept']").val(result.employee.dept_id);
+
+                $("#employee-edit-form select[name='employee_section']").val(result.employee.section_id);
+
+                $("#employee-edit-form select[name='employee_location']").val(result.employee.location_id);
 
             }});
         };
@@ -232,6 +240,25 @@
                 getEmployeesList();
                 $("#employee-form" )[0].reset();
                 $("#employee-form" ).css({"display":"none"});
+
+                $msg = '<div class="alert alert-success">'+data.message+'</div>';
+                $("#submit-status").html($msg);
+            });
+            event.preventDefault();
+        });
+
+        $("#employee-edit-form" ).on( "submit", function( event ) {
+            var formData = $( this ).serialize();
+            var url = $( this ).attr('action');
+            $.ajax({
+                type        : 'POST',
+                url         : url,
+                data        : formData,
+                encode          : true
+            }).done(function(data) {
+                getEmployeesList();
+                $("#employee-edit-form" )[0].reset();
+                $("#employee-edit-form" ).css({"display":"none"});
 
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);

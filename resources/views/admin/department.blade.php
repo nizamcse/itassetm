@@ -127,6 +127,7 @@
 
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
+                $("#department-form #department-input-area").html('');
             });
             event.preventDefault();
         });
@@ -183,6 +184,9 @@
                 $(".bt-save-department").css({
                     "display" : "inline-block"
                 });
+                $(".bt-cancel-add-department").css({
+                    "display" : "inline-block"
+                });
             }
             getEmployeesList();
         };
@@ -210,6 +214,9 @@
             $fieldHtml += '</div>';
 
             $("#department-input-area").html($fieldHtml);
+            $(".bt-cancel-add-department").css({
+                "display" : "inline-block"
+            });
             getEmployeesList();
         }
 
@@ -225,6 +232,9 @@
                 $(".bt-save-department").css({
                     "display" : "none"
                 });
+                $(".bt-cancel-add-department").css({
+                    "display" : "none"
+                });
             }
         }
         $(".bt-save-department").css({
@@ -237,6 +247,7 @@
             $("#edit-department-form input[name='name']").val(elem.data('name'));
             $("#department-form").css({"display":"none"});
             getEmployeesList();
+            $('#edit-department-form #edit_report_to_employee option[value="'+elem.data('report')+'"]').prop('selected', true);
         }
 
         function deleteDepartment(elem) {

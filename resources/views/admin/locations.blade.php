@@ -15,13 +15,6 @@
                 <button id="cancelLocationForm" type="button" class="btn btn-success">Cancel</button>
                 <button type="submit" class="btn btn-success save-section">Save</button>
             </form>
-            <div id="location-parent" style="display: none">
-                <option value="">Option 1</option>
-                <option value="">Option 5</option>
-                <option value="">Option 4</option>
-                <option value="">Option 3</option>
-                <option value="">Option 2</option>
-            </div>
             <form id="location-edit-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="row">
@@ -32,15 +25,10 @@
                         </div>
                     </div>
                     <div class="col-sm-5">
+
                         <div class="form-group">
                             <label>Location Parent</label>
-                            <select name="parent_id" class="form-control select2" style="width: 100%">
-                                <option value="">Option 1</option>
-                                <option value="">Option 5</option>
-                                <option value="">Option 4</option>
-                                <option value="">Option 3</option>
-                                <option value="">Option 2</option>
-                            </select>
+                            <select id="parent_id" name="parent_id" class="form-control"></select>
                         </div>
                     </div>
                 </div>
@@ -63,6 +51,7 @@
 @section('script')
     @include('../partials.location-list')
     <script>
+        var $locationOption;
         $("#location-form").css({"display":"none"});
         $("#location-edit-form").css({"display":"none"});
 
@@ -95,6 +84,13 @@
                 locationData(result);
             }});
         };
+        var LocationTree = function peintTree(){
+
+            $.ajax({url: "{{ route('location-tree') }}", success: function(result){
+                $locationOption = result;
+            }});
+        };
+        LocationTree();
 
         var formField = function () {
             var ind = $("#section-input-area").find('.row').length;
@@ -104,9 +100,9 @@
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
-            var $input2 ='<select name="location['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#location-parent").html();
-            $input2 += $input2Data;
+            var $input2 = '<select name="location_parent" class="form-control">';
+            $input2 += '<option value="">TOP</option>';
+            $input2 += $locationOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -129,9 +125,9 @@
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
-            var $input2 ='<select name="location['+ind+'][parent_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#location-parent").html();
-            $input2 += $input2Data;
+            var $input2 = '<select name="location_parent" class="form-control">';
+            $input2 += '<option value="">TOP</option>';
+            $input2 += $locationOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -162,6 +158,10 @@
             $("#location-edit-form").css({"display":"block"});
 
             $("#location-edit-form input[name='name']").val(elem.data('name'));
+            var $input2 = '<option value="">TOP</option>';
+            $input2 += $locationOption;
+            $("#location-edit-form #parent_id").html($input2);
+            $('#location-edit-form #parent_id option[value="'+elem.data('parent')+'"]').prop('selected', true);
         }
 
         function deleteLocation(elem) {
@@ -194,6 +194,8 @@
 
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
+                $("#section-input-area").html('');
+                LocationTree();
             });
             event.preventDefault();
         });
@@ -215,6 +217,7 @@
 
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
+                LocationTree();
             });
             event.preventDefault();
         });
@@ -222,6 +225,13 @@
         $("#addLocation").click(function () {
             $("#location-form").css({"display":"block"});
             formField();
+        });
+
+        //getLocationList();
+
+        $("#section-input-area-test").click(function () {
+            console.log($(this).html());
+            alert();
         });
 
         locations();

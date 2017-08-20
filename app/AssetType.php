@@ -20,4 +20,8 @@ class AssetType extends Model
     {
         return $this->childs()->with('childrenRecursive');
     }
+
+    public function yearlyBudget(){
+        return $this->hasOne('App\YearlyBudgetInfo', 'unit', 'id');
+    }
 }

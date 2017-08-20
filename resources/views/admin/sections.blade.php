@@ -20,13 +20,6 @@
                 <button id="cancelSectionForm" type="button" class="btn btn-success">Cancel</button>
                 <button type="submit" class="btn btn-success save-section">Save</button>
             </form>
-            <div id="supervise-to-hidden-data" style="display: none">
-                <option value="">Option 1</option>
-                <option value="">Option 5</option>
-                <option value="">Option 4</option>
-                <option value="">Option 3</option>
-                <option value="">Option 2</option>
-            </div>
             <form id="section-edit-form" action="#" method="POST" style="display: none">
                 {{ csrf_field() }}
 
@@ -42,11 +35,7 @@
                         <div class="form-group">
                             <label>Section S.V </label>
 
-                            <select name="employee_id" class="form-control select2" style="width: 100%" ;="">
-                                <option value="">Choose Section S.V</option>
-                                @foreach($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                @endforeach
+                            <select id="employee_id" name="employee_id" class="form-control select2" style="width: 100%" ;="">
                             </select>
                         </div>
                         <!-- /.form-group -->
@@ -73,6 +62,7 @@
 @section('script')
     @include('../partials.section-list-table')
     <script>
+        var $supervisorOption;
         $("#section-form").css({"display":"none"});
         $("#cancelSectionForm").click(function(){
             $("#section-form").css({"display":"none"});
@@ -109,8 +99,7 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Section Supervisor </label>';
             var $input2 ='<select name="section['+ind+'][employee_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#supervise-to-hidden-data").html();
-            $input2 += $input2Data;
+            $input2 += $supervisorOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -123,6 +112,7 @@
             $fieldHtml += '</div>';
 
             $("#section-input-area").append($fieldHtml);
+            getEmployeesList();
 
         };
 
@@ -135,8 +125,7 @@
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Section Supervisor </label>';
             var $input2 ='<select name="section['+ind+'][employee_id]" class="form-control select2" style="width: 100%";">';
-            var $input2Data = $("#supervise-to-hidden-data").html();
-            $input2 += $input2Data;
+            $input2 += $supervisorOption;
             $input2 += '</select>';
             $fieldColum2 += $input2;
             $fieldColum2 += '</div></div>';
@@ -149,6 +138,7 @@
             $fieldHtml += '</div>';
 
             $("#department-input-area").html($fieldHtml);
+            getEmployeesList();
         }
 
         $("#addSection").click(function () {
@@ -215,6 +205,9 @@
             $("#section-edit-form").attr("action","{{ route('json-update-section') }}/"+elem.data('id'));
             $("#section-edit-form").css({"display":"block"});
             $("#section-edit-form input[name='name']").val(elem.data('name'));
+            getEmployeesList();
+            $("#section-edit-form #employee_id").html($supervisorOption);
+            $('#section-edit-form #employee_id option[value="'+elem.data('supervisor')+'"]').prop('selected', true);
         }
 
         function deleteSection(elem) {
@@ -231,6 +224,19 @@
                 getSections();
             });
         }
+
+        var getEmployeesList = function (){
+            $.ajax({url: "{{ route('json-employees') }}", success: function(result){
+
+                $supervisorOption = '<option value="">Select Supervisor</option>';
+                result.employees.forEach(function (employee) {
+                    $supervisorOption +='<option value="'+employee.id+'">'+employee.name+'</option>'
+                });
+            }});
+
+        };
+
+        getEmployeesList();
 
         getSections();
 

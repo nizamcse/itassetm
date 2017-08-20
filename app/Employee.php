@@ -17,6 +17,19 @@ class Employee extends Model
         'location',
         'org',
         'created_by',
-        'location_id'
+        'location_id',
+        'section_id',
     ];
+
+    public function budgetTypeApproval(){
+        return $this->hasMany('App\BudgetTypeApprovalEmployee','employee_id');
+    }
+
+    public function department(){
+        return $this->belongsTo('App\Department','dept_id','id');
+    }
+
+    public function section(){
+        return $this->belongsTo('App\Section','section_id','id');
+    }
 }
