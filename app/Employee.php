@@ -32,4 +32,18 @@ class Employee extends Model
     public function section(){
         return $this->belongsTo('App\Section','section_id','id');
     }
+
+    public function user(){
+        return $this->hasOne('App\User','employee_id','id');
+    }
+
+    public function budgetTypes(){
+        return $this->belongsToMany('App\BudgetType','budget_type_approval_employees','employee_id','budget_type')
+            ->withPivot('employee_order')
+            ->orderBy('id','asc');
+    }
+
+    public function yearlyBudgetInfo(){
+        return $this->belongsToMany('App\YearlyBudgetInfo','budget_type_approvals','approved_by','budget_type_id');
+    }
 }

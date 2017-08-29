@@ -17,8 +17,8 @@
             <td>{{ this.employee.name }}</td>
             <td>{{ this.employee_order }}</td>
             <td class="text-right">
-                <a data-id="{{ this.id }}" data-name="{{ this.employee.name }}" data-emp="{{ this.employee.id }}" data-order="{{ this.employee_order }}"  href="#" class="btn btn-sm btn-info btn-edit">Edit</a>
-                <a data-id="{{ this.id }}" data-budget="{{ this.budget_type }}" href="#" class="btn btn-sm btn-info btn-delete">Delete</a>
+                <a data-id="{{ this.id }}" data-name="{{ this.employee.name }}" data-emp="{{ this.employee.id }}" data-order="{{ this.employee_order }}"  href="#" class="btn btn-xs btn-flat btn-info btn-edit">Edit</a>
+                <a data-id="{{ this.id }}" data-budget="{{ this.budget_type }}" href="#" class="btn btn-xs btn-flat btn-info btn-delete">Delete</a>
             </td>
         </tr>
         {{/each}}

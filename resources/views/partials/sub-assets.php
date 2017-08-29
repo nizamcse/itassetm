@@ -23,8 +23,8 @@
             <td>{{ this.suba_lifetime }} {{ this.suba_life_unit }}</td>
             <td>{{ this.suba_retainment_dt }}</td>
             <td>
-                <a data-id="{{ this.id }}" data-report="" href="#" class="btn btn-sm btn-info btn-edit">Edit</a>
-                <a data-id="{{ this.id }}" href="#" class="btn btn-sm btn-info btn-delete">Delete</a>
+                <a data-id="{{ this.id }}" data-report="" href="#" class="btn btn-xs btn-flat btn-info btn-edit">Edit</a>
+                <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-info btn-delete">Delete</a>
             </td>
         </tr>
         {{/each}}

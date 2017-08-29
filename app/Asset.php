@@ -34,4 +34,15 @@ class Asset extends Model
     public function employee(){
         return $this->belongsTo('App\Employee','asset_emp','id');
     }
+
+    public function manuFacturer(){
+        return $this->belongsTo('App\Manufacturer','asset_manufac','id');
+    }
+
+    public function purchaseRequisition(){
+        return $this->hasOne('App\PurchaseRequisitionDetail','asset_id','id');
+    }
+
+
+
 }

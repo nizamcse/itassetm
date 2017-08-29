@@ -12,7 +12,8 @@ class BudgetType extends Model
         'budget_type_level_apv',
         'type_info',
         'budget_org',
-        'created_by'
+        'created_by',
+        'status'
     ];
 
     public function yearlyBudget(){
@@ -21,6 +22,18 @@ class BudgetType extends Model
 
     public function approvalEmployee(){
         return $this->hasMany('App\BudgetTypeApprovalEmployee','budget_type');
+    }
+
+    public function employees(){
+        return $this->belongsToMany('App\Employee','budget_type_approval_employees','budget_type','employee_id')->withPivot('employee_order');
+    }
+
+    public function employeesApproved(){
+        return $this->belongsToMany('App\Employee','budget_type_approvals','budget_type_id','approved_by')->withTimestamps();
+    }
+
+    public function employeesApprovedAlready(){
+        return $this->belongsToMany('App\Employee','budget_type_approvals','budget_type_id','approved_by')->withTimestamps();
     }
 
 

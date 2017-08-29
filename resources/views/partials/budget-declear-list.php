@@ -31,8 +31,8 @@
             <td>{{ this.quantity }}</td>
             <td>{{ this.unit.name }}</td>
             <td>
-                <a data-id="{{ this.id }}"  href="#" class="btn btn-sm btn-info btn-edit">Edit</a>
-                <a data-id="{{ this.id }}" href="#" class="btn btn-sm btn-info btn-delete">Delete</a>
+                <a data-id="{{ this.id }}"  href="#" class="btn btn-xs btn-flat btn-info btn-edit">Edit</a>
+                <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-info btn-delete">Delete</a>
             </td>
         </tr>
         {{/each}}

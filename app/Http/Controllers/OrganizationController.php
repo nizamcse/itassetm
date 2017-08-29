@@ -329,7 +329,7 @@ class OrganizationController extends Controller
 
 
     public function getEmployees(){
-        $employees['employees'] = Employee::all();
+        $employees['employees'] = Employee::with('user')->get();
         return response()->json($employees,200);
     }
 

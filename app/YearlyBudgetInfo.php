@@ -18,7 +18,8 @@ class YearlyBudgetInfo extends Model
         'quantity',
         'unit',
         'org_id',
-        'created_by'
+        'created_by',
+        'comment'
     ];
 
     public function unit(){
@@ -42,4 +43,5 @@ class YearlyBudgetInfo extends Model
     public function organization(){
         return $this->belongsTo('App\Organization','org_id','id');
     }
+
 }

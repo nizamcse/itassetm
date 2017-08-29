@@ -10,11 +10,16 @@ class PurchaseRequisition extends Model
         'budget_type',
         'particulars',
         'budget_org',
+        'date',
         'created_by'
     ];
 
     public function budgetType(){
         return $this->belongsTo('App\BudgetType','budget_type','id');
+    }
+
+    public function purchaseRequisitionDetails(){
+        return $this->hasMany('App\PurchaseRequisitionDetail','purchase_req_id','id');
     }
 
 

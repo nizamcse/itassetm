@@ -11,10 +11,16 @@ class PurchaseRequisitionDetail extends Model
         'quantity',
         'approx_price',
         'budget_org',
+        'purchase_req_id',
         'created_by',
+        'comment',
     ];
 
     public function asset(){
         return $this->belongsTo('App\Asset','asset_id','id');
+    }
+
+    public function purchaseRequisition(){
+        return $this->belongsTo('App\PurchaseRequisition','purchase_req_id','id');
     }
 }

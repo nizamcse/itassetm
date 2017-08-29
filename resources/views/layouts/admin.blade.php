@@ -3,43 +3,43 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>Rakeen | IT Asset Management</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- jvectormap -->
-    <link rel="stylesheet" href="{{ asset('plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/dist/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/dist/css/skins/_all-skins.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('plugins/iCheck/flat/blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/iCheck/flat/blue.css') }}">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="{{ asset('plugins/morris/morris.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/morris/morris.css') }}">
     <!-- jvectormap -->
-    <link rel="stylesheet" href="{{ asset('plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
     <!-- Date Picker -->
-    <link rel="stylesheet" href="{{ asset('plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/datepicker/datepicker3.css') }}">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <!-- daterange picker -->
-    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap datepicker -->
-    <link rel="stylesheet" href="{{ asset('plugins/datepicker/datepicker3.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/plugins/datatables/dataTables.bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <!-- bootstrap datepicker -->
     <!--for grid-->
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -57,7 +57,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-sm" style="font-size: 12px; line-height: 1.1"><b>Rakeen</b> IT Asset Management</span>
         </a>
 
         <!-- Header Navbar: style can be found in header.less -->
@@ -71,17 +71,17 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{ Auth::user()->name }}</span>
+                            <img src="{{ asset('public/dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
+                            <span class="hidden-xs">{{ Auth::user() ? Auth::user()->name : '' }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                                <img src="{{ asset('public/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{ Auth::user()->name }}
-                                    <small>{{ Auth::user()->email }}</small>
+                                    {{ Auth::user() ? Auth::user()->name : '' }}
+                                    <small>{{ Auth::user() ? Auth::user()->email : '' }}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -126,10 +126,10 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                    <img src="{{ asset('public/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>{{ Auth::user()->name }}</p>
+                    <p>{{ Auth::user() ? Auth::user()->name : '' }}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -219,13 +219,27 @@
                         <li class="active">
                             <a href="{{ route('purchase-requisition') }}"><i class="fa fa-circle-o"></i> Purchase Requisition</a>
                         </li>
-                        <li>
-                            <a href="{{ route('purchase-requisition-details') }}"><i class="fa fa-circle-o"></i> Purchase Requisition Details</a>
-                        </li>
 
 
                     </ul>
                 </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cog"></i> <span>My Approval</span>
+                        <span class="pull-right-container">
+					<i class="fa fa-angle-left pull-right"></i>
+					</span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active">
+                            <a href="{{ route('budget-approval') }}"><i class="fa fa-circle-o"></i> Budget Approval</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('purchase-requisition-approval') }}"><i class="fa fa-circle-o"></i> Purchase Requisition Approval</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{{ route('send-approval') }}">Send Approval Request</a></li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-cog"></i> <span>Purchase &amp; Receive</span>
@@ -234,7 +248,10 @@
 					</span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="/?option=Purchase_Requisition_Request"><i class="fa fa-circle-o"></i> Purchase Requisition Request</a></li>	<li class="active"><a href="/?option=Receive"><i class="fa fa-circle-o"></i> Receive</a></li>
+                        <li class="active">
+                            <a href="{{ route('purchase-receive') }}"><i class="fa fa-circle-o"></i> Purchase Received</a>
+                        </li>
+                        <li class="active"><a href="{{ route('purchase-receive-details') }}"><i class="fa fa-circle-o"></i>Purchase Receive Details</a></li>
 
                     </ul>
                 </li>
@@ -246,18 +263,6 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                Dashboard
-                <small>Version 2.0</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
-            </ol>
-        </section>
-
         <!-- Main content -->
         <section class="content">
             @yield('content')
@@ -268,7 +273,7 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 2.3.8
+            <b>Version</b> 1.0.0
         </div>
         <strong>Copyright @2017 MbizTech.</strong> All rights
         reserved.
@@ -279,29 +284,29 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="{{ asset('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+<script src="{{ asset('public/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('public/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- FastClick -->
-<script src="{{ asset('plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ asset('public/plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="{{ asset('dist/js/app.min.js') }}"></script>
+<script src="{{ asset('public/dist/js/app.min.js') }}"></script>
 <!-- Sparkline -->
-<script src="{{ asset('plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+<script src="{{ asset('public/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
 <!-- jvectormap -->
-<script src="{{ asset('plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
-<script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+<script src="{{ asset('public/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+<script src="{{ asset('public/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
 <!-- SlimScroll 1.3.0 -->
-<script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('public/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- ChartJS 1.0.1 -->
-<script src="{{ asset('plugins/chartjs/Chart.min.js') }}"></script>
+<script src="{{ asset('public/plugins/chartjs/Chart.min.js') }}"></script>
 
 <script src="http://js-grid.com/js/jsgrid.min.js"></script>
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
 <!--<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>-->
-<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('public/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -311,27 +316,27 @@
 
 <!-- Morris.js charts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="{{ asset('plugins/morris/morris.min.js') }}"></script>
+<script src="{{ asset('public/plugins/morris/morris.min.js') }}"></script>
 <!-- jQuery Knob Chart -->
-<script src="{{ asset('plugins/knob/jquery.knob.js') }}"></script>
+<script src="{{ asset('public/plugins/knob/jquery.knob.js') }}"></script>
 <!-- daterangepicker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('public/plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- datepicker -->
-<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('public/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+<script src="{{ asset('public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 <!-- FastClick -->
-<script src="{{ asset('plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ asset('public/plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="{{ asset('dist/js/app.min.js') }}"></script>
+<script src="{{ asset('public/dist/js/app.min.js') }}"></script>
 
-<script src="{{ asset('dist/js/main.js') }}"></script>
-<script src="{{ asset('dist/js/grid.js') }}"></script>
-<script src="{{ asset('dist/js/ReceiveGrid.js') }}"></script>
+<script src="{{ asset('public/dist/js/main.js') }}"></script>
+<script src="{{ asset('public/dist/js/grid.js') }}"></script>
+<script src="{{ asset('public/dist/js/ReceiveGrid.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
-<script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('public/plugins/datatables/dataTables.bootstrap.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 @yield('script')
 

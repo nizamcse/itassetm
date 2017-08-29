@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','email_token','employee_id','is_active','user_type'
     ];
 
     /**
@@ -29,5 +29,10 @@ class User extends Authenticatable
 
     public function yearlyBudget(){
         return $this->hasOne('App\YearlyBudgetInfo', 'id', 'created_by');
+    }
+
+    public function getUserTypeAttribute($value)
+    {
+        return strtoupper($value);
     }
 }

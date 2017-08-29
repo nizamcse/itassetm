@@ -17,7 +17,7 @@ class YearlyBudgetController extends Controller
 {
     public function index(){
         $units = UnitOfMesurement::all();
-        $budget_types = BudgetType::all();
+        $budget_types = BudgetType::where('status',0)->get();
         $budget_heads =  $this->get_budget_head_tree();
         $manufacturers = Manufacturer::all();
         $suppliers = Vendor::all();
@@ -70,7 +70,9 @@ class YearlyBudgetController extends Controller
             'budgetHead',
             'manufacturer',
             'vendor',
-        ])->get();
+        ])->whereDoesntHave('budgetType',function($q){
+            $q->where('status','>',0);
+        })->get();
         return response()->json($yearly_budgets,200);
     }
 

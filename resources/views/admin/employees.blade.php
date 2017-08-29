@@ -181,6 +181,37 @@
         $("#employee-edit-form").css({"display":"none"});
 
         var employeesData = function (data) {
+            Handlebars.registerHelper('ifEquals', function(a, options) {
+                if (a) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
+
+            Handlebars.registerHelper('ifNotEquals', function(a, options) {
+                if (a == null) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
+
+            Handlebars.registerHelper('ifPending', function(a, options) {
+                if (a == 0) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
+
+            Handlebars.registerHelper('ifActive', function(a, options) {
+                if (a == 1) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
 
             var theTemplateScript = $("#employee-table-template").html();
 
@@ -192,11 +223,16 @@
             var theCompiledHtml = theTemplate(data);
             // Add the compiled html to the page
             $('#employees').html(theCompiledHtml);
+            initializeDatatable();
 
         };
+        function initializeDatatable() {
+            $('#employeeDatatable').DataTable();
+        }
 
         var getEmployeesList = function (){
             $.ajax({url: "{{ route('json-employees') }}", success: function(result){
+                console.log(result);
                 employeesData(result);
             }});
         };

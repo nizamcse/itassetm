@@ -14,7 +14,7 @@
                         <div class="form-group">
                             <label>Asset</label>
                             <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">select Budget Type</option>
+                                <option value="">Select Asset</option>
                                 @foreach($assets as $asset)
                                     <option value="{{ $asset->id }}">{{ $asset->name }}</option>
                                 @endforeach
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label>Asset</label>
                             <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">select Budget Type</option>
+                                <option value="">Select Asset Type</option>
                                 @foreach($assets as $asset)
                                     <option value="{{ $asset->id }}">{{ $asset->name }}</option>
                                 @endforeach

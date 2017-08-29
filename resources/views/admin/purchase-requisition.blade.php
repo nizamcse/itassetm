@@ -16,15 +16,53 @@
                             <select name="budget_type" id="budget_type" class="form-control">
                                 <option value="">select Budget Type</option>
                                 @foreach($budget_types as $budget_type)
-                                    <option value="{{ $budget_type->id }}">{{ $budget_type->budget_type_name }}</option>
+                                    <option value="{{ $budget_type->id }}">
+                                        {{ $budget_type->budget_type_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Asset</label>
+                            <select name="asset_id" id="asset_id" class="form-control">
+                                <option value="">Select Asset</option>
+                                @foreach($assets as $asset)
+                                    <option value="{{ $asset->id }}">
+                                        {{ $asset->name }},
+                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
+                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
+                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" name="date" class="form-control">
+                        </div>
+                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Particulars</label>
                             <input type="text" name="particulars" class="form-control" style="text-transform: uppercase">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Approximate Price</label>
+                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -37,6 +75,7 @@
             </form>
             <form id="purchaseReqEditForm" action="{{ route('budget-type') }}" method="post" style="display: none">
                 {{ csrf_field() }}
+                <input type="hidden" name="pur_req_details">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -49,12 +88,47 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Asset</label>
+                            <select name="asset_id" id="asset_id" class="form-control">
+                                <option value="">Select Asset</option>
+                                @foreach($assets as $asset)
+                                    <option value="{{ $asset->id }}">
+                                        {{ $asset->name }},
+                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
+                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
+                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" name="date" class="form-control">
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Particulars</label>
                             <input type="text" name="particulars" class="form-control" style="text-transform: uppercase">
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Approximate Price</label>
+                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
+                        </div>
+                    </div>
+
                     <div class="col-md-2">
                         <label></label>
                         <div class="form-group">
@@ -94,6 +168,7 @@
             function getPurchaseRequisitions(){
                 $.ajax({url: "{{ route('purchase-requisitions') }}", success: function(result){
                     purchaseRequisitionData(result);
+                    console.log(result);
                 }});
             }
 
@@ -112,6 +187,7 @@
                     var $msg = '<div class="alert alert-success">'+data.message+'</div>';
                     $("#submit-status").html($msg);
                     $("#purchaseReqForm" )[0].reset();
+                    assetListOption();
                     getPurchaseRequisitions();
                 }).error(function (xhr, status, error) {
                     $('#savePurchaseReq').prop('disabled' ,false);
@@ -131,8 +207,14 @@
                 $.ajax({
                     url: url,
                     success: function(data){
-                        $("#purchaseReqEditForm input[name=particulars]").val(data.particulars);
-                        $("#purchaseReqEditForm select[name=budget_type]").val(data.budget_type.id);
+                        $("#purchaseReqEditForm input[name=particulars]").val(data.purchase_requisition.particulars);
+                        $("#purchaseReqEditForm input[name=date]").val(data.purchase_requisition.date);
+                        $("#purchaseReqEditForm select[name=budget_type]").val(data.purchase_requisition.budget_type.id);
+                        $("#purchaseReqEditForm input[name=quantity]").val(data.pur_req_details.quantity);
+                        $("#purchaseReqEditForm input[name=quantity]").val(data.pur_req_details.quantity);
+                        $("#purchaseReqEditForm input[name=approx_price]").val(data.pur_req_details.approx_price);
+                        $("#purchaseReqEditForm select[name=asset_id]").val(data.pur_req_details.asset_id);
+                        $("#purchaseReqEditForm input[name=pur_req_details]").val(data.pur_req_details.id);
                     }
                 });
             });
@@ -177,11 +259,24 @@
                         var $msg = '<div class="alert alert-success">'+data.message+'</div>';
                         $("#submit-status").html($msg);
                         getPurchaseRequisitions();
+                        assetListOption();
                     }
                 });
             });
 
+            function assetListOption() {
+                var url = "{{ route('get-asset-list-html') }}";
+                $.ajax({
+                    url: url,
+                    success: function(data){
+                        $("#asset_id").html(data);
+                        console.log(data);
+                    }
+                });
+            }
+
             getPurchaseRequisitions();
+            assetListOption();
         });
 
     </script>

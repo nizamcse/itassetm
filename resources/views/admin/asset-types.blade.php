@@ -3,7 +3,7 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title">Asset Information</h3>
+            <h3 class="box-title">Asset Type</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -21,13 +21,13 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="form-group">
-                            <label>Asset Name</label>
+                            <label>Asset Type</label>
                             <input type="text" class="form-control" name="name"  placeholder="Asset Name" required="">
                         </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="form-group">
-                            <label>Asset Parent</label>
+                            <label>Asset Type Parent</label>
                             <select id="parent_id" name="parent_id" class="form-control select2" style="width: 100%">
 
                             </select>

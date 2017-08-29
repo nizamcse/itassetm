@@ -1,6 +1,6 @@
 <script id="employee-table-template" type="text/x-handlebars-template">
 
-    <table id="employeeTable" class="table table-striped table-bordered dataTable">
+    <table id="employeeDatatable" class="table table-striped table-bordered dataTable">
         <thead>
         <tr>
             <th>ID#</th>
@@ -8,6 +8,7 @@
             <th>Designation</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Register</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -21,8 +22,26 @@
             <td>{{ this.phone }}</td>
             <td>{{ this.email }}</td>
             <td>
-                <a data-id="{{ this.id }}" data-name="{{ this.name }}" data-report="" href="#" onclick="editEmployee($(this))" class="btn btn-sm btn-info">Edit</a>
-                <a data-id="{{ this.id }}" href="#" onclick="deleteEmployee($(this))" class="btn btn-sm btn-info">Delete</a>
+                {{#ifEquals this.user}}
+                Registered -
+
+                    {{#ifPending this.user.is_active}}
+                        <a class="btn btn-flat btn-info btn-xs" href="<?php echo route('resend-register-employee-user') ?>/{{ this.id }}">Resent</a>
+                    {{/ifPending}}
+
+                    {{#ifActive this.user.is_active}}
+                        Active
+                    {{/ifActive}}
+
+                {{/ifEquals}}
+
+                {{#ifNotEquals this.user}}
+                    <a class="btn btn-flat btn-success btn-xs" href="<?php echo route('register-employee-user') ?>/{{ this.id }}">Register</a>
+                {{/ifNotEquals}}
+            </td>
+            <td>
+                <a data-id="{{ this.id }}" data-name="{{ this.name }}" data-report="" href="#" onclick="editEmployee($(this))" class="btn btn-xs btn-flat btn-info">Edit</a>
+                <a data-id="{{ this.id }}" href="#" onclick="deleteEmployee($(this))" class="btn btn-xs btn-flat btn-info">Delete</a>
             </td>
         </tr>
         {{/each}}

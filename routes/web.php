@@ -11,9 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('default');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/',function (){
+        return view('welcome');
+    })->name('default');
+
+});
 
 Auth::routes();
 
@@ -272,11 +275,12 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'uses'  => 'AssetController@updateAssetJson',
         'as'    => 'post.assets-update-json'
     ]);
-
+/*
     Route::get('json-assets',[
         'uses'  => 'AssetController@getAssets',
         'as'    => 'json-assets'
     ]);
+*/
 
     Route::get('json-get-asset/{id?}',[
         'uses'  => 'AssetController@getSingleAsset',
@@ -541,6 +545,11 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'delete-purchase-requisition-detail'
     ]);
 
+    Route::get('register/{id}',[
+        'uses'  => 'UserController@createUser',
+        'as'    => 'create-user'
+    ]);
+
 
     Route::get('logout',function (){
         Auth::logout();
@@ -548,5 +557,118 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
     })->name('logout');
 
 
+    Route::get('register-employee-user/{id?}',[
+        'uses'  => 'UserController@createUser',
+        'as'    => 'register-employee-user'
+    ]);
+
+    Route::get('resend-register-employee-user/{id?}',[
+        'uses'  => 'UserController@resendEmail',
+        'as'    => 'resend-register-employee-user'
+    ]);
+
+
+    Route::get('users',[
+        'uses'  => 'UserController@getUsers',
+        'as'    => 'users'
+    ]);
+
+    Route::get('/budget-approval',[
+        'uses'  => 'UserController@getMyBudgetApproval',
+        'as'    => 'budget-approval'
+    ]);
+
+    Route::get('/purchase-requisition-approval',[
+        'uses'  => 'UserController@getMyPurchaseReqApproval',
+        'as'    => 'purchase-requisition-approval'
+    ]);
+
+    Route::get('/my-purchase-req-approval-details/{id}',[
+        'uses'  => 'UserController@getMyBudgetReqApprovalDetails',
+        'as'    => 'my-purchase-req-approval-details'
+    ]);
+
+    Route::get('/my-budget-approval-details/{id}',[
+        'uses'  => 'UserController@getMyBudgetApprovalDetails',
+        'as'    => 'my-budget-approval-details'
+    ]);
+
+    Route::get('/approve-budget/{id}',[
+        'uses'  => 'UserController@getMyBudgetApproved',
+        'as'    => 'approve-budget'
+    ]);
+
+    Route::get('/cancel-approved-budget/{id}',[
+        'uses'  => 'UserController@cancelMyBudgetApproval',
+        'as'    => 'cancel-approved-budget'
+    ]);
+
+    Route::post('/budget-modification/{id}/{yearly_budget?}',[
+        'uses'  => 'UserController@budgetModification',
+        'as'    => 'budget-modification'
+    ]);
+
+    Route::get('/re-approve-budget/{id}',[
+        'uses'  => 'UserController@reApproveModification',
+        'as'    => 're-approve-budget'
+    ]);
+
+    /*
+     * Send Approval
+     */
+
+    Route::get('send-approval',[
+        'uses'  => 'UserController@sendApprovalRequest',
+        'as'    => 'send-approval'
+    ]);
+
+    Route::get('send-approval/{id}',[
+        'uses'  => 'UserController@sendToApprove',
+        'as'    => 'send-to-approve'
+    ]);
+
+
+    Route::get('get-asset-list-html',[
+        'uses'  => 'PurchaseRequisitionController@remainingAsset',
+        'as'    => 'get-asset-list-html'
+    ]);
+
+
+
+    /*
+     * Purchase Receive & Receive Details
+     */
+
+    Route::get('/purchase-receive',[
+        'uses'  => 'PurchaseReceiveController@index',
+        'as'    => 'purchase-receive'
+    ]);
+
+    Route::get('/purchase-receive-details',[
+        'uses'  => 'PurchaseReceiveDetailsController@index',
+        'as'    => 'purchase-receive-details'
+    ]);
+
+
+
 });
+
+
+
+Route::get('confirm-registration/{id}/{token}',function($id,$token){
+    $user = \App\User::where('id', $id)->where('email_token',$token);
+    if(!$user){
+        return redirect()->route('login');
+    }
+    return view('confirm-registration')->with([
+        'id'    => $id,
+        'token' => $token
+    ]);
+})->name('confirm-registration');
+
+Route::post('confirm-registration/{id}/{token}',[
+    'uses'  => 'UserController@confirmUserRegistration',
+    'as'    => 'confirm-registration'
+]);
+
 

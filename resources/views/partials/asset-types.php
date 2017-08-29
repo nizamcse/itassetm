@@ -4,8 +4,8 @@
         <thead>
         <tr>
             <th>ID#</th>
-            <th>Asset Name</th>
-            <th>Asset Parent</th>
+            <th>Asset Type</th>
+            <th>Asset Type Parent</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -17,8 +17,8 @@
             <td>{{ this.name }}</td>
             <td>{{ this.parent.name }}</td>
             <td>
-                <a data-id="{{ this.id }}" data-parent="{{ this.parent.id }}" data-name="{{ this.name }}" data-report="" href="#" onclick="editAsset($(this))" class="btn btn-sm btn-info">Edit</a>
-                <a data-id="{{ this.id }}" href="#" onclick="deleteAsset($(this))" class="btn btn-sm btn-info">Delete</a>
+                <a data-id="{{ this.id }}" data-parent="{{ this.parent.id }}" data-name="{{ this.name }}" data-report="" href="#" onclick="editAsset($(this))" class="btn btn-xs btn-flat btn-info">Edit</a>
+                <a data-id="{{ this.id }}" href="#" onclick="deleteAsset($(this))" class="btn btn-xs btn-flat btn-info">Delete</a>
             </td>
         </tr>
         {{/each}}
