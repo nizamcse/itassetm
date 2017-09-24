@@ -36,5 +36,9 @@ class BudgetType extends Model
         return $this->belongsToMany('App\Employee','budget_type_approvals','budget_type_id','approved_by')->withTimestamps();
     }
 
+    public function purchaseRequisions(){
+        return $this->hasMany('App\PurchaseRequisition','budget_type','id');
+    }
+
 
 }

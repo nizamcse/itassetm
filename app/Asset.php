@@ -43,6 +43,10 @@ class Asset extends Model
         return $this->hasOne('App\PurchaseRequisitionDetail','asset_id','id');
     }
 
+    public function receiveDetails(){
+        return $this->hasOne('App\ReceiveDetail','asset_id','id');
+    }
+
 
 
 }

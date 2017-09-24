@@ -27,4 +27,8 @@ class PurchaseRequisition extends Model
     {
         $this->attributes['particulars'] = strtoupper($value);
     }
+
+    public function receives(){
+        return $this->hasMany('App\Receive','purchase_req_id','id');
+    }
 }

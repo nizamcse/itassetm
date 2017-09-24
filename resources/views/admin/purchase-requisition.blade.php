@@ -12,9 +12,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Budget Type</label>
+                            <label>Purchase Req Type</label>
                             <select name="budget_type" id="budget_type" class="form-control">
-                                <option value="">select Budget Type</option>
+                                <option value="">Select Purchase Req Type</option>
                                 @foreach($budget_types as $budget_type)
                                     <option value="{{ $budget_type->id }}">
                                         {{ $budget_type->budget_type_name }}
@@ -23,46 +23,16 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            <label>Asset</label>
-                            <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">Select Asset</option>
-                                @foreach($assets as $asset)
-                                    <option value="{{ $asset->id }}">
-                                        {{ $asset->name }},
-                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
-                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
-                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" name="date" class="form-control">
-                        </div>
-                    </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Particulars</label>
                             <input type="text" name="particulars" class="form-control" style="text-transform: uppercase">
                         </div>
                     </div>
-
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Approximate Price</label>
-                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
+                            <label>Date</label>
+                            <input type="date" name="date" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -79,35 +49,13 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Budget Type</label>
+                            <label>Purchase Req Type</label>
                             <select name="budget_type" id="budget_type" class="form-control">
-                                <option value="">select Budget Type</option>
+                                <option value="">Select Purchase Req Type</option>
                                 @foreach($budget_types as $budget_type)
                                     <option value="{{ $budget_type->id }}">{{ $budget_type->budget_type_name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            <label>Asset</label>
-                            <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">Select Asset</option>
-                                @foreach($assets as $asset)
-                                    <option value="{{ $asset->id }}">
-                                        {{ $asset->name }},
-                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
-                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
-                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" name="date" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -118,16 +66,11 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
+                            <label>Date</label>
+                            <input type="date" name="date" class="form-control">
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Approximate Price</label>
-                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
+
 
                     <div class="col-md-2">
                         <label></label>
@@ -210,11 +153,6 @@
                         $("#purchaseReqEditForm input[name=particulars]").val(data.purchase_requisition.particulars);
                         $("#purchaseReqEditForm input[name=date]").val(data.purchase_requisition.date);
                         $("#purchaseReqEditForm select[name=budget_type]").val(data.purchase_requisition.budget_type.id);
-                        $("#purchaseReqEditForm input[name=quantity]").val(data.pur_req_details.quantity);
-                        $("#purchaseReqEditForm input[name=quantity]").val(data.pur_req_details.quantity);
-                        $("#purchaseReqEditForm input[name=approx_price]").val(data.pur_req_details.approx_price);
-                        $("#purchaseReqEditForm select[name=asset_id]").val(data.pur_req_details.asset_id);
-                        $("#purchaseReqEditForm input[name=pur_req_details]").val(data.pur_req_details.id);
                     }
                 });
             });

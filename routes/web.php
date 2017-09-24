@@ -644,6 +644,11 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'purchase-receive'
     ]);
 
+    Route::get('/purchase-receive/{id}',[
+        'uses'  => 'PurchaseReceiveController@receiveAsset',
+        'as'    => 'asset-receive'
+    ]);
+
     Route::get('/purchase-receive-details',[
         'uses'  => 'PurchaseReceiveDetailsController@index',
         'as'    => 'purchase-receive-details'

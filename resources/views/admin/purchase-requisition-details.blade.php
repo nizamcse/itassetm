@@ -12,16 +12,32 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Asset</label>
-                            <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">Select Asset</option>
-                                @foreach($assets as $asset)
-                                    <option value="{{ $asset->id }}">{{ $asset->name }}</option>
+                            <label>Purchase Requisition</label>
+                            <select name="purchase_req_id" id="purchase_req_id" class="form-control">
+                                <option value="">Select Purchase Requisition</option>
+                                @foreach($purchase_equisitions as $purchase_equisition)
+                                    <option value="{{ $purchase_equisition->id }}">{{ $purchase_equisition->budgetType->budget_type_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Asset</label>
+                            <select name="asset_id" id="asset_id" class="form-control">
+                                <option value="">Select Asset</option>
+                                @foreach($assets as $asset)
+                                    <option value="{{ $asset->id }}">
+                                        {{ $asset->name }},
+                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
+                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
+                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
                         <div class="form-group">
                             <label>Quantity</label>
                             <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
@@ -33,7 +49,7 @@
                             <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <label></label>
                         <div class="form-group">
                             <button type="submit" id="savePurchaseReqDetails" class="btn btn-success">Save</button>
@@ -46,8 +62,19 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label>Purchase Requisition</label>
+                            <select name="purchase_req_id" id="purchase_req_id" class="form-control">
+                                <option value="">Select Purchase Requisition</option>
+                                @foreach($purchase_equisitions as $purchase_equisition)
+                                    <option value="{{ $purchase_equisition->id }}">{{ $purchase_equisition->budgetType->budget_type_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <label>Asset</label>
-                            <select name="asset_id" id="asset_id" class="form-control">
+                            <select name="asset_id" class="form-control">
                                 <option value="">Select Asset Type</option>
                                 @foreach($assets as $asset)
                                     <option value="{{ $asset->id }}">{{ $asset->name }}</option>
@@ -128,7 +155,7 @@
                     getPurchaseRequisitionDetails();
                 }).error(function (xhr, status, error) {
                     $('#savePurchaseReqDetails').prop('disabled' ,false);
-                    var $msg = '<div class="alert alert-danger">Something went wrong. Please check your internet connection or fill the form appropiately</div>';
+                     var $msg = '<div class="alert alert-danger">Something went wrong. Please check your internet connection or fill the form appropiately</div>';
                     $("#submit-status").html($msg);
                 });
                 event.preventDefault();
@@ -144,9 +171,11 @@
                 $.ajax({
                     url: url,
                     success: function(data){
+                        console.log(data);
                         $("#purchaseReqDetailsEditForm input[name=approx_price]").val(data.approx_price);
                         $("#purchaseReqDetailsEditForm input[name=quantity]").val(data.quantity);
                         $("#purchaseReqDetailsEditForm select[name=asset_id]").val(data.asset.id);
+                        $("#purchaseReqDetailsEditForm select[name=purchase_req_id]").val(data.purchase_requisition.id);
                     }
                 });
             });
@@ -191,9 +220,23 @@
                         var $msg = '<div class="alert alert-success">'+data.message+'</div>';
                         $("#submit-status").html($msg);
                         getPurchaseRequisitionDetails();
+                        assetListOption();
                     }
                 });
             });
+
+            function assetListOption() {
+                var url = "{{ route('get-asset-list-html') }}";
+                $.ajax({
+                    url: url,
+                    success: function(data){
+                        $('select[name="asset_id"]').html(data);
+                        console.log(data);
+                    }
+                });
+            }
+
+            assetListOption();
 
             getPurchaseRequisitionDetails();
         });

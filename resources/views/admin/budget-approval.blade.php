@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+
     <div class="box box-default">
         <div class="box-header with-border">
             <h3 class="box-title">Sub Asset Details</h3>

@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+
     <div class="box box-default">
         <div class="box-header with-border">
             <div id="selectBudgetType">

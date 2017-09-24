@@ -14,14 +14,16 @@ class PurchaseRequisitionDetailsController extends Controller
 {
     public function index(){
 
-        $assets = Asset::all();
+        $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
+        $purchase_equisitions = PurchaseRequisition::all();
         return view('admin.purchase-requisition-details')->with([
-            'assets'  => $assets
+            'assets'  => $assets,
+            'purchase_equisitions'  => $purchase_equisitions,
         ]);
     }
 
     public function getPurchaseRequisitionDetail($id){
-        $purchase_requisition_detail = PurchaseRequisitionDetail::with(['asset'])
+        $purchase_requisition_detail = PurchaseRequisitionDetail::with(['asset','purchaseRequisition.budgetType'])
             ->where('id',$id)->first();
         return response()->json($purchase_requisition_detail,201);
     }
@@ -51,6 +53,7 @@ class PurchaseRequisitionDetailsController extends Controller
             'quantity'  => $request->input('quantity'),
             'approx_price'  => $request->input('approx_price'),
             'budget_org'   => $org->id,
+            'purchase_req_id'   => $request->input('purchase_req_id'),
             'created_by'   => Auth::user()->id,
         ]);
 
@@ -67,6 +70,7 @@ class PurchaseRequisitionDetailsController extends Controller
             'asset_id'  => $asset->id,
             'quantity'  => $request->input('quantity'),
             'approx_price'  => $request->input('approx_price'),
+            'purchase_req_id'   => $request->input('purchase_req_id'),
             'created_by'   => Auth::user()->id,
         ]);
         return response()->json([

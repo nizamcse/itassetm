@@ -218,6 +218,7 @@
                     <ul class="treeview-menu">
                         <li class="active">
                             <a href="{{ route('purchase-requisition') }}"><i class="fa fa-circle-o"></i> Purchase Requisition</a>
+                            <a href="{{ route('purchase-requisition-details') }}"><i class="fa fa-circle-o"></i> Purchase Requisition Details</a>
                         </li>
 
 
@@ -249,7 +250,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="active">
-                            <a href="{{ route('purchase-receive') }}"><i class="fa fa-circle-o"></i> Purchase Received</a>
+                            <a href="{{ route('purchase-receive') }}"><i class="fa fa-circle-o"></i> Purchase Receive</a>
                         </li>
                         <li class="active"><a href="{{ route('purchase-receive-details') }}"><i class="fa fa-circle-o"></i>Purchase Receive Details</a></li>
 

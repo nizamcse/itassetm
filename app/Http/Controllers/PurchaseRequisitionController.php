@@ -82,19 +82,6 @@ class PurchaseRequisitionController extends Controller
 
     public function update(Request $request, $id){
 
-        $asset = Asset::find($request->input('asset_id'));
-        $asset_id = $asset->id;
-        $purchase_req_details = PurchaseRequisitionDetail::whereHas('asset',function($q) use($asset_id){
-            $q->where('asset_id', $asset_id);
-        })->get();
-
-        if(count($purchase_req_details)){
-            return response()->json([
-                'status' => 'ok',
-                'message' => 'You are trying to assign multiple asset on single purchase requisition'
-            ],500);
-        }
-
         $purchase_requisition = PurchaseRequisition::find($id);
 
         $time = strtotime($request->input('date'));
@@ -105,14 +92,6 @@ class PurchaseRequisitionController extends Controller
             'budget_type'  => $request->input('budget_type'),
             'particulars'  => $request->input('particulars'),
             'date'   => $newFormat,
-            'created_by'   => Auth::user()->id,
-        ]);
-
-        $purchase_requisition_details = PurchaseRequisitionDetail::find($request->input('pur_req_details'));
-        $purchase_requisition_details->update([
-            'asset_id'  => $asset->id,
-            'quantity'  => $request->input('quantity'),
-            'approx_price'  => $request->input('approx_price'),
             'created_by'   => Auth::user()->id,
         ]);
 

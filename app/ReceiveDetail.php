@@ -22,4 +22,8 @@ class ReceiveDetail extends Model
         'price',
         'received_by',
     ];
+
+    public function asset(){
+        return $this->belongsTo('App\Asset','asset_id','id');
+    }
 }
