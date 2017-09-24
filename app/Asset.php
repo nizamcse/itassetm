@@ -21,6 +21,8 @@ class Asset extends Model
         'asset_retainment_dt',
         'created_by',
         'asset_org',
+        'status',
+        'status_date',
     ];
 
     public function assetTypes(){
@@ -45,6 +47,10 @@ class Asset extends Model
 
     public function receiveDetails(){
         return $this->hasOne('App\ReceiveDetail','asset_id','id');
+    }
+
+    public function IssueDetail(){
+        return $this->hasOne('App\Asset','asset_id','id');
     }
 
 

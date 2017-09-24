@@ -2,114 +2,144 @@
 @section('content')
     <div class="box box-default" style="border-top: 0px; padding-top: 30px; border-radius: 0px">
         <div class="box-header">
-            <h3 class="box-title">PURCHASE REQUISITION DETAILS</h3>
+            <h3 class="box-title">PURCHASE REQUISITION</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body" style="border-radius: 0px">
-            <div id="submit-status"></div>
-            <form id="purchaseReqDetailsForm" action="{{ route('purchase-requisition-details') }}" method="post">
-                {{ csrf_field() }}
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Purchase Requisition</label>
-                            <select name="purchase_req_id" id="purchase_req_id" class="form-control">
-                                <option value="">Select Purchase Requisition</option>
-                                @foreach($purchase_equisitions as $purchase_equisition)
-                                    <option value="{{ $purchase_equisition->id }}">{{ $purchase_equisition->budgetType->budget_type_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            <label>Asset</label>
-                            <select name="asset_id" id="asset_id" class="form-control">
-                                <option value="">Select Asset</option>
-                                @foreach($assets as $asset)
-                                    <option value="{{ $asset->id }}">
-                                        {{ $asset->name }},
-                                        Type - {{ $asset->assetTypes ? $asset->assetTypes->name : '' }},
-                                        Dept - {{ $asset->departments ? $asset->departments->name : '' }},
-                                        Employee - {{ $asset->employee ? $asset->employee->name : '' }},
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Approximate Price</label>
-                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <label></label>
-                        <div class="form-group">
-                            <button type="submit" id="savePurchaseReqDetails" class="btn btn-success">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <form id="purchaseReqDetailsEditForm" action="{{ route('update-purchase-requisition-detail') }}" method="post" style="display: none">
-                {{ csrf_field() }}
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Purchase Requisition</label>
-                            <select name="purchase_req_id" id="purchase_req_id" class="form-control">
-                                <option value="">Select Purchase Requisition</option>
-                                @foreach($purchase_equisitions as $purchase_equisition)
-                                    <option value="{{ $purchase_equisition->id }}">{{ $purchase_equisition->budgetType->budget_type_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Asset</label>
-                            <select name="asset_id" class="form-control">
-                                <option value="">Select Asset Type</option>
-                                @foreach($assets as $asset)
-                                    <option value="{{ $asset->id }}">{{ $asset->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="number" name="quantity" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Approximate Price</label>
-                            <input type="number" name="approx_price" class="form-control" style="text-transform: uppercase">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label></label>
-                        <div class="form-group">
-                            <button type="button" id="CancelUpdatePurchaseReqDetails" class="btn btn-warning btn-cancel-edit">Cancel</button>
-                            <button type="submit" id="updatePurchaseReqDetails" class="btn btn-success">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <table class="table table-bored table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Purchase Requisition</th>
+                    <th>Particulars</th>
+                    @if($purchase_equisition->status == 0 || $purchase_equisition->status == 1)
+                        <th class="text-right">Action</th>
+                    @else
+                        <th class="text-right">Status</th>
+                    @endif
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ $purchase_equisition->id }}</td>
+                    <td>{{ $purchase_equisition->budgetType->budget_type_name }}</td>
+                    <td>{{ $purchase_equisition->particulars }}</td>
+                    <td class="text-right">
+                        @if($purchase_equisition->status == 0)
+                            <a href="{{ route('send-pr-to-approve',['id' => $purchase_equisition->id]) }}" class="btn flat btn-xs btn-success">SEND FOR APPROVAL</a>
+                        @elseif($purchase_equisition->status == 1)
+                            <a href="{{ route('cancel-approved-pr',['id' => $purchase_equisition->id]) }}" class="btn flat btn-xs btn-warning">REMOVE FROM APPROVAL</a>
+                        @endif
+
+                        @if($purchase_equisition->status == 0 || $purchase_equisition->status == 1)
+                            <a href="#" class="btn flat btn-xs btn-info">Edit</a>
+                            <a href="#" class="btn flat btn-xs btn-danger">Delete</a>
+                        @else
+                            @if($purchase_equisition->status == 3)
+                                    <span class="text-info">Approved</span>
+                            @else
+                                <span class="text-info">Partially Approved</span>
+                            @endif
+                        @endif
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <!-- /.row -->
     </div>
-    <!-- /.box-body -->
-    <div class="x_content">
-        <div id="purchase-requisition-details"></div>
+
+    <div class="box box-default" style="border-top: 0px; padding-top: 30px; border-radius: 0px">
+        <div class="box-header">
+            <h3 class="box-title" style="display: block">
+                PURCHASE REQUISITION DETAILS
+                @if($purchase_equisition->status == 0 || $purchase_equisition->status == 1)
+                    <a href="#" class="btn pull-right flat btn-info btn-xs" data-toggle="modal" data-target="#addPrDetails">ADD NEW ASSET</a>
+                @endif
+            </h3>
+        </div>
+        <div class="box-body">
+            <div id="purReqDetails"></div>
+        </div>
+        <!-- /.row -->
     </div>
+
+    <div class="modal fade" id="editPrDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="pr-detail-edit" action="#">
+                    {{ csrf_field() }}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Purchase Requisition</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="asset">Select Asset</label>
+                            <select name="asset" id="asset" class="form-control">
+
+                                <option value="">- Select Asset</option>
+                                @foreach($assets as $asset)
+                                    <option value="{{ $asset->id }}">{{ $asset->name }}, Employee - {{ $asset->employee->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" name="quantity" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" name="price" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default flat btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary flat btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addPrDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="pr-detail-add" action="{{ route('pr-requisition-details',['id' => $purchase_equisition->id]) }}" method="post">
+                    {{ csrf_field() }}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add New Asset Purchase Requisition</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="asset">Select Asset</label>
+                            <select name="asset" id="asset" class="form-control">
+
+                                <option value="">- Select Asset</option>
+                                @foreach($assets as $asset)
+                                    <option value="{{ $asset->id }}">{{ $asset->name }}, Employee - {{ $asset->employee->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" name="quantity" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" name="price" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default flat btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary flat btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -117,30 +147,35 @@
     <script>
 
         $(document).ready(function () {
+            $(document).on('click', '.btn-edit-pr-detail',function(e){
+                var id = $(this).data('id');
+                var url = "{{ route('json-purchase-requisition-detail') }}/" + id;
+                var formUrl = "{{ route('update-purchase-requisition-detail') }}/" + id;
+                $("#pr-detail-edit").attr('action',formUrl);
 
-            function purchaseRequisitionDetailsData(data) {
-                console.log(data);
-                var theTemplateScript = $("#purchase-requisition-details-list").html();
-                var theTemplate = Handlebars.compile(theTemplateScript);
-                var theCompiledHtml = theTemplate(data);
-                $('#purchase-requisition-details').html(theCompiledHtml);
-                initializeDatatable();
-            }
-
-            function initializeDatatable() {
-                $('#purchaseRequisitionDetailsDataTable').DataTable();
-            }
-
-            function getPurchaseRequisitionDetails(){
-                $.ajax({url: "{{ route('json-purchase-requisition-details') }}", success: function(result){
-                    purchaseRequisitionDetailsData(result);
+                $.ajax({url: url, success: function(result){
+                    var optn = '<option value="'+result.asset.id+'">'+result.asset.name+', Employee - '+result.asset.employee.name+'</option>';
+                    //console.log(optn);
+                    //console.log(result);
+                    $("#pr-detail-edit select[name=asset]").append(optn);
+                    $("#pr-detail-edit select[name=asset]").val(result.asset.id);
+                    $("#pr-detail-edit input[name=price]").val(result.approx_price);
+                    $("#pr-detail-edit input[name=quantity]").val(result.quantity);
                 }});
-            }
 
-            $("#purchaseReqDetailsForm" ).submit(function( event ) {
-                $('#savePurchaseReqDetails').prop('disabled' ,true);
+            });
+            $(document).on('click', '.btn-delete-pr-detail',function(e){
+                var id = $(this).data('id');
+                var url = "{{ route('delete-purchase-requisition-detail') }}/" + id;
+
+                $.ajax({url: url, success: function(result){
+                    getPurchaseReqDetails();
+                }});
+
+            });
+
+            $( "#pr-detail-edit" ).on( "submit", function( event ) {
                 var formData = $( this ).serialize();
-
                 var url = $( this ).attr('action');
                 $.ajax({
                     type        : 'POST',
@@ -148,97 +183,59 @@
                     data        : formData,
                     encode          : true
                 }).done(function(data) {
-                    $('#savePurchaseReqDetails').prop('disabled' ,false);
-                    var $msg = '<div class="alert alert-success">'+data.message+'</div>';
-                    $("#submit-status").html($msg);
-                    $("#purchaseReqDetailsForm" )[0].reset();
-                    getPurchaseRequisitionDetails();
-                }).error(function (xhr, status, error) {
-                    $('#savePurchaseReqDetails').prop('disabled' ,false);
-                     var $msg = '<div class="alert alert-danger">Something went wrong. Please check your internet connection or fill the form appropiately</div>';
-                    $("#submit-status").html($msg);
+                    getPurchaseReqDetails();
+                    $("#editPrDetails").modal('hide');
                 });
                 event.preventDefault();
             });
-
-            $(document).on('click', '.btn-edit', function (e) {
-                $("#purchaseReqDetailsForm").css({"display":"none"});
-                $("#purchaseReqDetailsEditForm").css({"display":"block"});
-                var item = $(this).data('id');
-                var url = "{{ route('json-purchase-requisition-detail') }}/"+item;
-                var formUrl = "{{ route('update-purchase-requisition-detail') }}/"+item;
-                $("#purchaseReqDetailsEditForm").attr('action',formUrl);
-                $.ajax({
-                    url: url,
-                    success: function(data){
-                        console.log(data);
-                        $("#purchaseReqDetailsEditForm input[name=approx_price]").val(data.approx_price);
-                        $("#purchaseReqDetailsEditForm input[name=quantity]").val(data.quantity);
-                        $("#purchaseReqDetailsEditForm select[name=asset_id]").val(data.asset.id);
-                        $("#purchaseReqDetailsEditForm select[name=purchase_req_id]").val(data.purchase_requisition.id);
-                    }
-                });
-            });
-
-            $(document).on('click', '.btn-cancel-edit', function (e) {
-                $("#purchaseReqDetailsEditForm").css({"display":"none"});
-                $("#purchaseReqDetailsForm").css({"display":"block"});
-            });
-
-            $("#purchaseReqDetailsEditForm" ).submit(function( event ) {
-                $('#updatePurchaseReqDetails').prop('disabled' ,true);
+            $( "#pr-detail-add" ).on( "submit", function( event ) {
                 var formData = $( this ).serialize();
-
-                var url = $(this).attr('action');
+                var url = $( this ).attr('action');
                 $.ajax({
                     type        : 'POST',
                     url         : url,
                     data        : formData,
                     encode          : true
                 }).done(function(data) {
-                    $('#updatePurchaseReqDetails').prop('disabled' ,false);
-                    var $msg = '<div class="alert alert-success">'+data.message+'</div>';
-                    $("#submit-status").html($msg);
-                    $("#purchaseReqDetailsEditForm" )[0].reset();
-                    $("#purchaseReqDetailsEditForm").css({"display":"none"});
-                    $("#purchaseReqDetailsForm").css({"display":"block"});
-                    getPurchaseRequisitionDetails();
-                }).error(function (xhr, status, error) {
-                    $('#updatePurchaseReqDetails').prop('disabled' ,false);
-                    var $msg = '<div class="alert alert-danger">Something went wrong. Please check your internet connection or fill the form appropiately</div>';
-                    $("#submit-status").html($msg);
+                    getPurchaseReqDetails();
+                    $("#addPrDetails").modal('hide');
                 });
                 event.preventDefault();
             });
 
-            $(document).on('click', '.btn-delete', function (e) {
-                var item = $(this).data('id');
-                var url = "{{ route('delete-purchase-requisition-detail') }}/"+item;
-                $.ajax({
-                    url: url,
-                    success: function(data){
-                        var $msg = '<div class="alert alert-success">'+data.message+'</div>';
-                        $("#submit-status").html($msg);
-                        getPurchaseRequisitionDetails();
-                        assetListOption();
+            function showPurchaseReqDetails (data) {
+                Handlebars.registerHelper('ifEditable', function(a, options) {
+                    if (a == 0 || a == 1) {
+                        return options.fn(this);
                     }
-                });
-            });
 
-            function assetListOption() {
-                var url = "{{ route('get-asset-list-html') }}";
-                $.ajax({
-                    url: url,
-                    success: function(data){
-                        $('select[name="asset_id"]').html(data);
-                        console.log(data);
-                    }
+                    return options.inverse(this);
                 });
+
+                var theTemplateScript = $("#purchase-requisition-details-list").html();
+
+                // Compile the template
+                var theTemplate = Handlebars.compile(theTemplateScript);
+
+
+                // Pass our data to the template
+                var theCompiledHtml = theTemplate(data);
+                // Add the compiled html to the page
+                $('#purReqDetails').html(theCompiledHtml);
+
+            };
+
+            function getPurchaseReqDetails(){
+                var url = "{{ route('json-purchase-requisition-details',['id' => $purchase_equisition->id]) }}";
+                $.ajax({url: url, success: function(result){
+                    showPurchaseReqDetails(result);
+                }});
             }
 
-            assetListOption();
 
-            getPurchaseRequisitionDetails();
+
+            getPurchaseReqDetails();
+
         });
 
     </script>

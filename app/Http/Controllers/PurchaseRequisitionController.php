@@ -14,12 +14,9 @@ class PurchaseRequisitionController extends Controller
 {
     public function index(){
 
-        $budget_types = BudgetType::where('type_info','purchase_requisition')->where('status',0)->get();
-        $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
-        //return $assets;
+        $purchase_requisitions = PurchaseRequisition::all();
         return view('admin.purchase-requisition')->with([
-            'budget_types'  => $budget_types,
-            'assets'    => $assets
+            'purchase_requisitions'  => $purchase_requisitions,
         ]);
     }
 
@@ -37,26 +34,25 @@ class PurchaseRequisitionController extends Controller
         return response()->json($purchase_requisitions,201);
     }
 
+    public function getCreatePurchaseRequisition(){
+
+        $budget_types = BudgetType::where('type_info','purchase_requisition')->where('status',0)->get();
+        $assets = Asset::all();
+        //return $assets;
+        return view('admin.create-purchase-requisition')->with([
+            'budget_types'  => $budget_types,
+            'assets'    => $assets
+        ]);
+    }
+
     public function create(Request $request){
 
         $time = strtotime($request->input('date'));
 
         $newFormat = date('Y-m-d',$time);
 
-        $asset = Asset::find($request->input('asset_id'));
-        $asset_id = $asset->id;
-        $purchase_req_details = PurchaseRequisitionDetail::whereHas('asset',function($q) use($asset_id){
-            $q->where('asset_id', $asset_id);
-        })->get();
-
-        if(count($purchase_req_details)){
-            return response()->json([
-                'status' => 'ok',
-                'message' => 'You are trying to assign multiple asset on single purchase requisition'
-            ],500);
-        }
-
         $org = Organization::first();
+
         $purchase_requisition = PurchaseRequisition::create([
             'budget_type'  => $request->input('budget_type'),
             'particulars'  => $request->input('particulars'),
@@ -65,19 +61,18 @@ class PurchaseRequisitionController extends Controller
             'created_by'   => Auth::user()->id,
         ]);
 
-        $purchase_requisition_details = PurchaseRequisitionDetail::create([
-            'asset_id'  => $asset->id,
-            'purchase_req_id'  => $purchase_requisition->id,
-            'quantity'  => $request->input('quantity'),
-            'approx_price'  => $request->input('approx_price'),
-            'budget_org'   => $org->id,
-            'created_by'   => Auth::user()->id,
-        ]);
+        foreach ($request->input('asset') as $asset){
+            $purchase_requisition_details = PurchaseRequisitionDetail::create([
+                'asset_id'  => $asset['name'],
+                'purchase_req_id'  => $purchase_requisition->id,
+                'quantity'  => $asset['quantity'],
+                'approx_price'  => $asset['price'],
+                'budget_org'   => $org->id,
+                'created_by'   => Auth::user()->id,
+            ]);
+        }
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'Successfully created this purchase requisition'
-        ],200);
+        return redirect()->route('pr-details',['id' => $purchase_requisition->id]);
     }
 
     public function update(Request $request, $id){
@@ -111,7 +106,7 @@ class PurchaseRequisitionController extends Controller
 
     public function remainingAsset(){
         $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
-        $data = "<option>--Select Asset</option>>";
+        $data = "<option>--Select Asset</option>";
 
         foreach($assets as $asset){
             $type = $asset->assetTypes ? $asset->assetTypes->name : '';
@@ -122,5 +117,14 @@ class PurchaseRequisitionController extends Controller
         }
 
         return $data;
+    }
+
+    public function newPurchaseRequisition(){
+        $budget_types = $budget_types = BudgetType::where('type_info','purchase_requisition')->get();;
+        $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
+        return view('admin.create-purchase-requisition')->with([
+            'budget_types'  => $budget_types,
+            'assets'  => $assets,
+        ]);
     }
 }

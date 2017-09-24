@@ -123,108 +123,31 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" style="height: auto;">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="{{ asset('public/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
-                </div>
-                <div class="pull-left info">
-                    <p>{{ Auth::user() ? Auth::user()->name : '' }}</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-            </div>
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-                    <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>
-            <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-                <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cog"></i> <span>Master Data</span>
-                        <span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-					</span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ route('admin.organizations') }}"><i class="fa fa-circle-o"></i> Organization</a></li>
-                        <li class="active"><a href="{{ route('admin.departments') }}"><i class="fa fa-circle-o"></i> Department</a></li>
-                        <li class="active"><a href="{{ route('admin.sections') }}"><i class="fa fa-circle-o"></i> Section</a></li>
-                        <li class="active"><a href="{{ route('admin.employees') }}"><i class="fa fa-circle-o"></i> Employe</a></li>
-                        <li class="active"><a href="{{ route('admin.locations') }}"><i class="fa fa-circle-o"></i> Location</a></li>
-                        <li class="active"><a href="{{ route('admin.asset-types') }}"><i class="fa fa-circle-o"></i> Assets Type</a></li>
-                        <li class="active"><a href="{{ route('admin.vendors') }}"><i class="fa fa-circle-o"></i> Vendor</a></li>
-                        <li class="active"><a href="{{ route('admin.services-type') }}"><i class="fa fa-circle-o"></i> Service Type</a></li>
-                        <li class="active"><a href="{{ route('admin.manufacturers') }}"><i class="fa fa-circle-o"></i> Manufacturer</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cog"></i> <span>Assets</span>
-                        <span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-					</span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active">
-                            <a href="{{ route('assets') }}"><i class="fa fa-circle-o"></i> Asset Detail</a>
-                        </li>
-                        <li class="active">
-                            <a href="{{ route('sub-assets') }}"><i class="fa fa-circle-o"></i> Sub Assets</a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cog"></i> <span>Budget</span>
-                        <span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-					</span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active">
-                            <a href="{{ route('budget-head') }}"><i class="fa fa-circle-o"></i> Budget Head</a>
-                        </li>
-                        <li class="active">
-                            <a href="{{ route('budget-type') }}"><i class="fa fa-circle-o"></i> Budget Type</a>
-                        </li>
-                        <li class="active">
-                            <a href="{{ route('budget-type-approval') }}"><i class="fa fa-circle-o"></i> Budget Type Approval</a>
-                        </li>
-                        <li class="active">
-                            <a href="{{ route('budget-declear') }}"><i class="fa fa-circle-o"></i> Budget Declar</a>
-                        </li>
+                @if(Auth::user()->hasRole('admin') || Auth::user()->user_type == 'ADMIN')
+                    <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa  fa-file-text"></i> <span>Purchase Requisition</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('new-purchase-requisition') }}"><i class="fa fa-circle-o"></i>New Purchase Requisition</a>
+                                <a href="{{ route('purchase-requisition') }}"><i class="fa fa-circle-o"></i> Purchase Requisition</a>
+                            </li>
 
 
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cog"></i> <span>Purchase Requisition</span>
-                        <span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-					</span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active">
-                            <a href="{{ route('purchase-requisition') }}"><i class="fa fa-circle-o"></i> Purchase Requisition</a>
-                            <a href="{{ route('purchase-requisition-details') }}"><i class="fa fa-circle-o"></i> Purchase Requisition Details</a>
-                        </li>
+                        </ul>
+                    </li>
+                @endif
 
-
-                    </ul>
-                </li>
-                <li class="treeview">
+                @if(Auth::user()->employee_id)
+                    <li class="treeview">
                     <a href="#">
                         <i class="fa fa-cog"></i> <span>My Approval</span>
                         <span class="pull-right-container">
@@ -240,22 +163,119 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="{{ route('send-approval') }}">Send Approval Request</a></li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cog"></i> <span>Purchase &amp; Receive</span>
-                        <span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-					</span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active">
-                            <a href="{{ route('purchase-receive') }}"><i class="fa fa-circle-o"></i> Purchase Receive</a>
-                        </li>
-                        <li class="active"><a href="{{ route('purchase-receive-details') }}"><i class="fa fa-circle-o"></i>Purchase Receive Details</a></li>
+                @endif
+                @if(Auth::user()->hasRole('admin') || Auth::user()->user_type == 'ADMIN')
+                    <li><a href="{{ route('send-approval') }}"><i class="fa fa-send"></i><span>Send Approval Request</span></a></li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cart-plus"></i> <span>Purchase &amp; Receive</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('purchase-receive') }}"><i class="fa fa-circle-o"></i> Purchase Receive</a>
+                            </li>
+                            <li class="active"><a href="{{ route('purchase-receive-details') }}"><i class="fa fa-circle-o"></i>Purchase Receive Details</a></li>
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cog"></i> <span>Issues</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('issue-received-asset') }}"><i class="fa fa-circle-o"></i> Issue Items</a>
+                            </li>
+                            <li class="active"><a href="{{ route('issued-item-list') }}"><i class="fa fa-circle-o"></i>Issued Item List</a></li>
+                            <li class="active"><a href="{{ route('create-issued-item-docs') }}"><i class="fa fa-circle-o"></i>Create Issued Item Docs</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-users"></i> <span>User & Support Manager</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="{{ route('user-list') }}"><i class="fa fa-circle-o"></i> Users</a></li>
+                            <li class="active"><a href="{{ route('create-roles') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
+                            <li class="active"><a href="{{ route('support-departments') }}"><i class="fa fa-circle-o"></i> Support Departments</a></li>
+                            <li class="active"><a href="{{ route('support-department-employee') }}"><i class="fa fa-circle-o"></i> Support Department Employee</a></li>
+                        </ul>
+                    </li>
+                @endif
+                <li><a href="{{ route('create-support-ticket') }}"><i class="fa fa-openid"></i><span>Open Support Ticket</span></a></li>
+                <li><a href="{{ route('support-question') }}"><i class="fa fa-support"></i><span>Support Tickets</span></a></li>
+                @if(Auth::user()->hasRole('admin') || Auth::user()->user_type == 'ADMIN')
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa  fa-database"></i> <span>Master Data</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active"><a href="{{ route('admin.organizations') }}"><i class="fa fa-circle-o"></i> Organization</a></li>
+                            <li class="active"><a href="{{ route('admin.departments') }}"><i class="fa fa-circle-o"></i> Department</a></li>
+                            <li class="active"><a href="{{ route('admin.sections') }}"><i class="fa fa-circle-o"></i> Section</a></li>
+                            <li class="active"><a href="{{ route('admin.employees') }}"><i class="fa fa-circle-o"></i> Employe</a></li>
+                            <li class="active"><a href="{{ route('admin.locations') }}"><i class="fa fa-circle-o"></i> Location</a></li>
+                            <li class="active"><a href="{{ route('admin.asset-types') }}"><i class="fa fa-circle-o"></i> Assets Type</a></li>
+                            <li class="active"><a href="{{ route('admin.vendors') }}"><i class="fa fa-circle-o"></i> Vendor</a></li>
+                            <li class="active"><a href="{{ route('admin.services-type') }}"><i class="fa fa-circle-o"></i> Service Type</a></li>
+                            <li class="active"><a href="{{ route('admin.manufacturers') }}"><i class="fa fa-circle-o"></i> Manufacturer</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cog"></i> <span>Assets</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('assets') }}"><i class="fa fa-circle-o"></i> Asset Detail</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('sub-assets') }}"><i class="fa fa-circle-o"></i> Sub Assets</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa  fa-file-word-o"></i> <span>Budget</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('budget-head') }}"><i class="fa fa-circle-o"></i> Budget Head</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('budget-type') }}"><i class="fa fa-circle-o"></i> Budget Type</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('budget-type-approval') }}"><i class="fa fa-circle-o"></i> Budget Type Approval</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('budget-declear') }}"><i class="fa fa-circle-o"></i> Budget Declar</a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                @endif
 
             </ul>
         </section>

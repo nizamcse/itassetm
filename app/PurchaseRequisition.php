@@ -11,7 +11,8 @@ class PurchaseRequisition extends Model
         'particulars',
         'budget_org',
         'date',
-        'created_by'
+        'created_by',
+        'status',
     ];
 
     public function budgetType(){
@@ -30,5 +31,9 @@ class PurchaseRequisition extends Model
 
     public function receives(){
         return $this->hasMany('App\Receive','purchase_req_id','id');
+    }
+
+    public function employeesApprovedAlready(){
+        return $this->belongsToMany('App\Employee','purchase_requisition_approvals','purchase_reqn_id','approved_by')->withTimestamps();
     }
 }

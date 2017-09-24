@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receive extends Model
 {
-    protected $fillable = ['purchase_req_id','status'];
+    protected $fillable = ['purchase_req_id','status','date'];
 
     public function purchaseRequisition(){
         return $this->belongsTo('App\PurchaseRequisition','purchase_req_id','id');

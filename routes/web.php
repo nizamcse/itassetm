@@ -15,7 +15,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/',function (){
         return view('welcome');
     })->name('default');
-
 });
 
 Auth::routes();
@@ -25,12 +24,18 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
 
     Route::get('/',[
-        'uses'  => 'OrganizationController@getDepartments',
+        'uses'  => 'OrganizationController@getOrganization',
         'as'    => 'admin.departments'
     ]);
-    Route::get('/organizations',function(){
-        return view('admin.organization');
-    })->name('admin.organizations');
+    Route::get('/organizations',[
+        'uses'  => 'OrganizationController@getOrganization',
+        'as'    => 'admin.organizations'
+    ]);
+
+    Route::post('/update-organization',[
+        'uses'  => 'OrganizationController@update',
+        'as'    => 'update-organization'
+    ]);
 
     Route::get('departments', [
         'uses'  => 'OrganizationController@getDepartments',
@@ -483,6 +488,11 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'purchase-requisition'
     ]);
 
+    Route::get('/new-purchase-requisition',[
+        'uses'  => 'PurchaseRequisitionController@newPurchaseRequisition',
+        'as'    => 'new-purchase-requisition'
+    ]);
+
 
     Route::get('/purchase-requisitions',[
         'uses'  => 'PurchaseRequisitionController@getPurchaseRequisitions',
@@ -520,14 +530,25 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'purchase-requisition-details'
     ]);
 
-    Route::get('/json-purchase-requisition-details',[
+    Route::get('/pr-details/{id}',[
         'uses'  => 'PurchaseRequisitionDetailsController@getPurchaseRequisitionDetails',
+        'as'    => 'pr-details'
+    ]);
+
+
+    Route::get('/json-purchase-requisition-details/{id?}',[
+        'uses'  => 'PurchaseRequisitionDetailsController@getPurchaseRequisitionDetailsJson',
         'as'    => 'json-purchase-requisition-details'
     ]);
 
     Route::post('/purchase-requisition-details',[
         'uses'  => 'PurchaseRequisitionDetailsController@create',
         'as'    => 'purchase-requisition-details'
+    ]);
+
+    Route::post('/pr-requisition-details/{id}',[
+        'uses'  => 'PurchaseRequisitionDetailsController@create',
+        'as'    => 'pr-requisition-details'
     ]);
 
     Route::get('/json-purchase-requisition-detail/{id?}',[
@@ -598,9 +619,19 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'approve-budget'
     ]);
 
+    Route::get('/approve-pr/{id}',[
+        'uses'  => 'UserController@getMyPrApproved',
+        'as'    => 'approve-pr'
+    ]);
+
     Route::get('/cancel-approved-budget/{id}',[
         'uses'  => 'UserController@cancelMyBudgetApproval',
         'as'    => 'cancel-approved-budget'
+    ]);
+
+    Route::get('/cancel-approved-pr/{id}',[
+        'uses'  => 'UserController@cancelMyPrApproval',
+        'as'    => 'cancel-approved-pr'
     ]);
 
     Route::post('/budget-modification/{id}/{yearly_budget?}',[
@@ -627,6 +658,11 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'send-to-approve'
     ]);
 
+    Route::get('send-pr-approval/{id}',[
+        'uses'  => 'UserController@sendPrToApprove',
+        'as'    => 'send-pr-to-approve'
+    ]);
+
 
     Route::get('get-asset-list-html',[
         'uses'  => 'PurchaseRequisitionController@remainingAsset',
@@ -649,11 +685,190 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'asset-receive'
     ]);
 
+    Route::get('/purchase-receive/{pur_req_id}/{asset_id}',function($pur_req_id,$asset_id){
+        $asset = \App\Asset::find($asset_id);
+        $budget_types = \App\BudgetType::where('type_info','budget')->get();
+        $pur_req_detail = \App\PurchaseRequisitionDetail::with('asset')
+            ->where('purchase_req_id',$pur_req_id)
+            ->where('asset_id',$asset_id)->first();
+        $vw_receive_detail = \App\VwReceiveDetail::where('PUR_REQ_ID',$pur_req_id)
+                                                ->where('asset_id',$asset_id)->first();
+        $vendors = \App\Vendor::all();
+        return view('admin.asset-receive-form')->with([
+            'asset'         => $asset,
+            'pur_req_id'    => $pur_req_id,
+            'asset_id'      => $asset_id,
+            'vendors'      => $vendors,
+            'vw_receive_detail'      => $vw_receive_detail,
+            'pur_req_detail'      => $pur_req_detail,
+            'budget_types'      => $budget_types,
+        ]);
+
+    })->name('get-receive-asset');
+
+    Route::post('/purchase-receive-details/{per_req_id}/{assset_id}',[
+        'uses'  => 'PurchaseReceiveDetailsController@saveReceive',
+        'as'    => 'post-purchase-receive-details'
+    ]);
+
     Route::get('/purchase-receive-details',[
         'uses'  => 'PurchaseReceiveDetailsController@index',
         'as'    => 'purchase-receive-details'
     ]);
 
+    /*
+     * Issue Received Asset
+     */
+    Route::get('/issue-received-asset',[
+        'uses'  => 'IssueController@index',
+        'as'    => 'issue-received-asset'
+    ]);
+
+    Route::get('/get-rem-balance/{bgt?}/{bhd?}',[
+        'uses'  => 'PurchaseReceiveController@getRemBalance',
+        'as'    => 'get-rem-balance'
+    ]);
+
+    Route::post('/issue-received-asset',[
+        'uses'  => 'IssueController@create',
+        'as'    => 'issue-received-asset'
+    ]);
+
+    /*
+     * Budget Head
+     */
+
+    Route::get('/get-budget-head/{id?}',[
+        'uses'  => 'BudgetHeadController@getBudgetHeadList',
+        'as'    => 'get-budget-head'
+    ]);
+
+    /*
+     * User List
+     */
+
+    Route::get('/users',[
+        'uses'  => 'UserController@getUsersList',
+        'as'    => 'user-list'
+    ]);
+
+    Route::get('/user-roles/{id}',[
+        'uses'  => 'UserController@getUsersRole',
+        'as'    => 'user-roles'
+    ]);
+
+    Route::post('/user-roles/{id}',[
+        'uses'  => 'UserController@updateUsersRole',
+        'as'    => 'update-user-roles'
+    ]);
+
+    Route::get('/create-roles/',[
+        'uses'  => 'RoleController@index',
+        'as'    => 'create-roles'
+    ]);
+
+    Route::get('/delete-role/{id}',[
+        'uses'  => 'RoleController@delete',
+        'as'    => 'delete-role'
+    ]);
+
+    /*
+     * Support Ticket
+     */
+
+    Route::get('/support-departments',[
+        'uses'  => 'SupportController@index',
+        'as'    => 'support-departments'
+    ]);
+
+    Route::get('/delete-support-dept/{id}',[
+        'uses'  => 'SupportController@delete',
+        'as'    => 'delete-support-dept'
+    ]);
+
+    Route::post('/create-support-dept',[
+        'uses'  => 'SupportController@create',
+        'as'    => 'create-support-dept'
+    ]);
+
+    Route::post('/update-support-dept/{id?}',[
+        'uses'  => 'SupportController@update',
+        'as'    => 'update-support-dept'
+    ]);
+
+    Route::get('/support-department-employee',[
+        'uses'  => 'SupportDeptEmployeeController@index',
+        'as'    => 'support-department-employee'
+    ]);
+
+    Route::post('/support-department-employee',[
+        'uses'  => 'SupportDeptEmployeeController@create',
+        'as'    => 'support-department-employee'
+    ]);
+
+    Route::get('/remove-support-dept-employee/{id}/{user_id}',[
+        'uses'  => 'SupportDeptEmployeeController@remove',
+        'as'    => 'remove-support-dept-employee'
+    ]);
+
+    Route::get('/get-support-dept-assignable-user/{id?}',[
+        'uses'  => 'SupportDeptEmployeeController@getRemainingUser',
+        'as'    => 'get-support-dept-assignable-user'
+    ]);
+
+    Route::get('/create-support-ticket',[
+        'uses'  => 'SupportQuestionController@index',
+        'as'    => 'create-support-ticket'
+    ]);
+
+    Route::get('/support-question',[
+        'uses'  => 'SupportQuestionController@getSupportQuestion',
+        'as'    => 'support-question'
+    ]);
+
+    Route::get('/support-ticket/{id}',[
+        'uses'  => 'SupportQuestionController@getSupportTecket',
+        'as'    => 'support-ticket'
+    ]);
+
+    Route::post('/support-ticket/answare/{id}',[
+        'uses'  => 'SupportQuestionController@postAnswer',
+        'as'    => 'support-ticket-answare'
+    ]);
+
+    Route::post('/create-support-ticket',[
+        'uses'  => 'SupportQuestionController@create',
+        'as'    => 'create-support-ticket'
+    ]);
+
+    Route::get('/create-support-ticket/{id}/{status}',[
+        'uses'  => 'SupportQuestionController@changeStatus',
+        'as'    => 'change-support-ticket-status'
+    ]);
+
+    /*
+     * Issued Item Docs
+     */
+
+    Route::get('issued-item-list',[
+        'uses'  => 'IssueController@issuedItems',
+        'as'    => 'issued-item-list'
+    ]);
+
+    Route::get('view-issued-item-doc/{id}',[
+        'uses'  => 'IssuedItemDocsController@viewDoc',
+        'as'    => 'view-issued-item-doc'
+    ]);
+
+    Route::get('create-issued-item-docs',[
+        'uses'  => 'IssuedItemDocsController@index',
+        'as'    => 'create-issued-item-docs'
+    ]);
+
+    Route::post('create-issued-item-docs',[
+        'uses'  => 'IssuedItemDocsController@create',
+        'as'    => 'create-issued-item-docs'
+    ]);
 
 
 });
@@ -675,5 +890,14 @@ Route::post('confirm-registration/{id}/{token}',[
     'uses'  => 'UserController@confirmUserRegistration',
     'as'    => 'confirm-registration'
 ]);
+
+
+Route::group(['middleware' => 'guest'],function(){
+    Route::post('/password-reset-link',[
+        'uses'  => 'UserController@resetPassword',
+        'as'    => 'reset-pass-link'
+    ]);
+});
+
 
 

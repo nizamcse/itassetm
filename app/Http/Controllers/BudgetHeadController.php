@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BudgetHead;
 use App\Organization;
+use App\YearlyBudgetInfo;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -102,5 +103,16 @@ class BudgetHeadController extends Controller
             $level++;
         }
         return $level;
+    }
+
+    public function getBudgetHeadList($id){
+        $yearly_budgets = YearlyBudgetInfo::where('budget_type',$id)->get();
+        $budget_head_ids = $yearly_budgets->pluck('budget_head');
+        $budget_heads = BudgetHead::whereIn('id',$budget_head_ids)->get();
+        $options = '<option value="">Select Budget Head</option>';
+        foreach ($budget_heads as $budget_head){
+            $options .= '<option value="'.$budget_head->id.'">'.$budget_head->name.'</option>';
+        }
+        return $options;
     }
 }

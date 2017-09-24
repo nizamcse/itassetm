@@ -10,6 +10,7 @@ use App\Manufacturer;
 use App\Organization;
 use App\Section;
 use App\ServiceType;
+use App\User;
 use App\Vendor;
 use Faker\Provider\DateTime;
 use Validator;
@@ -24,6 +25,13 @@ class OrganizationController extends Controller
     public function __construct()
     {
         $this->assetType = "";
+    }
+
+    public function getOrganization(){
+        $organization = Organization::first();
+        return view('admin.organization')->with([
+            'organization'  => $organization
+        ]);
     }
 
     public function create(Request $request){
@@ -45,6 +53,45 @@ class OrganizationController extends Controller
         }
 
         $organization = Organization::create([
+            'name' => $request->input('name'),
+            'address_line_1' => $request->input('address_line_1'),
+            'address_line_2' => $request->input('address_line_2'),
+            'address_line_3' => $request->input('address_line_3'),
+            'city' => $request->input('city'),
+            'postal_code' => $request->input('postal_code'),
+            'state' => $request->input('state'),
+            'country' => $request->input('country'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'fax' => $request->input('fax'),
+            'web' => $request->input('web'),
+            'photo' => $request->input('photo'),
+            'key' => $request->input('key'),
+            'created_by' => Auth::user()->id,
+        ]);
+
+        return view('admin.organization')->withOrganization($organization);
+
+    }
+    public function update(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'name'  => 'required',
+            'address_line_1'  => 'required',
+            'city'  => 'required',
+            'postal_code'  => 'required|max:4',
+            'country'  => 'required',
+            'phone'  => 'required',
+        ]);
+
+        if($validator->fails()){
+            $errors = $validator->errors();
+            return view('admin.organization')->with([
+                'errors'    => $errors
+            ]);
+        }
+        $organization = Organization::first();
+        $organization->update([
             'name' => $request->input('name'),
             'address_line_1' => $request->input('address_line_1'),
             'address_line_2' => $request->input('address_line_2'),
@@ -388,6 +435,11 @@ class OrganizationController extends Controller
             'location'          => $request->input('employee_location'),
             'location_id'        => $request->input('employee_location'),
             'created_by'        => Auth::user()->id,
+        ]);
+
+        $user = User::where('employee_id',$employee->id)->first();
+        $user->update([
+            'email' => $employee->email
         ]);
 
         return response()->json([

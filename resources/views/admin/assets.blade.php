@@ -101,7 +101,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Lifge Unit</label>
+                            <label>Life Unit</label>
 
                             <select name="asset_life_unit" class="form-control select2" style="width: 100%" ;="">
                                 <option value="0">Choose Life Unit </option>

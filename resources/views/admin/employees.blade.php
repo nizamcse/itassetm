@@ -335,16 +335,13 @@
             });
         }
         function setLocation() {
-            var url = "{{ route('json-location') }}";
+            var url = "{{ route('location-tree') }}";
             $.ajax({
                 type        : 'GET',
                 url         : url,
                 encode      : true
             }).done(function(data) {
-                var $departmentsOptions = '<option value="">Select Location</option>';
-                data.locations.forEach(function (location) {
-                    $departmentsOptions +='<option value="'+location.id+'">'+location.name+'</option>'
-                });
+                var $departmentsOptions = data;
                 $("#employee_location").html($departmentsOptions);
                 $("#edit_employee_location").html($departmentsOptions);
             });

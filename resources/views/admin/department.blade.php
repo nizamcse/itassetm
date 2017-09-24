@@ -3,17 +3,15 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title"></h3>
+            <h3 class="box-title">DEPARTMENTS</h3>
 
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                <a href="#" id="addDepartment" class="btn flat btn-xs btn-info">Add More</a>
             </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <div id="submit-status"></div>
-            <p><a href="#" id="addDepartment" class="btn btn-info">Add More</a></p>
             <div class="add-department-wraper">
                 <form id="department-form" action="{{ route('post.department') }}" method="post">
                     {{ csrf_field() }}

@@ -17,7 +17,7 @@ class BudgetType extends Model
     ];
 
     public function yearlyBudget(){
-        return $this->hasOne('App\YearlyBudgetInfo', 'budget_type', 'id');
+        return $this->hasMany('App\YearlyBudgetInfo', 'budget_type', 'id');
     }
 
     public function approvalEmployee(){

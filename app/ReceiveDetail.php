@@ -20,10 +20,15 @@ class ReceiveDetail extends Model
         'warranty_duration',
         'quantity',
         'price',
+        'yearly_budget_info_id',
         'received_by',
     ];
 
     public function asset(){
         return $this->belongsTo('App\Asset','asset_id','id');
+    }
+
+    public function receive(){
+        return $this->belongsTo('App\Receive','receive_id','id');
     }
 }

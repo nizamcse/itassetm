@@ -5,25 +5,27 @@
         <tr>
             <th>ID#</th>
             <th>Asset Name</th>
-            <th>Employee Name</th>
             <th>Quantity</th>
             <th>Approximate Price</th>
-            <th class="text-right">Action</th>
+            {{#ifEditable pr_req_details.info.status}}
+            <th class="text-right">Action {{ pr_req_details.info.status }} </th>
+            {{/ifEditable}}
         </tr>
         </thead>
 
         <tbody>
-        {{#each purchase_requisition_details}}
+        {{#each pr_req_details.data}}
         <tr>
             <td>{{ this.id }}</td>
             <td>{{ this.asset.name }}</td>
-            <td>{{ this.asset.employee.name }}</td>
             <td>{{ this.quantity }}</td>
             <td>{{ this.approx_price }}</td>
+            {{#ifEditable this.purchase_requisition.status}}
             <td class="text-right">
-                <a data-id="{{ this.id }}"  href="#" class="btn btn-xs btn-flat btn-info btn-edit">Edit</a>
-                <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-info btn-delete">Delete</a>
+                <a href="#" class="btn flat btn-xs btn-info btn-edit-pr-detail" data-toggle="modal" data-target="#editPrDetails" data-id="{{ this.id }}">Edit</a>
+                <a href="#" class="btn flat btn-xs btn-danger btn-delete-pr-detail" data-id="{{ this.id }}">Delete</a>
             </td>
+            {{/ifEditable}}
         </tr>
         {{/each}}
     </table>

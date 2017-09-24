@@ -9,12 +9,12 @@
         <div class="box-body">
             <!-- /.row -->
             <div id="submit-status"></div>
-            <a href="#" id="addAsset">Add Assets</a>
+            <a href="#" id="addAsset" class="btn btn-info flat btn-sm">Add Assets</a>
             <form id="asset-type-form" action="{{ route('post.assets') }}" method="POST">
                 {{ csrf_field() }}
                 <div id="section-input-area"></div>
-                <button id="cancelAssetForm" type="button" class="btn btn-success">Cancel</button>
-                <button type="submit" class="btn btn-success save-section">Save</button>
+                <button id="cancelAssetForm" type="button" class="btn btn-danger flat btn-sm">Cancel</button>
+                <button type="submit" class="btn btn-success save-section flat btn-sm">Save</button>
             </form>
             <form id="asset-type-edit-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
@@ -34,17 +34,12 @@
                         </div>
                     </div>
                 </div>
-                <button id="cancelAssetTypeEditForm" type="button" class="btn btn-success">Cancel</button>
-                <button type="submit" class="btn btn-success save-section">Save</button>
+                <button id="cancelAssetTypeEditForm" type="button" class="btn btn-danger flat">Cancel</button>
+                <button type="submit" class="btn btn-success flat save-section">Save</button>
             </form>
         </div>
         <div class="x_content">
             <div id="assets"></div>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
         </div>
     </div>
 @endsection

@@ -17,7 +17,7 @@ class YearlyBudgetController extends Controller
 {
     public function index(){
         $units = UnitOfMesurement::all();
-        $budget_types = BudgetType::where('status',0)->get();
+        $budget_types = BudgetType::where('status',0)->where('type_info','budget')->get();
         $budget_heads =  $this->get_budget_head_tree();
         $manufacturers = Manufacturer::all();
         $suppliers = Vendor::all();

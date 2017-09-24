@@ -8,19 +8,19 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div id="submit-status"></div>
-            <a href="#" id="addLocation">Add Location</a>
+            <a href="#" id="addLocation" class="btn flat btn-info btn-xs">Add Location</a>
             <form id="location-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
                 <div id="section-input-area"></div>
-                <button id="cancelLocationForm" type="button" class="btn btn-success">Cancel</button>
-                <button type="submit" class="btn btn-success save-section">Save</button>
+                <button id="cancelLocationForm" type="button" class="btn flat btn-danger">Cancel</button>
+                <button type="submit" class="btn flat btn-success save-section">Save</button>
             </form>
             <form id="location-edit-form" action="{{ route('post.location') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="form-group">
-                            <label>Section Name</label>
+                            <label>Location Name</label>
                             <input type="text" class="form-control" name="name"  placeholder="Location" required="">
                         </div>
                     </div>
@@ -39,11 +39,6 @@
         </div>
         <div class="x_content">
             <div id="locations"></div>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
         </div>
     </div>
 @endsection
@@ -95,7 +90,7 @@
         var formField = function () {
             var ind = $("#section-input-area").find('.row').length;
             var $fieldHtml = '<div class="row">';
-            var $fieldColum1 = '<div class="col-sm-5"><div class="form-group"><label>Section Name</label>';
+            var $fieldColum1 = '<div class="col-sm-5"><div class="form-group"><label>Location Name</label>';
             var $input1 = '<input type="text" class="form-control" name="location['+ind+'][name]"  placeholder="Location" required="">';
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';

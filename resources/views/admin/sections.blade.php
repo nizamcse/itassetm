@@ -3,22 +3,19 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title"></h3>
+            <h3 class="box-title">SECTION</h3>
 
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-            </div>
+                <a href="#" id="addSection" class="btn flat btn-info btn-xs">Add Section</a>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <div id="submit-status"></div>
-            <a href="#" id="addSection">Add Section</a>
             <form id="section-form" action="{{ route('post.section') }}" method="POST" style="display:none;">
                 {{ csrf_field() }}
                 <div id="section-input-area"></div>
-                <button id="cancelSectionForm" type="button" class="btn btn-success">Cancel</button>
-                <button type="submit" class="btn btn-success save-section">Save</button>
+                <button id="cancelSectionForm" type="button" class="btn btn-danger flat btn-sm">Cancel</button>
+                <button type="submit" class="btn flat btn-sm btn-success save-section">Save</button>
             </form>
             <form id="section-edit-form" action="#" method="POST" style="display: none">
                 {{ csrf_field() }}

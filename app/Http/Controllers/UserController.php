@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\BudgetType;
 use App\BudgetTypeApproval;
+use App\BudgetTypeApprovalEmployee;
 use App\Employee;
+use App\Mail\ApprovalNotification;
 use App\PurchaseRequisition;
+use App\PurchaseRequisitionApproval;
 use App\PurchaseRequisitionDetail;
+use App\Role;
 use App\YearlyBudgetInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -81,7 +85,10 @@ class UserController extends Controller
 
     public function getMyBudgetApproval(){
         $employee = Employee::find(Auth::user()->employee_id);
-        $id = $employee->id;
+        if($employee)
+            $id = $employee->id;
+        else
+            return redirect()->back();
 
         $budget_types = BudgetType::with(['employees' => function($q) use($id){
                 $q->where('employee_id', $id);
@@ -95,32 +102,75 @@ class UserController extends Controller
 
     public function getMyPurchaseReqApproval(){
         $employee = Employee::find(Auth::user()->employee_id);
-        $id = $employee->id;
+        if($employee)
+            $id = $employee->id;
+        else
+            return redirect()->back();
 
         $budget_types = BudgetType::with(['employees' => function($q) use($id){
             $q->where('employee_id', $id);
-        }])
-            ->where('type_info','purchase_requisition')->get();
+        }])->where('type_info','purchase_requisition')
+            ->whereHas('purchaseRequisions',function($q){
+                $q->where('status','>',0);
+            })->get();
 
-        return view('admin.my-approval')->with([
-            'budget_types' => $budget_types
+        $ids = $budget_types->pluck('id');
+        $pr_reqns = PurchaseRequisition::whereIn('budget_type',$ids)->where('status','!=',0)->get();
+
+        return view('admin.my-approval-purchase-requisition')->with([
+            'budget_types' => $budget_types,
+            'pr_reqns' => $pr_reqns
         ]);
     }
 
     public function getMyBudgetApproved($id){
+
         $employee = Employee::find(Auth::user()->employee_id);
         $budget_types = BudgetType::find($id);
 
-        $budget_types->employeesApproved()->attach($employee->id);
+        if($budget_types->employees->find(Auth::user()->employee_id)->pivot->employee_order - 1 == count($budget_types->employeesApprovedAlready)){
+            $budget_types->employeesApproved()->attach($employee->id);
+            if(count($budget_types->employeesApproved) == $budget_types->budget_type_level_apv){
+                $budget_types->status = 3;
+                $budget_types->save();
+            }
+            else{
+                $next_order = $budget_types->employees->find(Auth::user()->employee_id)->pivot->employee_order;
+                $next_employee = BudgetTypeApprovalEmployee::where('budget_type',$budget_types->id)
+                    ->where('employee_order',$next_order+1)->first();
+                $user = User::where('employee_id',$next_employee->employee_id)->first();
+                $budget_types->status = 2;
+                $budget_types->save();
+                Mail::to($user->email)->send(new ApprovalNotification($user));
+            }
+        }
 
-        if(count($budget_types->employeesApproved) == $budget_types->budget_type_level_apv){
-            $budget_types->status = 3;
-            $budget_types->save();
+        return redirect()->back();
+    }
+
+    public function getMyPrApproved($id){
+        $employee = Employee::find(Auth::user()->employee_id);
+        $pr_reqn = PurchaseRequisition::find($id);
+        $budget_types = BudgetType::find($pr_reqn->budget_type);
+        if($budget_types->employees->find(Auth::user()->employee_id)->pivot->employee_order - 1 == count($pr_reqn->employeesApprovedAlready)){
+
+            $pr_reqn->employeesApprovedAlready()->attach($employee->id);
+            $pr = PurchaseRequisition::find($id);
+            if(count($pr->employeesApprovedAlready) == $budget_types->budget_type_level_apv){
+                $pr_reqn->status = 3;
+                $pr_reqn->save();
+            }
+            else{
+                $next_order = $budget_types->employees->find(Auth::user()->employee_id)->pivot->employee_order;
+                $next_employee = BudgetTypeApprovalEmployee::where('budget_type',$budget_types->id)
+                    ->where('employee_order',$next_order+1)->first();
+                $user = User::where('employee_id',$next_employee->employee_id)->first();
+                $pr_reqn->status = 2;
+                $pr_reqn->save();
+                Mail::to($user->email)->send(new ApprovalNotification($user));
+            }
         }
-        else{
-            $budget_types->status = 2;
-            $budget_types->save();
-        }
+
 
         return redirect()->back();
     }
@@ -168,6 +218,25 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    public function cancelMyPrApproval($id){
+        $pr_reqn = PurchaseRequisition::find($id);
+        $budget_type = BudgetType::find($pr_reqn->budget_type);
+        if(!$budget_type->employees->contains(Auth::user()->employee_id)){
+            return redirect()->back();
+        }
+        if(
+            $budget_type->employees->find(Auth::user()->employee_id)->pivot->employee_order == count($pr_reqn->employeesApprovedAlready) ||
+            $budget_type->employees->find(Auth::user()->employee_id)->pivot->employee_order == count($pr_reqn->employeesApprovedAlready)+1
+        ){
+            PurchaseRequisitionApproval::where('purchase_reqn_id',$pr_reqn->id)->delete();
+            $pr_reqn->status = 0;
+            $pr_reqn->save();
+
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
     public function budgetModification(Request $request,$id,$yearly_budget){
 
         $budget_type = BudgetType::find($id);
@@ -208,20 +277,18 @@ class UserController extends Controller
     }
 
     public function getMyBudgetReqApprovalDetails($id){
-        $budget_type = BudgetType::find($id);
+        $purchase_requisition = PurchaseRequisition::find($id);
+        $budget_type = BudgetType::find($purchase_requisition->budgetType->id);
         if(!$budget_type->employees->contains(Auth::user()->employee_id)){
             return redirect()->back();
         }
         $my_order = $budget_type->employees->find(Auth::user()->employee_id)->pivot->employee_order;
 
-        $purchase_requisitions = PurchaseRequisition::where('budget_type' ,$id)->get();
-        $total_approximate_price = PurchaseRequisitionDetail::whereHas('purchaseRequisition',function($q) use($id){
-            $q->where('budget_type',$id);
-        })->get()->pluck('approx_price')->sum();
+        $pur_reqn_details = PurchaseRequisitionDetail::where('purchase_req_id',$purchase_requisition->id)->get();
         return view('admin.my-purchase-approval-list')->with([
-            'purchase_requisitions' => $purchase_requisitions,
-            'budget_types' => $budget_type,
-            'total_approximate_price'   => $total_approximate_price,
+            'pur_reqn_details' => $pur_reqn_details,
+            'purchase_requisition' => $purchase_requisition,
+            'budget_type' => $budget_type
         ]);
     }
 
@@ -232,9 +299,12 @@ class UserController extends Controller
      */
 
     public function sendApprovalRequest(){
-        $budget_types = BudgetType::where('status',0)->get();
+        $budget_types = BudgetType::whereHas('yearlyBudget')->where('status',0)
+            ->where('type_info','budget')->get();
+        $purchase_req = PurchaseRequisition::whereHas('purchaseRequisitionDetails')->where('status',0)->get();
         return view('admin.send-for-approval')->with([
-            'budget_types'  => $budget_types
+            'budget_types'  => $budget_types,
+            'purchase_req'  => $purchase_req
         ]);
     }
 
@@ -252,17 +322,69 @@ class UserController extends Controller
                 $yearly_budget->save();
             }
         }
-        elseif ($budget_type->type_info == 'purchase_requisition'){
-            $purchase_requisitions = PurchaseRequisition::where('budget_type' ,$budget_type->id)->get();
-            foreach ($purchase_requisitions as $purchase_requisition){
-                $purchase_req_details = PurchaseRequisitionDetail::where('purchase_req_id' ,$purchase_requisition->id)
-                    ->whereNotNull('comment')->get();
-                foreach ($purchase_req_details as $purchase_req_detail){
-                    $purchase_req_detail->comment = '';
-                    $purchase_req_detail->save();
-                }
-            }
+
+        $budget_type_approval_employee = BudgetTypeApprovalEmployee::where('budget_type',$budget_type->id)
+            ->where('employee_order',1)->first();
+        $user = User::where('employee_id',$budget_type_approval_employee->employee_id)->first();
+
+        Mail::to($user->email)->send(new ApprovalNotification($user));
+
+        return redirect()->back();
+    }
+
+    public function sendPrToApprove($id){
+        $pr_reqn = PurchaseRequisition::find($id);
+        $pr_reqn->update([
+            'status'    => 1
+        ]);
+
+        $purchase_req_details = PurchaseRequisitionDetail::where('purchase_req_id' ,$pr_reqn->id)
+            ->whereNotNull('comment')->get();
+        foreach ($purchase_req_details as $purchase_req_detail){
+            $purchase_req_detail->comment = '';
+            $purchase_req_detail->save();
         }
+        $budget_type_approval_employee = BudgetTypeApprovalEmployee::where('budget_type',$pr_reqn->budget_type)
+            ->where('employee_order',1)->first();
+        $user = User::where('employee_id',$budget_type_approval_employee->employee_id)->first();
+
+        Mail::to($user->email)->send(new ApprovalNotification($user));
+        return redirect()->back();
+    }
+
+
+    public function getUsersList(){
+        $users = User::where('is_active',1)->get();
+
+        return view('admin.user-list')->with([
+            'users' => $users
+        ]);
+    }
+
+    public function resetPassword(Request $request){
+        $user = User::where('email',$request->input('email'))->first();
+
+        $user->update([
+            'email_token'   => str_random(40),
+        ]);
+
+        $this->sendMail($user);
+
+        return redirect()->back();
+    }
+
+    public function getUsersRole($id){
+        $user = User::find($id);
+        $roles = Role::all();
+        return view('admin.view-user-roles')->with([
+            'user'  => $user,
+            'roles' => $roles
+        ]);
+    }
+
+    public function updateUsersRole(Request $request, $id){
+        $user = User::find($id);
+        $user->roles()->sync($request->input('roles'));
         return redirect()->back();
     }
 }

@@ -7,7 +7,8 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body" style="border-radius: 0px">
-            <table class="table table-bordered table-striped">
+            @if(count($pur_reqns))
+                <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>Purchase Requisition</th>
@@ -17,17 +18,19 @@
                 <tbody>
                 @foreach($pur_reqns as $pur_reqn)
                     <tr>
-                        <td><a href="{{ route('asset-receive',['id'  => $pur_reqn->id]) }}">{{ $pur_reqn->id.$pur_reqn->budgetType->budget_type_name }}</a></td>
+                        <td><a href="{{ route('asset-receive',['id'  => $pur_reqn->id]) }}">{{ $pur_reqn->budgetType->budget_type_name }}</a></td>
                         <td>{{ $pur_reqn->particulars }}</td>
-                        <td></td>
+                        <td> </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+            @else
+                <p class="text-danger">Sorry! Currently there is no approved purchase requisition to receive.</p>
+            @endif
         </div>
 
     </div>
-
 @endsection
 
 @section('script')

@@ -38,30 +38,24 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Budget Manufacturer</label>
-                            <select name="manufacturer_id" class="form-control select2" style="width: 100%" ;>
-                                <option value="">Choose Budget Manufacturer</option>
-                                @foreach($manufacturers as $manufacturer)
-                                    <option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>
-                                @endforeach
-                            </select>
+                            <label for="">Quantity</label>
+                            <input type="text" name="quantity" class="form-control">
                         </div>
                     </div>
+
                 </div>
                 <div class="row">
-
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Supplier</label>
-                            <select name="supplier_id" class="form-control select2" style="width: 100%" ;>
-                                <option value="">Choose Supplier</option>
-                                @foreach($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                            <label>Unit Of Measurement</label>
+                            <select name="unit" class="form-control select2" style="width: 100%" ;>
+                                <option value="">Choose Measurement Unit</option>
+                                @foreach($units as $unit)
+                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="">USD Ammount</label>
@@ -84,17 +78,22 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="">Quantity</label>
-                            <input type="text" name="quantity" class="form-control">
+                            <label>Manufacturer</label>
+                            <select name="manufacturer_id" class="form-control select2" style="width: 100%" ;>
+                                <option value="">Choose Budget Manufacturer</option>
+                                @foreach($manufacturers as $manufacturer)
+                                    <option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Unit Of Measurement</label>
-                            <select name="unit" class="form-control select2" style="width: 100%" ;>
-                                <option value="">Choose Measurement Unit</option>
-                                @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                            <label>Supplier</label>
+                            <select name="supplier_id" class="form-control select2" style="width: 100%" ;>
+                                <option value="">Choose Supplier</option>
+                                @foreach($suppliers as $supplier)
+                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -138,7 +137,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Budget Manufacturer</label>
+                            <label>Manufacturer</label>
                             <select name="manufacturer_id" class="form-control select2" style="width: 100%" ;>
                                 <option value="">Choose Budget Manufacturer</option>
                                 @foreach($manufacturers as $manufacturer)

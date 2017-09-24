@@ -14,3 +14,12 @@
 .btn{
     border-radius: 0px !important;
 }
+
+span.err-text {
+    right: 15px;
+    position: absolute;
+    top: 0;
+    font-size: 12px;
+    color: red;
+    letter-spacing: 2px;
+}

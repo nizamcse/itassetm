@@ -6,7 +6,6 @@ use App\BudgetType;
 use App\BudgetTypeApprovalEmployee;
 use App\Employee;
 use App\Organization;
-use function foo\func;
 use Illuminate\Http\Request;
 use Auth;
 

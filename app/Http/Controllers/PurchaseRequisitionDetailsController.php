@@ -13,22 +13,22 @@ use Auth;
 class PurchaseRequisitionDetailsController extends Controller
 {
     public function index(){
-
-        $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
-        $purchase_equisitions = PurchaseRequisition::all();
+        $purchase_equisition = PurchaseRequisition::all();
+        //return $purchase_equisition;
+        return redirect()->back();
         return view('admin.purchase-requisition-details')->with([
-            'assets'  => $assets,
-            'purchase_equisitions'  => $purchase_equisitions,
+            'purchase_equisition'  => $purchase_equisition,
         ]);
     }
 
     public function getPurchaseRequisitionDetail($id){
-        $purchase_requisition_detail = PurchaseRequisitionDetail::with(['asset','purchaseRequisition.budgetType'])
+        $purchase_requisition_detail = PurchaseRequisitionDetail::with(['asset' => function($q){
+            $q->with(['employee']);
+        },'purchaseRequisition.budgetType'])
             ->where('id',$id)->first();
         return response()->json($purchase_requisition_detail,201);
     }
 
-    public function getPurchaseRequisitionDetails(){
         /*
          * This may need later
          */
@@ -40,20 +40,16 @@ class PurchaseRequisitionDetailsController extends Controller
         ])->get();
         */
 
-        $purchase_requisition_details['purchase_requisition_details'] = PurchaseRequisitionDetail::with(['asset.employee'])->get();
 
-        return response()->json($purchase_requisition_details,201);
-    }
-
-    public function create(Request $request){
+    public function create(Request $request,$id){
         $org = Organization::first();
-        $asset = Asset::find($request->input('asset_id'));
+        $asset = Asset::find($request->input('asset'));
         $purchase_requisition_details = PurchaseRequisitionDetail::create([
             'asset_id'  => $asset->id,
             'quantity'  => $request->input('quantity'),
-            'approx_price'  => $request->input('approx_price'),
+            'approx_price'  => $request->input('price'),
             'budget_org'   => $org->id,
-            'purchase_req_id'   => $request->input('purchase_req_id'),
+            'purchase_req_id'   => $id,
             'created_by'   => Auth::user()->id,
         ]);
 
@@ -64,13 +60,12 @@ class PurchaseRequisitionDetailsController extends Controller
     }
 
     public function update(Request $request, $id){
-        $asset = Asset::find($request->input('asset_id'));
+        $asset = Asset::find($request->input('asset'));
         $purchase_requisition_detail = PurchaseRequisitionDetail::find($id);
         $purchase_requisition_detail->update([
             'asset_id'  => $asset->id,
             'quantity'  => $request->input('quantity'),
-            'approx_price'  => $request->input('approx_price'),
-            'purchase_req_id'   => $request->input('purchase_req_id'),
+            'approx_price'  => $request->input('price'),
             'created_by'   => Auth::user()->id,
         ]);
         return response()->json([
@@ -85,5 +80,22 @@ class PurchaseRequisitionDetailsController extends Controller
             'status' => 'ok',
             'message' => 'Successfully deleted this purchase requisition details'
         ],200);
+    }
+
+    public function getPurchaseRequisitionDetails($id){
+        $purchase_equisition = PurchaseRequisition::find($id);
+        $assets = Asset::whereDoesntHave('purchaseRequisition')->get();
+        return view('admin.purchase-requisition-details')->with([
+            'purchase_equisition'  => $purchase_equisition,
+            'assets'  => $assets,
+        ]);
+    }
+
+    public function getPurchaseRequisitionDetailsJson($id){
+        $pr_req_details['pr_req_details']['data'] = PurchaseRequisitionDetail::with(['asset','purchaseRequisition'])
+            ->where('purchase_req_id',$id)->get();
+        $pr_req_details['pr_req_details']['info'] = PurchaseRequisition::find($id);
+
+        return response()->json($pr_req_details,200);
     }
 }
