@@ -48,8 +48,10 @@ class PurchaseRequisitionController extends Controller
     public function create(Request $request){
 
         $time = strtotime($request->input('date'));
+        $time2 = strtotime($request->input('expected_receive_date'));
 
         $newFormat = date('Y-m-d',$time);
+        $newFormat2 = date('Y-m-d',$time2);
 
         $org = Organization::first();
 
@@ -58,6 +60,7 @@ class PurchaseRequisitionController extends Controller
             'particulars'  => $request->input('particulars'),
             'budget_org'   => $org->id,
             'date'   => $newFormat,
+            'expected_receive_date'   => $newFormat2,
             'created_by'   => Auth::user()->id,
         ]);
 
@@ -126,5 +129,34 @@ class PurchaseRequisitionController extends Controller
             'budget_types'  => $budget_types,
             'assets'  => $assets,
         ]);
+    }
+
+    public function deletePurchaseRequisition($id){
+        $purchase_requisition = PurchaseRequisition::find($id);
+        if(count($purchase_requisition->receives) == 0 && Auth::user()->user_type == 'ADMIN'){
+            $ids = $purchase_requisition->purchaseRequisitionDetails->pluck('id');
+            $emp_ids = $purchase_requisition->employeesApprovedAlready->pluck('id');
+            $purchase_requisition->employeesApprovedAlready()->detach($emp_ids);
+            PurchaseRequisitionDetail::whereIn('id',$ids)->delete();
+            $purchase_requisition->delete();
+        }
+
+        return redirect()->back();
+    }
+
+    public function forceApprovePurchaseRequisition($id){
+        $purchase_requisition = PurchaseRequisition::find($id);
+        if(
+            ($purchase_requisition->status > 0 && $purchase_requisition->status < 3) &&
+            count($purchase_requisition->receives) == 0
+            && Auth::user()->user_type == 'ADMIN'
+        ){
+            $purchase_requisition->update([
+                'status'    => 3,
+                'admin_approved'    => 1
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

@@ -118,7 +118,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" name="asset_retainment_dt" value="">
+                            <input type="date" class="form-control datepicker" name="asset_retainment_dt" value="">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -411,6 +411,8 @@
 
             assetEmployee(null);
             assetsList();
+
+            $('.datepicker').datepicker();
         });
 
     </script>

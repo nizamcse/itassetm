@@ -13,6 +13,9 @@ class PurchaseRequisition extends Model
         'date',
         'created_by',
         'status',
+        'comment',
+        'expected_receive_date',
+        'admin_approved',
     ];
 
     public function budgetType(){

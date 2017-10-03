@@ -42,6 +42,12 @@
             <td>
                 <a data-id="{{ this.id }}" data-name="{{ this.name }}" data-report="" href="#" onclick="editEmployee($(this))" class="btn btn-xs btn-flat btn-info">Edit</a>
                 <a data-id="{{ this.id }}" href="#" onclick="deleteEmployee($(this))" class="btn btn-xs btn-flat btn-info">Delete</a>
+                {{#ifEnable this.status}}
+                <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-warning btn-disable">Disable</a>
+                {{/ifEnable}}
+                {{#ifDisable this.status}}
+                <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-success btn-enable">Enable</a>
+                {{/ifDisable}}
             </td>
         </tr>
         {{/each}}

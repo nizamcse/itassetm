@@ -61,8 +61,15 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         return view('admin.asset-types')->with(['assetTypes' => $assetTypes]);
     })->name('admin.asset-types');
 
+    /*
+     * Vendor
+     */
+
     Route::get('vendors', function () {
-        return view('admin.vendors');
+        $vendor_types = \App\VendorType::all();
+        return view('admin.vendors')->with([
+            'vendor_types' => $vendor_types
+        ]);
     })->name('admin.vendors');
 
     Route::get('services-type', function () {
@@ -90,6 +97,109 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
     Route::post('/location', [
         'uses'  => 'OrganizationController@createLocation',
         'as'    => 'post.location'
+    ]);
+
+    Route::get('/enable-vendor/{id?}', [
+        'uses'  => 'VendorController@enable',
+        'as'    => 'enable-vendor'
+    ]);
+
+    Route::get('/disable-vendor/{id?}', [
+        'uses'  => 'VendorController@disable',
+        'as'    => 'disable-vendor'
+    ]);
+
+
+    /*
+     * Vendor Type
+     */
+
+    Route::get('/vendor-type', [
+        'uses'  => 'VendorTypeController@index',
+        'as'    => 'vendor-type'
+    ]);
+
+    Route::post('/vendor-type', [
+        'uses'  => 'VendorTypeController@create',
+        'as'    => 'vendor-type'
+    ]);
+
+    Route::get('/get-vendor-types', [
+        'uses'  => 'VendorTypeController@getVendorTypes',
+        'as'    => 'get-vendor-types'
+    ]);
+
+    Route::get('/get-vendor-type/{id?}', [
+        'uses'  => 'VendorTypeController@getVendorType',
+        'as'    => 'get-vendor-type'
+    ]);
+
+    Route::post('/update-vendor-type/{id?}', [
+        'uses'  => 'VendorTypeController@updateVendorType',
+        'as'    => 'update-vendor-type'
+    ]);
+
+    Route::get('/delete-vendor-type/{id?}', [
+        'uses'  => 'VendorTypeController@deleteVendorType',
+        'as'    => 'delete-vendor-type'
+    ]);
+
+    /*
+     * Vendor Contact
+     */
+    Route::get('/vendor-contacts/{id?}', [
+        'uses'  => 'VendorContactController@index',
+        'as'    => 'vendor-contacts'
+    ]);
+
+    Route::get('/vendor-contact/{id?}', [
+        'uses'  => 'VendorContactController@getContact',
+        'as'    => 'vendor-contact'
+    ]);
+
+    Route::get('/vendor-contacts-json/{id?}', [
+        'uses'  => 'VendorContactController@getContacts',
+        'as'    => 'vendor-contacts-json'
+    ]);
+
+    Route::post('/vendor-contact/{id?}', [
+        'uses'  => 'VendorContactController@create',
+        'as'    => 'vendor-contact'
+    ]);
+
+    Route::post('/update-vendor-contact/{id?}', [
+        'uses'  => 'VendorContactController@update',
+        'as'    => 'update-vendor-contact'
+    ]);
+
+    Route::get('/delete-vendor-contact/{id?}', [
+        'uses'  => 'VendorContactController@delete',
+        'as'    => 'delete-vendor-contact'
+    ]);
+
+    /*
+     * Vendor Document
+     */
+    Route::get('/vendor-documents/{id?}', [
+        'uses'  => 'VendorDocumentController@index',
+        'as'    => 'vendor-documents'
+    ]);
+
+
+    Route::get('/vendor-documents-json/{id?}', [
+        'uses'  => 'VendorDocumentController@getDocuments',
+        'as'    => 'vendor-documents-json'
+    ]);
+
+    Route::post('/vendor-document/{id?}', [
+        'uses'  => 'VendorDocumentController@create',
+        'as'    => 'vendor-document'
+    ]);
+
+
+    Route::get('/delete-vendor-document/{id?}', [
+        'uses'  => 'VendorDocumentController@delete',
+        'as'    => 'delete-vendor-document'
     ]);
 
     /********************  All Ajax Request *****************/
@@ -183,6 +293,16 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'json-delete-employee'
     ]);
 
+    Route::get('/active-employee/{id?}',[
+        'uses'  => 'EmployeeController@makeActive',
+        'as'    => 'active-employee'
+    ]);
+
+    Route::get('/inactive-employee/{id?}',[
+        'uses'  => 'EmployeeController@makeInActive',
+        'as'    => 'inactive-employee'
+    ]);
+
     Route::get('/location-tree',[
         'uses'  => 'OrganizationController@get_location_tree',
         'as'    => 'location-tree'
@@ -231,7 +351,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'as'    => 'json-update-service-type'
     ]);
 
-    Route::post('json-delete-service-type/{id?}',[
+    Route::get('json-delete-service-type/{id?}',[
         'uses'  => 'OrganizationController@deleteServiceType',
         'as'    => 'json-delete-service-type'
     ]);
@@ -486,6 +606,16 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
     Route::get('/purchase-requisition',[
         'uses'  => 'PurchaseRequisitionController@index',
         'as'    => 'purchase-requisition'
+    ]);
+
+    Route::get('/delete/purchase-requisition/{id}',[
+        'uses'  => 'PurchaseRequisitionController@deletePurchaseRequisition',
+        'as'    => 'delete-purchase-requisition'
+    ]);
+
+    Route::get('/force-approve/purchase-requisition/{id}',[
+        'uses'  => 'PurchaseRequisitionController@forceApprovePurchaseRequisition',
+        'as'    => 'force-approve-purchase-requisition'
     ]);
 
     Route::get('/new-purchase-requisition',[
@@ -869,6 +999,71 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'uses'  => 'IssuedItemDocsController@create',
         'as'    => 'create-issued-item-docs'
     ]);
+
+    /*
+     * Service
+     */
+    Route::get('in-service',[
+        'uses'  => 'ServiceController@index',
+        'as'    => 'in-service'
+    ]);
+
+    Route::get('send-for-service',[
+        'uses'  => 'ServiceController@getCreateService',
+        'as'    => 'send-for-service'
+    ]);
+
+    Route::post('send-for-service',[
+        'uses'  => 'ServiceController@create',
+        'as'    => 'send-for-service'
+    ]);
+
+    Route::get('asset-in-service/{id}',[
+        'uses'  => 'ServiceController@serviceDetails',
+        'as'    => 'asset-in-service'
+    ]);
+
+    Route::get('receive-from-service/{id}',[
+        'uses'  => 'ServiceController@receiveFromService',
+        'as'    => 'receive-from-service'
+    ]);
+
+    Route::get('receive-all-from-service/{id}',[
+        'uses'  => 'ServiceController@receiveAllAsset',
+        'as'    => 'receive-all-from-service'
+    ]);
+
+    Route::post('receive-selected-from-service',[
+        'uses'  => 'ServiceController@receiveSelectedAsset',
+        'as'    => 'receive-selected-from-service'
+    ]);
+
+    Route::get('received-service',[
+        'uses'  => 'ServiceController@receivedAssets',
+        'as'    => 'received-service'
+    ]);
+
+
+
+    /*
+     * Asset Log
+     */
+
+    Route::get('asset-log',[
+        'uses'  => 'AssetLogController@index',
+        'as'    => 'asset-logs'
+    ]);
+
+    Route::get('asset-log/{id}',[
+        'uses'  => 'AssetLogController@assetLog',
+        'as'    => 'asset-log'
+    ]);
+
+    Route::get('delete-log/{id}',[
+        'uses'  => 'AssetLogController@delete',
+        'as'    => 'delete-log'
+    ]);
+
 
 
 });

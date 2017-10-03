@@ -20,7 +20,7 @@ class YearlyBudgetController extends Controller
         $budget_types = BudgetType::where('status',0)->where('type_info','budget')->get();
         $budget_heads =  $this->get_budget_head_tree();
         $manufacturers = Manufacturer::all();
-        $suppliers = Vendor::all();
+        $suppliers = Vendor::where('status',1)->get();
         return view('admin.budget-declear')->with([
             'budget_types'  => $budget_types,
             'budget_heads'  => $budget_heads,
@@ -83,6 +83,8 @@ class YearlyBudgetController extends Controller
 
     public function updateJson(Request $request,$id){
         $yearly_budget = YearlyBudgetInfo::findOrFail($id);
+
+
 
         $units = UnitOfMesurement::findOrFail($request->input('unit'));
         $budget_types = BudgetType::findOrFail($request->input('budget_type'));

@@ -10,10 +10,10 @@
             <form id="purchaseReqForm" action="{{ route('purchase-requisition') }}" method="post">
                 {{ csrf_field() }}
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Purchase Req Type</label>
-                            <select name="budget_type" id="budget_type" class="form-control">
+                            <select name="budget_type" id="budget_type" class="form-control" required>
                                 <option value="">Select Purchase Req Type</option>
                                 @foreach($budget_types as $budget_type)
                                     <option value="{{ $budget_type->id }}">
@@ -23,7 +23,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Particulars</label>
                             <input type="text" name="particulars" class="form-control" style="text-transform: uppercase">
@@ -32,7 +32,14 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Date</label>
-                            <input type="date" name="date" class="form-control">
+                            <input name="date" class="form-control datepicker">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Expect To Receive</label>
+                            <input name="expected_receive_date" class="datepicker form-control">
                         </div>
                     </div>
                 </div>
@@ -137,6 +144,8 @@
 
                 e.preventDefault();
             });
+
+            $('.datepicker').datepicker();
         });
 
     </script>

@@ -308,6 +308,8 @@
                 //$('#updateBudgetHead').prop('disabled' ,true);
                 var formData = $( this ).serialize();
 
+                console.log(formData);
+
                 var url = $(this).attr('action');
                 $.ajax({
                     type        : 'POST',
@@ -315,6 +317,7 @@
                     data        : formData,
                     encode          : true
                 }).done(function(data) {
+                    console.log(data);
                     //$('#updateBudgetHead').prop('disabled' ,false);
                     var $msg = '<div class="alert alert-success">'+data.message+'</div>';
                     $("#submit-status").html($msg);

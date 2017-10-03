@@ -221,10 +221,16 @@ class UserController extends Controller
     public function cancelMyPrApproval($id){
         $pr_reqn = PurchaseRequisition::find($id);
         $budget_type = BudgetType::find($pr_reqn->budget_type);
-        if(!$budget_type->employees->contains(Auth::user()->employee_id)){
+        if(!$budget_type->employees->contains(Auth::user()->employee_id) && Auth::user()->user_type != 'ADMIN'){
             return redirect()->back();
         }
-        if(
+        if(Auth::user()->user_type == 'ADMIN'){
+            PurchaseRequisitionApproval::where('purchase_reqn_id',$pr_reqn->id)->delete();
+            $pr_reqn->status = 0;
+            $pr_reqn->save();
+            return redirect()->back();
+        }
+        else if(
             $budget_type->employees->find(Auth::user()->employee_id)->pivot->employee_order == count($pr_reqn->employeesApprovedAlready) ||
             $budget_type->employees->find(Auth::user()->employee_id)->pivot->employee_order == count($pr_reqn->employeesApprovedAlready)+1
         ){

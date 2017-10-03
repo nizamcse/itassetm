@@ -19,6 +19,7 @@ class Employee extends Model
         'created_by',
         'location_id',
         'section_id',
+        'status',
     ];
 
     public function budgetTypeApproval(){

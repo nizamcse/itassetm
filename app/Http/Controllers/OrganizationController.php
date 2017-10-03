@@ -549,21 +549,23 @@ class OrganizationController extends Controller
 
     public function createVendor(Request $request){
         $org = Organization::first();
-        foreach ($request->input('vendor') as $vendor){
 
-            Vendor::create([
-                'name'  => $vendor['name'],
-                'address'  => $vendor['address'],
-                'contact_person'  => $vendor['contact_person'],
-                'contact_no'  => $vendor['contact_no'],
-                'web'  => $vendor['web'],
-                'trade_no'  => $vendor['trade_no'],
-                'vat_no'  => $vendor['vat_no'],
-                'company'  => $vendor['company'],
-                'org'  => $org->id,
-                'created_by'  => Auth::user()->id,
-            ]);
-        }
+        Vendor::create([
+            'name'  => $request->input('name'),
+            'address'  => $request->input('address'),
+            'contact_person'  => $request->input('contact_person'),
+            'contact_no'  => $request->input('contact_no'),
+            'web'  => $request->input('web'),
+            'trade_no'  => $request->input('trade_no'),
+            'vat_no'  => $request->input('vat_no'),
+            'company'  => $request->input('company'),
+            'email'  => $request->input('email'),
+            'comment'  => $request->input('comment'),
+            'vendor_type_id'  => $request->input('vendor_type'),
+            'org'  => $org->id,
+            'created_by'  => Auth::user()->id,
+        ]);
+
         return response()->json([
             'status' => 'ok',
             'message' => 'Successfully created vendors'
@@ -601,6 +603,9 @@ class OrganizationController extends Controller
             'trade_no'  => $request->input('trade_no'),
             'vat_no'  => $request->input('vat_no'),
             'company'  =>$request->input('company'),
+            'email'  =>$request->input('email'),
+            'comment'  =>$request->input('comment'),
+            'vendor_type_id'  =>$request->input('vendor_type'),
             'org'  => $org->id,
             'created_by'  => Auth::user()->id,
         ]);
