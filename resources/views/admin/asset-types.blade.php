@@ -4,12 +4,14 @@
     <div class="box box-default">
         <div class="box-header with-border">
             <h3 class="box-title">Asset Type</h3>
+            <div class="box-tools pull-right">
+                <button type="button" id="addAsset" class="btn btn-info flat btn-sm">Add Assets</button>
+            </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <!-- /.row -->
             <div id="submit-status"></div>
-            <a href="#" id="addAsset" class="btn btn-info flat btn-sm">Add Assets</a>
             <form id="asset-type-form" action="{{ route('post.assets') }}" method="POST">
                 {{ csrf_field() }}
                 <div id="section-input-area"></div>
@@ -72,8 +74,13 @@
             var theCompiledHtml = theTemplate(data);
             // Add the compiled html to the page
             $('#assets').html(theCompiledHtml);
+            initializeDatatable();
 
         };
+
+        function initializeDatatable() {
+            $('#assetsData').DataTable();
+        }
 
         var getAssetList = function (){
             $.ajax({url: "{{ route('json-assets') }}", success: function(result){
@@ -188,6 +195,7 @@
                 encode          : true
             }).done(function(data) {
                 getAssetList();
+                assetTree();
                 $( "#asset-type-form" )[0].reset();
                 $( "#asset-type-form" ).css({"display":"none"});
                 $("#section-input-area").html('');
@@ -195,7 +203,6 @@
                 $msg = '<div class="alert alert-success">'+data.message+'</div>';
                 $("#submit-status").html($msg);
             });
-            assetTree();
             event.preventDefault();
         });
 

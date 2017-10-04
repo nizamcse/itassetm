@@ -21,7 +21,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
+Route::group(/**
+ *
+ */
+    ['prefix' => 'admin','middleware' => 'auth'],function () {
 
     Route::get('/',[
         'uses'  => 'OrganizationController@getOrganization',
@@ -1063,6 +1066,66 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function () {
         'uses'  => 'AssetLogController@delete',
         'as'    => 'delete-log'
     ]);
+
+    /*
+     * Report Generation
+     */
+
+    Route::get('report-pending-assets',[
+        'uses'  => 'ReportController@pendingAssets',
+        'as'    => 'report-pending-assets'
+    ]);
+
+    Route::get('report-received-assets',[
+        'uses'  => 'ReportController@receivedAssets',
+        'as'    => 'report-received-assets'
+    ]);
+
+    Route::get('report-issued-assets',[
+        'uses'  => 'ReportController@issuedAssets',
+        'as'    => 'report-issued-assets'
+    ]);
+
+    Route::get('report-budget-details',[
+        'uses'  => 'ReportController@budgetDetails',
+        'as'    => 'report-budget-details'
+    ]);
+
+
+    /*
+     * Unit Of Measurement
+     */
+
+    Route::get('units',[
+        'uses'  => 'UnitOfMeasurementController@index',
+        'as'    => 'units'
+    ]);
+
+    Route::get('json-units',[
+        'uses'  => 'UnitOfMeasurementController@jsonUnits',
+        'as'    => 'json-units'
+    ]);
+
+    Route::get('unit/{id?}',[
+        'uses'  => 'UnitOfMeasurementController@getUnit',
+        'as'    => 'unit'
+    ]);
+
+    Route::post('unit',[
+        'uses'  => 'UnitOfMeasurementController@create',
+        'as'    => 'unit'
+    ]);
+
+    Route::post('update/unit/{id?}',[
+        'uses'  => 'UnitOfMeasurementController@update',
+        'as'    => 'update-unit'
+    ]);
+
+    Route::get('delete/unit/{id?}',[
+        'uses'  => 'UnitOfMeasurementController@delete',
+        'as'    => 'delete-unit'
+    ]);
+
 
 
 

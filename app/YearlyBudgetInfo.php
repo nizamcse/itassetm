@@ -44,4 +44,8 @@ class YearlyBudgetInfo extends Model
         return $this->belongsTo('App\Organization','org_id','id');
     }
 
+    public function remainingBudget(){
+        return $this->hasOne('App\VwRemainingBudget', 'id', 'id');
+    }
+
 }

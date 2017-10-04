@@ -56,13 +56,6 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="company">Company Name</label>
-                            <input class="form-control vendor-company" name="company" type="text" placeholder="Company Name" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
                             <label for="company">Vendor Email</label>
                             <input class="form-control vendor-company" name="email" type="email" placeholder="Vendor Email" />
                         </div>
@@ -138,13 +131,6 @@
                         <div class="form-group">
                             <label for="vat-no">Vat No</label>
                             <input class="form-control vendor-vat-no" name="vat_no" type="text" placeholder="Vat No" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="company">Company Name</label>
-                            <input class="form-control vendor-company" name="company" type="text" placeholder="Company Name" />
                         </div>
                     </div>
 
@@ -243,6 +229,11 @@
                 var theTemplate = Handlebars.compile(theTemplateScript);
                 var theCompiledHtml = theTemplate(data);
                 $('#vendorsData').html(theCompiledHtml);
+                initializeDatatable();
+            }
+
+            function initializeDatatable() {
+                $('#datatableN').DataTable();
             }
 
             var getVendors = function () {
@@ -301,7 +292,6 @@
                 $("#vendorEditForm input[name='web']").val(data.web);
                 $("#vendorEditForm input[name='trade_no']").val(data.trade_no);
                 $("#vendorEditForm input[name='vat_no']").val(data.vat_no);
-                $("#vendorEditForm input[name='company']").val(data.company);
                 $("#vendorEditForm input[name='email']").val(data.email);
                 $("#vendorEditForm input[name='comment']").val(data.comment);
                 $("#vendorEditForm select[name='vendor_type']").val(data.vendor_type_id);

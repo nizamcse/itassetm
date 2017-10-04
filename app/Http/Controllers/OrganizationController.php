@@ -182,11 +182,10 @@ class OrganizationController extends Controller
     public function createLocation(Request $request){
 
         foreach ($request->input('location') as $location){
-            $location = Location::firstOrNew([
-                'name'  => $location['name']
+            $location = Location::firstOrCreate([
+                'name'  => $location['name'],
+                'parent_id' => $location['location_parent']
             ]);
-
-            $location->fill(['parent_id' => $location['parent_id']])->save();
         }
         return response()->json([
             'status' => 'ok',
@@ -558,7 +557,6 @@ class OrganizationController extends Controller
             'web'  => $request->input('web'),
             'trade_no'  => $request->input('trade_no'),
             'vat_no'  => $request->input('vat_no'),
-            'company'  => $request->input('company'),
             'email'  => $request->input('email'),
             'comment'  => $request->input('comment'),
             'vendor_type_id'  => $request->input('vendor_type'),
@@ -602,7 +600,6 @@ class OrganizationController extends Controller
             'web'  => $request->input('web'),
             'trade_no'  => $request->input('trade_no'),
             'vat_no'  => $request->input('vat_no'),
-            'company'  =>$request->input('company'),
             'email'  =>$request->input('email'),
             'comment'  =>$request->input('comment'),
             'vendor_type_id'  =>$request->input('vendor_type'),

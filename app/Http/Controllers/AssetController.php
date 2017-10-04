@@ -9,6 +9,7 @@ use App\Employee;
 use App\Manufacturer;
 use App\Organization;
 use App\Section;
+use App\UnitOfMesurement;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -20,12 +21,14 @@ class AssetController extends Controller
         $manufacturers = Manufacturer::all();
         $departments = Department::all();
         $sections = Section::all();
+        $units_of_measurement = UnitOfMesurement::all();
 
         return view('admin.assets')->with([
             'assets_type'   => $assetType,
             'manufacturers'   => $manufacturers,
             'departments'   => $departments,
             'sections'   => $sections,
+            'units_of_measurement'   => $units_of_measurement,
         ]);
     }
     public function getAssets(){

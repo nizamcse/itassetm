@@ -22,7 +22,6 @@ class CreateVendorsTable extends Migration
             $table->string('web')->nullable();
             $table->string('trade_no')->nullable();
             $table->string('vat_no')->nullable();
-            $table->string('company')->nullable();
             $table->string('org')->nullable();
             $table->integer('created_by')->unsigned();
             $table->timestamps();

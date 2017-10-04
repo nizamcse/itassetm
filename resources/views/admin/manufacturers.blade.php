@@ -54,17 +54,15 @@
         var manufacturerData = function (data) {
 
             var theTemplateScript = $("#manufacturer-data-template").html();
-
-            // Compile the template
             var theTemplate = Handlebars.compile(theTemplateScript);
-
-
-            // Pass our data to the template
             var theCompiledHtml = theTemplate(data);
-            // Add the compiled html to the page
             $('#manufacturer').html(theCompiledHtml);
-
+            initializeDatatable();
         };
+
+        function initializeDatatable() {
+            $('#datatableN').DataTable();
+        }
 
         var formField = function () {
             var ind = $("#manufacturer-input-area").find('.row').length;

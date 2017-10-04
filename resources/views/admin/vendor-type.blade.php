@@ -112,6 +112,7 @@
                 }).done(function(data) {
                     getVendorTypes();
                     $("#editVendorType").modal('hide');
+                    $( "#vendor-type-edit" )[0].reset();
                 });
                 event.preventDefault();
             });
@@ -126,6 +127,7 @@
                 }).done(function(data) {
                     getVendorTypes();
                     $("#addVendorType").modal('hide');
+                    $( "#vendor-type-add" )[0].reset();
                 });
                 event.preventDefault();
             });
@@ -135,8 +137,13 @@
                 var theTemplate = Handlebars.compile(theTemplateScript);
                 var theCompiledHtml = theTemplate(data);
                 $('#vendorTypes').html(theCompiledHtml);
+                initializeDatatable();
 
             };
+
+            function initializeDatatable() {
+                $('#vendorTypesTable').DataTable();
+            }
 
             function getVendorTypes(){
                 var url = "{{ route('get-vendor-types') }}";

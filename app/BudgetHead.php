@@ -21,4 +21,5 @@ class BudgetHead extends Model
     public function yearlyBudget(){
         return $this->hasOne('App\YearlyBudgetInfo', 'budget_head', 'id');
     }
+
 }

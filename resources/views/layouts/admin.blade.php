@@ -130,6 +130,24 @@
                     <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
                     <li class="treeview">
                         <a href="#">
+                            <i class="fa  fa-file-text"></i> <span>Reports</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('report-pending-assets') }}"><i class="fa fa-circle-o"></i>PENDING ASSETS</a>
+                                <a href="{{ route('report-received-assets') }}"><i class="fa fa-circle-o"></i>RECEIVED ASSETS</a>
+                                <a href="{{ route('report-issued-assets') }}"><i class="fa fa-circle-o"></i>ISSUED ASSETS</a>
+                                <a href="{{ route('report-budget-details') }}"><i class="fa fa-circle-o"></i>BUDGET DETAILS</a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
                             <i class="fa  fa-file-text"></i> <span>Purchase Requisition</span>
                             <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -249,9 +267,10 @@
                             <li class="active"><a href="{{ route('admin.sections') }}"><i class="fa fa-circle-o"></i> Section</a></li>
                             <li class="active"><a href="{{ route('admin.employees') }}"><i class="fa fa-circle-o"></i> Employe</a></li>
                             <li class="active"><a href="{{ route('admin.locations') }}"><i class="fa fa-circle-o"></i> Location</a></li>
+                            <li class="active"><a href="{{ route('units') }}"><i class="fa fa-circle-o"></i> Units</a></li>
                             <li class="active"><a href="{{ route('admin.asset-types') }}"><i class="fa fa-circle-o"></i> Assets Type</a></li>
-                            <li class="active"><a href="{{ route('admin.vendors') }}"><i class="fa fa-circle-o"></i> Vendor</a></li>
                             <li class="active"><a href="{{ route('vendor-type') }}"><i class="fa fa-circle-o"></i> Vendor Type</a></li>
+                            <li class="active"><a href="{{ route('admin.vendors') }}"><i class="fa fa-circle-o"></i> Vendor</a></li>
                             <li class="active"><a href="{{ route('admin.services-type') }}"><i class="fa fa-circle-o"></i> Service Type</a></li>
                             <li class="active"><a href="{{ route('admin.manufacturers') }}"><i class="fa fa-circle-o"></i> Manufacturer</a></li>
                         </ul>

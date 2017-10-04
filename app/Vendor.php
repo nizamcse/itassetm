@@ -14,7 +14,6 @@ class Vendor extends Model
         'web',
         'trade_no',
         'vat_no',
-        'company',
         'org',
         'created_by',
         'email',

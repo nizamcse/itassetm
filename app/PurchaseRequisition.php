@@ -39,4 +39,6 @@ class PurchaseRequisition extends Model
     public function employeesApprovedAlready(){
         return $this->belongsToMany('App\Employee','purchase_requisition_approvals','purchase_reqn_id','approved_by')->withTimestamps();
     }
+
+
 }

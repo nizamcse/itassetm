@@ -5,8 +5,8 @@
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
             </div>
         </div>
         <!-- /.box-header -->
@@ -95,7 +95,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="formgroup">
-                            <label>Life Time Day</label>
+                            <label>Life Time</label>
                             <input type="text" class="form-control" name="asset_life" value="" placeholder="Number">
                         </div>
                     </div>
@@ -105,10 +105,9 @@
 
                             <select name="asset_life_unit" class="form-control select2" style="width: 100%" ;="">
                                 <option value="0">Choose Life Unit </option>
-                                <option value="1">Day</option>
-                                <option value="2">Month</option>
-                                <option value="3">Year</option>
-
+                                @foreach($units_of_measurement as $unit_of_measurement)
+                                    <option value="{{ $unit_of_measurement->id }}">{{ $unit_of_measurement->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -118,7 +117,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control datepicker" name="asset_retainment_dt" value="">
+                            <input class="form-control datepicker" name="asset_retainment_dt" value="">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -212,7 +211,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="formgroup">
-                            <label>Life Time Day</label>
+                            <label>Life Time</label>
                             <input type="text" class="form-control" name="asset_life" value="" placeholder="Number">
                         </div>
                     </div>
@@ -222,9 +221,9 @@
 
                             <select name="asset_life_unit" class="form-control select2" style="width: 100%" ;="">
                                 <option value="0">Choose Life Unit </option>
-                                <option value="1">Day</option>
-                                <option value="2">Month</option>
-                                <option value="3">Year</option>
+                                @foreach($units_of_measurement as $unit_of_measurement)
+                                    <option value="{{ $unit_of_measurement->id }}">{{ $unit_of_measurement->name }}</option>
+                                @endforeach
 
                             </select>
                         </div>
@@ -235,7 +234,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" name="asset_retainment_dt" value="">
+                            <input class="form-control datepicker" name="asset_retainment_dt" value="">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -304,16 +303,16 @@
 
             function showAssetInTable(data) {
                 var theTemplateScript = $("#assets-list-template").html();
-
-                // Compile the template
                 var theTemplate = Handlebars.compile(theTemplateScript);
-
-
-                // Pass our data to the template
                 var theCompiledHtml = theTemplate(data);
-                // Add the compiled html to the page
                 $('#assetsList').html(theCompiledHtml);
+                initializeDatatable();
             }
+
+            function initializeDatatable() {
+                $('#assetsListData').DataTable();
+            }
+
 
             $("#assetForm" ).submit(function( event ) {
                 $('#saveAsset').prop('disabled' ,true);

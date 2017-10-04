@@ -13,8 +13,8 @@
             <table id="serviceFormTable" class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th><label>Service Name</label></th>
-                    <th><label>Service TYpe</label></th>
+                    <th><label>Service Type Name</label></th>
+                    <th><label>Service Type</label></th>
                     <th>
                         <button id="addFormRow" class="btn btn-success btn-add" type="button">
                             <i class="glyphicon glyphicon-plus gs"></i>
@@ -57,8 +57,8 @@
                 <table id="serviceEditFormTable" class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th><label>Service Name</label></th>
-                        <th><label>Service TYpe</label></th>
+                        <th><label>Service Type Name</label></th>
+                        <th><label>Service Type</label></th>
                     </tr>
                     </thead>
 
@@ -198,22 +198,33 @@
 
             function serviceTypeData(data){
 
+                Handlebars.registerHelper('ifExternal', function(a, options) {
+                    if (a == 2) {
+                        return options.fn(this);
+                    }
+
+                    return options.inverse(this);
+                });
+
+                Handlebars.registerHelper('ifInternal', function(a, options) {
+                    if (a == 1) {
+                        return options.fn(this);
+                    }
+
+                    return options.inverse(this);
+                });
+
                 var theTemplateScript = $("#servicce-type-data-template").html();
-
-                // Compile the template
                 var theTemplate = Handlebars.compile(theTemplateScript);
-
-
-                // Pass our data to the template
                 var theCompiledHtml = theTemplate(data);
-                // Add the compiled html to the page
                 $('#serviceTypes').html(theCompiledHtml);
+                initializeDatatable();
             }
 
-            function deleteServiceType (elem){
-                alert();
-
+            function initializeDatatable() {
+                $('#datatableN').DataTable();
             }
+
 
             $(document).on('click','.btn-delete',function (e) {
                 console.log($(this));
