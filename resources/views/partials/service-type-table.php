@@ -15,7 +15,15 @@
         <tr>
             <td>{{ this.id }}</td>
             <td>{{ this.name }}</td>
-            <td></td>
+            <td>
+                {{#ifExternal this.service_type}}
+                    External
+                {{/ifExternal}}
+
+                {{#ifInternal this.service_type}}
+                    Internal
+                {{/ifInternal}}
+            </td>
             <td>
                 <a data-id="{{ this.id }}" data-name="{{ this.name }}" data-service-type="{{ this.service_type }}"  class="btn btn-xs btn-flat btn-info btn-edit">Edit</a>
                 <a data-id="{{ this.id }}" href="#" class="btn btn-xs btn-flat btn-info btn-delete">Delete</a>

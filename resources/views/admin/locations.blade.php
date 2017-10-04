@@ -71,6 +71,7 @@
             var theCompiledHtml = theTemplate(data);
             // Add the compiled html to the page
             $('#locations').html(theCompiledHtml);
+            initializeDatatable();
 
         };
 
@@ -95,7 +96,7 @@
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
-            var $input2 = '<select name="location_parent" class="form-control">';
+            var $input2 = '<select name="location['+ind+'][location_parent]" class="form-control">';
             $input2 += '<option value="">TOP</option>';
             $input2 += $locationOption;
             $input2 += '</select>';
@@ -120,7 +121,7 @@
             $fieldColum1 += $input1;
             $fieldColum1 += '</div></div>';
             var $fieldColum2 = '<div class="col-sm-5"><div class="form-group"><label>Location Parent </label>';
-            var $input2 = '<select name="location_parent" class="form-control">';
+            var $input2 = '<select name="location['+ind+'][location_parent]" class="form-control">';
             $input2 += '<option value="">TOP</option>';
             $input2 += $locationOption;
             $input2 += '</select>';
@@ -228,6 +229,10 @@
             console.log($(this).html());
             alert();
         });
+
+        function initializeDatatable() {
+            $('#datatableN').DataTable();
+        }
 
         locations();
 

@@ -18,13 +18,15 @@
                 </thead>
                 <tbody>
                 @foreach($issued_assets as $issued_asset)
-                    <tr>
-                        <td>{{ $issued_asset->id }}</td>
-                        <td><a href="#">{{ $issued_asset->asset->id }}</a></td>
-                        <td><a href="#">{{ $issued_asset->asset->name }}</a></td>
-                        <td>{{ $issued_asset->employee->name }}</td>
-                        <td><a href="{{ route('view-issued-item-doc',['id' => $issued_asset->itemDoc->id]) }}">View Documentation</a></td>
-                    </tr>
+                    @if($issued_asset->asset)
+                        <tr>
+                            <td>{{ $issued_asset->id }}</td>
+                            <td><a href="#">{{ $issued_asset->asset->id }}</a></td>
+                            <td><a href="#">{{ $issued_asset->asset->name }}</a></td>
+                            <td>{{ $issued_asset->employee->name }}</td>
+                            <td><a href="{{ route('view-issued-item-doc',['id' => $issued_asset->itemDoc->id]) }}">View Details</a></td>
+                        </tr>
+                    @endif
                 @endforeach
                 </tbody>
             </table>

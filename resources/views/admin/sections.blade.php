@@ -63,6 +63,8 @@
         $("#section-form").css({"display":"none"});
         $("#cancelSectionForm").click(function(){
             $("#section-form").css({"display":"none"});
+            $("#section-input-area").html('');
+            initForm();
         });
         $("#get-edit-section").click(function () {
             $("#section-form").css({"display":"none"});
@@ -84,8 +86,12 @@
             var theCompiledHtml = theTemplate(data);
             // Add the compiled html to the page
             $('#sections').html(theCompiledHtml);
+            initializeDatatable();
 
         };
+        function initializeDatatable() {
+            $('#datatableN').DataTable();
+        }
 
         var formField = function () {
             var ind = $("#section-input-area").find('.row').length;

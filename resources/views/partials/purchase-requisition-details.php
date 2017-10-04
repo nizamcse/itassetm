@@ -8,7 +8,7 @@
             <th>Quantity</th>
             <th>Approximate Price</th>
             {{#ifEditable pr_req_details.info.status}}
-            <th class="text-right">Action {{ pr_req_details.info.status }} </th>
+            <th class="text-right">Action</th>
             {{/ifEditable}}
         </tr>
         </thead>

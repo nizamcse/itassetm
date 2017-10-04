@@ -4,7 +4,7 @@
     <div class="box box-default" style="border-top: 0px !important;">
         <div class="box-header with-border">
             <h2 class="box-title text-center" style="display: block; font-size: 24px; margin:15px 0">Asset Receive Information Form</h2>
-            <p class="text-center">Asset Name: {{ $pur_req_detail->asset->name }}</p>
+            <p class="text-center">Asset Name: {{ $pur_req_detail->asset->name }}, Requisition No: {{ $pur_req_detail->purchase_req_id }}</p>
         </div>
         <!-- /.box-header -->
         <div class="box-body" style="border-radius: 0px">
@@ -33,7 +33,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Receive Date</label>
-                            <input type="date" name="receive_date" class="form-control" required>
+                            <input name="receive_date" class="datepicker form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -68,7 +68,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Purchase Order Date</label>
-                            <input type="date" name="purchase_order_date" class="form-control" required>
+                            <input name="purchase_order_date" class="datepicker form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -80,13 +80,13 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Vendor Delivery Date</label>
-                            <input type="date" name="vendor_delivery_date" class="form-control">
+                            <input name="vendor_delivery_date" class="datepicker form-control">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Warranty Start From</label>
-                            <input type="date" name="warranty_start_from" class="form-control">
+                            <input name="warranty_start_from" class="datepicker form-control">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -206,6 +206,8 @@
                 $("span.err-qty").text("");
                 $("button#receive-btn").prop("disabled",false);
             }
+
+            $(".datepicker").datepicker();
 
             getRemBalance();
 

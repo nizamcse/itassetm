@@ -11,4 +11,8 @@ class Issue extends Model
         'particulars',
         'created_by',
     ];
+
+    public function issueDetails(){
+        return $this->hasMany('App\IssueDetail','issue_id','id');
+    }
 }

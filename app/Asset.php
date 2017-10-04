@@ -53,6 +53,12 @@ class Asset extends Model
         return $this->hasOne('App\Asset','asset_id','id');
     }
 
+    public function assetLog(){
+        return $this->hasMany('App\AssetLog','asset_id','id');
+    }
 
+    public function vwReceiveDetail(){
+        return $this->hasOne('App\VwReceiveDetail','asset_id','id');
+    }
 
 }

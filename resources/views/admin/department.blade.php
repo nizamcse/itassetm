@@ -95,7 +95,7 @@
             var theCompiledHtml = theTemplate(data);
             // Add the compiled html to the page
             $('#departments').html(theCompiledHtml);
-            departmentDataTable();
+            initializeDatatable();
 
         };
 
@@ -282,6 +282,10 @@
             }});
             $("#edit-department-form #edit_report_to_employee").html($departmentOption);
         };
+
+        function initializeDatatable() {
+            $('#datatableN').DataTable();
+        }
 
         getEmployeesList();
 

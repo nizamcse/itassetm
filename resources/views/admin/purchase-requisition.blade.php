@@ -15,6 +15,7 @@
                     <th>ID</th>
                     <th>Purchase Requisition</th>
                     <th>Particulars</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,16 @@
                             </a>
                         </td>
                         <td>{{ $purchase_requisition->particulars }}</td>
+                        <td>
+                            @if(count($purchase_requisition->receives) == 0 && Auth::user()->user_type == 'ADMIN')
+                                <a href="{{ route('delete-purchase-requisition',['id' => $purchase_requisition->id]) }}">DELETE</a>
+                            @endif
+
+                            @if(count($purchase_requisition->receives) == 0 && Auth::user()->user_type == 'ADMIN' && ($purchase_requisition->status >0 && $purchase_requisition->status <3 ))
+                                <a href="{{ route('force-approve-purchase-requisition',['id' => $purchase_requisition->id]) }}">FORCE APPROVE</a>
+                            @endif
+
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -13,6 +13,9 @@ class PurchaseRequisition extends Model
         'date',
         'created_by',
         'status',
+        'comment',
+        'expected_receive_date',
+        'admin_approved',
     ];
 
     public function budgetType(){
@@ -36,4 +39,6 @@ class PurchaseRequisition extends Model
     public function employeesApprovedAlready(){
         return $this->belongsToMany('App\Employee','purchase_requisition_approvals','purchase_reqn_id','approved_by')->withTimestamps();
     }
+
+
 }

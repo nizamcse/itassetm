@@ -3,110 +3,173 @@
 @section('content')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title"></h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-            </div>
+            <h3 class="box-title">VENDORS</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <div id="submit-status"></div>
             <form action="{{ route('post.vendor') }}" id="vendorForm" method="POST">
                 {{ csrf_field() }}
-            <table id="vendorFormTable" class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th><label>Vendor Name</label></th>
-                    <th><label>Contact Person</label></th>
-                    <th><label>Contact No</label></th>
-                    <th><label>Address</label></th>
-                    <th><label>Web Address</label></th>
-                    <th><label>Trade No</label></th>
-                    <th><label>Vat No</label></th>
-                    <th><label>Company Name</label></th>
-                    <th>
-                        <button id="addFormRow" class="btn btn-success btn-add" type="button">
-                            <i class="glyphicon glyphicon-plus gs"></i>
-                        </button>
-                    </th>
-                </tr>
-                </thead>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="name">Vendor Name</label>
+                            <input class="form-control vendor-name" name="name" type="text" placeholder="Vendor Name" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input class="form-control vendor-address" name="address" type="text" placeholder="Address" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="contact-person">Contact Person</label>
+                            <input class="form-control vendor-contact-person" name="contact_person" type="text" placeholder="Contact Person" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="contact-no">Contact No</label>
+                            <input class="form-control vendor-contact-no" name="contact_no" type="text" placeholder="Contact No" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="web">Web</label>
+                            <input class="form-control vendor-web" name="web" type="text" placeholder="www.example.com" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="trade-no">Trade No</label>
+                            <input class="form-control vendor-trade-no" name="trade_no" type="text" placeholder="Trade No" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="vat-no">Vat No</label>
+                            <input class="form-control vendor-vat-no" name="vat_no" type="text" placeholder="Vat No" />
+                        </div>
+                    </div>
 
-                <tbody>
-                <tr>
-                    <td><input class="form-control vendor-name" name="vendor[0][name]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-address" name="vendor[0][address]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-contact-person" name="vendor[0][contact_person]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-contact-no" name="vendor[0][contact_no]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-web" name="vendor[0][web]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-trade-no" name="vendor[0][trade_no]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-vat-no" name="vendor[0][vat_no]" type="text" placeholder="Service Name" /></td>
-                    <td><input class="form-control vendor-company" name="vendor[0][company]" type="text" placeholder="Service Name" /></td>
-                    <td>
-                        <button class="btn btn-danger btn-remove" type="button">
-                            <i class="glyphicon glyphicon-minus gs"></i>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="company">Vendor Email</label>
+                            <input class="form-control vendor-company" name="email" type="email" placeholder="Vendor Email" />
+                        </div>
+                    </div>
 
-                <tfoot>
-                <tr>
-                    <td colspan="3">
-                        <button class="btn btn-success btn-add" type="submit">
-                            Save
-                        </button>
-                    </td>
-                </tr>
-                </tfoot>
-
-            </table>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="company">Comment</label>
+                            <input class="form-control vendor-company" name="comment" type="text" placeholder="Comment" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="vendor-type">Vendor Type</label>
+                            <select name="vendor_type" id="vendor_type" class="form-control">
+                                <option value="">Select Vendor Type</option>
+                                @foreach($vendor_types as $vendor_type)
+                                    <option value="{{ $vendor_type->id }}">{{ $vendor_type->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <button class="btn btn-success btn-add" type="submit" style="margin-top:25px">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </form>
             <form action="#" id="vendorEditForm" method="POST" style="display: none">
                 {{ csrf_field() }}
-            <table id="vendorEditFormTable" class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th><label>Vendor Name</label></th>
-                    <th><label>Contact Person</label></th>
-                    <th><label>Contact No</label></th>
-                    <th><label>Address</label></th>
-                    <th><label>Web Address</label></th>
-                    <th><label>Trade No</label></th>
-                    <th><label>Vat No</label></th>
-                    <th><label>Company Name</label></th>
-                </tr>
-                </thead>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="name">Vendor Name</label>
+                            <input class="form-control vendor-name" name="name" type="text" placeholder="Vendor Name" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input class="form-control vendor-address" name="address" type="text" placeholder="Address" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="contact-person">Contact Person</label>
+                            <input class="form-control vendor-contact-person" name="contact_person" type="text" placeholder="Contact Person" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="contact-no">Contact No</label>
+                            <input class="form-control vendor-contact-no" name="contact_no" type="text" placeholder="Contact No" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="web">Web</label>
+                            <input class="form-control vendor-web" name="web" type="text" placeholder="www.example.com" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="trade-no">Trade No</label>
+                            <input class="form-control vendor-trade-no" name="trade_no" type="text" placeholder="Trade No" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="vat-no">Vat No</label>
+                            <input class="form-control vendor-vat-no" name="vat_no" type="text" placeholder="Vat No" />
+                        </div>
+                    </div>
 
-                <tbody>
-                <tr>
-                    <td><input class="form-control vendor-name" name="name" type="text" placeholder="Vendor Name" /></td>
-                    <td><input class="form-control vendor-address" name="address" type="text" placeholder="Vendor Address" /></td>
-                    <td><input class="form-control vendor-contact-person" name="contact_person" type="text" placeholder="Vendor Contact Person" /></td>
-                    <td><input class="form-control vendor-contact-no" name="contact_no" type="text" placeholder="Vendor Contact No" /></td>
-                    <td><input class="form-control vendor-web" name="web" type="text" placeholder="Vendor Web" /></td>
-                    <td><input class="form-control vendor-trade-no" name="trade_no" type="text" placeholder="Vendor Trade No" /></td>
-                    <td><input class="form-control vendor-vat-no" name="vat_no" type="text" placeholder="Vendor Vat No" /></td>
-                    <td><input class="form-control vendor-company" name="company" type="text" placeholder="Vendor Company" /></td>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="company">Vendor Email</label>
+                            <input class="form-control vendor-company" name="email" type="email" placeholder="Vendor Email" />
+                        </div>
+                    </div>
 
-                </tr>
-                </tbody>
-
-                <tfoot>
-                <tr>
-                    <td colspan="3">
-                        <button class="btn btn-danger btn-cancel-edit" type="button">
-                            Cancel
-                        </button>
-                        <button class="btn btn-success btn-save-update" type="submit">
-                            Update
-                        </button>
-                    </td>
-                </tr>
-                </tfoot>
-
-            </table>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="company">Comment</label>
+                            <input class="form-control vendor-company" name="comment" type="text" placeholder="Comment" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="vendor-type">Vendor Type</label>
+                            <select name="vendor_type" id="vendor_type" class="form-control">
+                                <option value="">Select Vendor Type</option>
+                                @foreach($vendor_types as $vendor_type)
+                                    <option value="{{ $vendor_type->id }}">{{ $vendor_type->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <button class="btn btn-danger btn-cancel-edit" type="button" style="margin-top: 25px">
+                                Cancel
+                            </button>
+                            <button class="btn btn-success btn-save-update" type="submit" style="margin-top: 25px">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </form>
         <!-- /.row -->
     </div>
@@ -123,51 +186,6 @@
     @include('../partials.vendors-list')
     <script>
         $(document).ready(function () {
-            var rowCount = $('table#vendorFormTable >tbody:last >tr').length;
-            if(rowCount == 1) {
-                document.getElementsByClassName('btn-remove')[0].disabled = true;
-            }
-            var addRows = function () {
-                var rowCount = $('table#vendorFormTable >tbody:last >tr').length;
-
-                var controlForm = $('table#vendorFormTable>tbody');
-                var currentEntry = '<tr>'+$('table#vendorFormTable>tbody>tr:last').html()+'</tr>';
-                var newEntry = $(currentEntry).appendTo(controlForm);
-
-                newEntry.find('input.vendor-name').attr('name','vendor['+rowCount+'][name]');
-                newEntry.find('input.vendor-address').attr('name','vendor['+rowCount+'][address]');
-                newEntry.find('input.vendor-contact-person').attr('name','vendor['+rowCount+'][contact_person]');
-                newEntry.find('input.vendor-contact-no').attr('name','vendor['+rowCount+'][contact_no]');
-                newEntry.find('input.vendor-web').attr('name','vendor['+rowCount+'][web]');
-                newEntry.find('input.vendor-trade-no').attr('name','vendor['+rowCount+'][trade_no]');
-                newEntry.find('input.vendor-vat-no').attr('name','vendor['+rowCount+'][vat_no]');
-                newEntry.find('input.vendor-company').attr('name','vendor['+rowCount+'][company]');
-
-                rowCount = $('table#vendorFormTable >tbody:last >tr').length;
-                if(rowCount > 1) {
-                    var removeButtons = document.getElementsByClassName('btn-remove');
-                    for(var i = 0; i < removeButtons.length; i++) {
-                        removeButtons.item(i).disabled = false;
-                    }
-                }
-            };
-
-            $("#addFormRow").click(function (e) {
-                e.preventDefault();
-                addRows();
-            });
-
-            $(document).on('click','.btn-remove',function (e) {
-                $(this).parents('tr:first').remove();
-
-                //Disable the Remove Button
-                var rowCount = $('table#vendorFormTable >tbody:last >tr').length;
-                if(rowCount == 1) {
-                    document.getElementsByClassName('btn-remove')[0].disabled = true;
-                }
-
-                e.preventDefault();
-            });
 
             $( "#vendorForm" ).on( "submit", function( event ) {
                 var formData = $( this ).serialize();
@@ -191,16 +209,31 @@
             });
 
             function vendorsData(data) {
+                Handlebars.registerHelper('ifEnable', function(a, options) {
+                    if (a == 1) {
+                        return options.fn(this);
+                    }
+
+                    return options.inverse(this);
+                });
+
+                Handlebars.registerHelper('ifDisable', function(a, options) {
+                    if (a == 0) {
+                        return options.fn(this);
+                    }
+
+                    return options.inverse(this);
+                });
+
                 var theTemplateScript = $("#vendors-data-template").html();
-
-                // Compile the template
                 var theTemplate = Handlebars.compile(theTemplateScript);
-
-
-                // Pass our data to the template
                 var theCompiledHtml = theTemplate(data);
-                // Add the compiled html to the page
                 $('#vendorsData').html(theCompiledHtml);
+                initializeDatatable();
+            }
+
+            function initializeDatatable() {
+                $('#datatableN').DataTable();
             }
 
             var getVendors = function () {
@@ -225,6 +258,20 @@
                 });
             });
 
+            $(document).on('click','.btn-enable',function (e) {
+                var url = "{{ route('enable-vendor') }}/"+$(this).data('id');
+                $.ajax({url: url, success: function(result){
+                    getVendors();
+                }});
+            });
+
+            $(document).on('click','.btn-disable',function (e) {
+                var url = "{{ route('disable-vendor') }}/"+$(this).data('id');
+                $.ajax({url: url, success: function(result){
+                    getVendors();
+                }});
+            });
+
             $(document).on('click','.btn-edit',function (e){
                 var id = $(this).data('id');
                 $.ajax({url: "{{ route('json-vendor') }}/"+id, success: function(result){
@@ -245,7 +292,9 @@
                 $("#vendorEditForm input[name='web']").val(data.web);
                 $("#vendorEditForm input[name='trade_no']").val(data.trade_no);
                 $("#vendorEditForm input[name='vat_no']").val(data.vat_no);
-                $("#vendorEditForm input[name='company']").val(data.company);
+                $("#vendorEditForm input[name='email']").val(data.email);
+                $("#vendorEditForm input[name='comment']").val(data.comment);
+                $("#vendorEditForm select[name='vendor_type']").val(data.vendor_type_id);
             }
 
             $("#vendorEditForm").on( "submit", function( event ) {

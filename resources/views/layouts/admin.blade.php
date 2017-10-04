@@ -130,6 +130,24 @@
                     <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
                     <li class="treeview">
                         <a href="#">
+                            <i class="fa  fa-file-text"></i> <span>Reports</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('report-pending-assets') }}"><i class="fa fa-circle-o"></i>PENDING ASSETS</a>
+                                <a href="{{ route('report-received-assets') }}"><i class="fa fa-circle-o"></i>RECEIVED ASSETS</a>
+                                <a href="{{ route('report-issued-assets') }}"><i class="fa fa-circle-o"></i>ISSUED ASSETS</a>
+                                <a href="{{ route('report-budget-details') }}"><i class="fa fa-circle-o"></i>BUDGET DETAILS</a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
                             <i class="fa  fa-file-text"></i> <span>Purchase Requisition</span>
                             <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -199,6 +217,26 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
+                            <i class="fa fa-cog"></i> <span>Service</span>
+                            <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ route('in-service') }}"><i class="fa fa-circle-o"></i>Asset In Service</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('send-for-service') }}"><i class="fa fa-circle-o"></i>Send For Service</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('received-service') }}"><i class="fa fa-circle-o"></i>Receive From Service</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
                             <i class="fa fa-users"></i> <span>User & Support Manager</span>
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
@@ -213,6 +251,7 @@
                     </li>
                 @endif
                 <li><a href="{{ route('create-support-ticket') }}"><i class="fa fa-openid"></i><span>Open Support Ticket</span></a></li>
+                <li><a href="{{ route('asset-logs') }}"><i class="fa fa-openid"></i><span>Asset Logs</span></a></li>
                 <li><a href="{{ route('support-question') }}"><i class="fa fa-support"></i><span>Support Tickets</span></a></li>
                 @if(Auth::user()->hasRole('admin') || Auth::user()->user_type == 'ADMIN')
                     <li class="treeview">
@@ -228,7 +267,9 @@
                             <li class="active"><a href="{{ route('admin.sections') }}"><i class="fa fa-circle-o"></i> Section</a></li>
                             <li class="active"><a href="{{ route('admin.employees') }}"><i class="fa fa-circle-o"></i> Employe</a></li>
                             <li class="active"><a href="{{ route('admin.locations') }}"><i class="fa fa-circle-o"></i> Location</a></li>
+                            <li class="active"><a href="{{ route('units') }}"><i class="fa fa-circle-o"></i> Units</a></li>
                             <li class="active"><a href="{{ route('admin.asset-types') }}"><i class="fa fa-circle-o"></i> Assets Type</a></li>
+                            <li class="active"><a href="{{ route('vendor-type') }}"><i class="fa fa-circle-o"></i> Vendor Type</a></li>
                             <li class="active"><a href="{{ route('admin.vendors') }}"><i class="fa fa-circle-o"></i> Vendor</a></li>
                             <li class="active"><a href="{{ route('admin.services-type') }}"><i class="fa fa-circle-o"></i> Service Type</a></li>
                             <li class="active"><a href="{{ route('admin.manufacturers') }}"><i class="fa fa-circle-o"></i> Manufacturer</a></li>
@@ -327,7 +368,6 @@
 
 <!-- jQuery 2.2.3 -->
 <!--<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>-->
-<script src="{{ asset('public/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

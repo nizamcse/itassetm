@@ -213,6 +213,22 @@
                 return options.inverse(this);
             });
 
+            Handlebars.registerHelper('ifEnable', function(a, options) {
+                if (a == 1) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
+
+            Handlebars.registerHelper('ifDisable', function(a, options) {
+                if (a == 0) {
+                    return options.fn(this);
+                }
+
+                return options.inverse(this);
+            });
+
             var theTemplateScript = $("#employee-table-template").html();
 
             // Compile the template
@@ -369,6 +385,20 @@
         $("#cancelEmployeeEditForm").click(function () {
             $("#employee-edit-form")[0].reset();
             $("#employee-edit-form").css({"display":"none"});
+        });
+
+        $(document).on('click','.btn-enable',function (e) {
+            var url = "{{ route('active-employee') }}/"+$(this).data('id');
+            $.ajax({url: url, success: function(result){
+                getEmployeesList();
+            }});
+        });
+
+        $(document).on('click','.btn-disable',function (e) {
+            var url = "{{ route('inactive-employee') }}/"+$(this).data('id');
+            $.ajax({url: url, success: function(result){
+                getEmployeesList();
+            }});
         });
 
         getEmployeesList();
